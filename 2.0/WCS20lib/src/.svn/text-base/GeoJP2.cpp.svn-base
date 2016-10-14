@@ -1,0 +1,270 @@
+/*
+ * GeoJP2.cpp
+ *
+ *  Created on: Nov 3, 2008
+ *      Author: pli
+ */
+
+#include "GeoJP2.h"
+
+using namespace std;
+
+GeoJP2::GeoJP2()
+{
+	// TODO Auto-generated constructor stub
+
+}
+
+GeoJP2::GeoJP2(const string& id, vector<int> &rBandList) :
+	AbstractDataset(id, rBandList)
+{
+	mdMissingValue = 0;
+	mbGeoTransformSet = FALSE;
+}
+
+GeoJP2::~GeoJP2()
+{
+
+}
+CPLErr GeoJP2::setNativeCRS()
+{
+	if (CE_None == AbstractDataset::setNativeCRS())
+		return CE_None;
+
+	char *pGCPsWkt = (char*) maptrDS->GetGCPProjection();
+	if (pGCPsWkt && *pGCPsWkt != '\0' && maptrDS->GetGCPCount() > 1)
+	{
+		if (OGRERR_NONE == moNativeCRS.importFromWkt(&pGCPsWkt))
+			return CE_None;
+	}
+	else
+	{
+		string desCovFile = CPLGetDirname(mSrcFilename.c_str());
+		desCovFile += "/" + (string) CPLGetBasename(mSrcFilename.c_str())
+				+ ".xml";
+		if (CE_None == setGeoRefFromXML(desCovFile))
+		{
+			mbGeoTransformSet = TRUE;
+			return CE_None;
+		}
+	}
+	moNativeCRS.SetLocalCS("OGC:ImageCRS");
+	return CE_None;
+}
+CPLErr GeoJP2::setGeoTransform()
+{
+	if (mbGeoTransformSet)
+		return CE_None;
+
+	if (CE_None == AbstractDataset::setGeoTransform())
+		return CE_None;
+
+
+	int nGCPs = maptrDS->GetGCPCount();
+	char *pGCPSRS = (char*) maptrDS->GetGCPProjection();
+	const GDAL_GCP* pGCPList = maptrDS->GetGCPs();
+	if (nGCPs > 1 && pGCPSRS && *pGCPSRS != '\0' && NULL != pGCPList)
+	{
+		OGRSpatialReference oGCPsSRS;
+		oGCPsSRS.importFromWkt(&pGCPSRS);
+
+		My2DPoint lowLeft;
+		My2DPoint upRight;
+
+		GetCornerPoints(pGCPList, nGCPs, lowLeft, upRight);
+
+		if (CE_None != bBox_transFormmate(oGCPsSRS, moNativeCRS, lowLeft,
+				upRight))
+			return CE_Failure;
+
+		double resX = (upRight.mi_X - lowLeft.mi_X) / (maptrDS->GetRasterXSize() - 1);
+		double resY = (upRight.mi_Y - lowLeft.mi_Y) / (maptrDS->GetRasterYSize() - 1);
+		mdGeotransform[0] = lowLeft.mi_X;
+		mdGeotransform[1] = resX;
+		mdGeotransform[2] = 0;
+		mdGeotransform[3] = upRight.mi_Y;
+		mdGeotransform[4] = 0;
+		mdGeotransform[5] = -resY;
+
+		mbGeoTransformSet = TRUE;
+	}
+	return CE_None;
+}
+
+CPLErr GeoJP2::initialDataset(const int isSimple)
+{
+
+	mbIsVirtualDS = FALSE;
+
+	if (ms_CoverageID.empty() || ms_CoverageID == "")
+	{
+		SetWCS_ErrorLocator("GeoJP2::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "No Coverage ID.");
+
+		return CE_Failure;
+	}
+	vector<string> strSet;
+	unsigned int n = csvburstCpp(ms_CoverageID, strSet, ':');
+
+	if (n == 1)
+	{
+		msDatasetName = "RGB";
+		msDataTypeName = "GEOJP2";
+		mSrcFilename = ms_CoverageID;
+	}
+	else if (n == 3 && EQUAL( strSet[0].c_str(), "GEOJP2" ))
+	{
+		mSrcFilename = strSet[1];
+		msDatasetName = strSet[2];
+		msDataTypeName = "JPEG2000:RGB";
+	}
+	else
+	{
+		SetWCS_ErrorLocator("GeoJP2::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Incorrect coverage ID.");
+
+		return CE_Failure;
+	}
+
+	mSrcFilename = myStrTrimsIn(mSrcFilename, " \'\"");
+
+	GDALDataset* pSrc = (GDALDataset*) GDALOpen(mSrcFilename.c_str(),
+			GA_ReadOnly);
+	if (pSrc == NULL)
+	{
+		SetWCS_ErrorLocator("GeoJP2::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to Open DataSet \"%s\" in GDAL.", mSrcFilename.c_str());
+
+		return CE_Failure;
+	}
+
+	msNativeFormat = GDALGetDriverShortName(pSrc->GetDriver());
+
+	if (!EQUAL(msNativeFormat.c_str(),"JPEG2000")
+			&&
+			!EQUAL(msNativeFormat.c_str(),"JPEG"))
+	{
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("GeoJP2::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Source file format is not \"image/jpeg2000\".");
+
+		return CE_Failure;
+	}
+
+	//set meta data list
+	setMetaDataList(pSrc);
+
+	//set noValue
+	unsigned int nBandCount = pSrc->GetRasterCount();
+	if (nBandCount < 1)
+	{
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("GeoJP2::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"No Band in Coverage \"%s\".", ms_CoverageID.c_str());
+
+		return CE_Failure;
+	}
+	int iSuc = 0;
+	double noValue = pSrc->GetRasterBand(1)->GetNoDataValue(&iSuc);
+	if (iSuc)
+		mdMissingValue = noValue;
+
+	maptrDS.reset(pSrc);
+
+	//set moNativeCRS and mGeoTransform
+	if (CE_None != setNativeCRS() || CE_None != setGeoTransform() || CE_None
+			!= setGDALDataset(isSimple))
+	{
+		GDALClose(maptrDS.release());
+		return CE_Failure;
+	}
+	return CE_None;
+}
+
+CPLErr GeoJP2::setGDALDataset(const int isSimple)
+{
+	if (!mpBandList.empty())
+	{
+		//Yuanzheng Shao
+		//VRTDataset *poVDS = new VRTDataset(maptrDS->GetRasterXSize(),
+		//		maptrDS->GetRasterYSize());
+		VRTDataset *poVDS = (VRTDataset *)VRTCreate(maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize()); 
+		if (poVDS == NULL)
+		{
+			SetWCS_ErrorLocator("GeoJP2::setGDALDataset()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to create VTR DataSet.");
+
+			return CE_Failure;
+		}
+
+		VRTSourcedRasterBand *poVRTBand = NULL;
+		GDALRasterBand *poSrcBand = NULL;
+		GDALDataType eBandType;
+		for (unsigned int i = 0; i < mpBandList.size(); i++)
+		{
+			poSrcBand = maptrDS->GetRasterBand(mpBandList[i]);
+			if (poSrcBand == NULL)
+			{
+				GDALClose(poVDS);
+				SetWCS_ErrorLocator("GeoJP2::setGDALDataset()");
+				WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+						"No Band in source DataSet.");
+
+				return CE_Failure;
+			}
+			eBandType = poSrcBand->GetRasterDataType();
+			/* -------------------------------------------------------------------- */
+			/*      Create this band.                                               */
+			/* -------------------------------------------------------------------- */
+			poVDS->AddBand(eBandType, NULL);
+			poVRTBand = (VRTSourcedRasterBand *) poVDS->GetRasterBand(i + 1);
+
+			poVRTBand->SetNoDataValue(mdMissingValue);
+
+			if (CE_None != poVRTBand->AddSimpleSource(poSrcBand, 0, 0,
+					maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize(), 0, 0,
+					maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize(), NULL,
+					mdMissingValue))
+			{
+				GDALClose(poVDS);
+				SetWCS_ErrorLocator("GeoJP2::setGDALDataset()");
+				WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+						"Failed to Add Simple Source into VTR DataSet.");
+
+				return CE_Failure;
+			}
+		}
+		if (mbGeoTransformSet)
+		{
+			poVDS->SetGeoTransform(mdGeotransform);
+			char *psTargetSRS;
+			moNativeCRS.exportToWkt(&psTargetSRS);
+			poVDS->SetProjection(psTargetSRS);
+			OGRFree(psTargetSRS);
+		}
+
+		GDALClose(maptrDS.release());
+		maptrDS.reset(poVDS);
+
+	}
+	return CE_None;
+}
+CPLErr GeoJP2::setMetaDataList(GDALDataset* hSrc)
+{
+	char** papszMetadata = hSrc->GetMetadata("");
+
+	mvtrMeteDataList.push_back(
+			"Product_Description=The image data be created by WCS 1.1.0 from GeoJpeg 2000 data.");
+	for (int i = 0; i < CSLCount((char**) papszMetadata); ++i)
+	{
+		mvtrMeteDataList.push_back(papszMetadata[i]);
+	}
+
+	return CE_None;
+}
+

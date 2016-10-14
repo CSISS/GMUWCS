@@ -1,0 +1,388 @@
+/*
+ * GaspAOD_Dataset.cpp
+ *
+ *  Created on: Oct 28, 2010
+ *      Author: yshao
+ */
+
+#include "GaspAOD_Dataset.h"
+
+static const char* AODAllVariable[10] = {"BAOD", "BAODSTD", "BSFC", "BCH1", "BMOS", "BCLD", "BCLS", "BSIG", "BMSK", "BCSA"};
+/*
+static const char* AODVariable[3] = {"BAOD", "AEROSOLSIGNAL", "ACCMASK"};
+static const char* AODAllVariableDescription[10] = {
+		"aerosol optical depth (AOD)",
+		"AOD standard deviation",
+		"surface reflectivities",
+		"channel 1 (Visible) reflectance",
+		"composite background image (visible) reflectance",
+		"cloud screen for individual pixel (0--cloud, 1--no cloud)",
+		"sum of the bcld variables for a 5 * 5 array surrounding each pixel",
+		"aerosol signal",
+		"mask/screen for the data (1---good data; 0-bad data)",
+		"scattering angle"
+};
+static const char* AODVariableDescription[3] = {
+		"aerosol optical depth (AOD)",
+		"aerosol signal",
+		"accmask"
+};
+*/
+
+GaspAOD_Dataset::GaspAOD_Dataset() {
+	// TODO Auto-generated constructor stub
+}
+
+GaspAOD_Dataset::~GaspAOD_Dataset() {
+	// TODO Auto-generated destructor stub
+}
+
+GaspAOD_Dataset::GaspAOD_Dataset(const string& id, vector<int> &rBandList):
+	AbstractDataset(id,rBandList){
+	mdMissingValue = 0;
+	mbGeoTransformSet = FALSE;
+	miPixelOffset = 1;
+	mfGeoYMin = 180.0;
+	mfGeoYMax = -180.0;
+	mfGeoXMin = 360.0;
+	mfGeoXMax = -360.0;
+}
+
+CPLErr GaspAOD_Dataset::initialDataset(const int isSimple)
+{
+	mbIsVirtualDS = FALSE;
+
+	vector<string> strSet;
+	unsigned int n = csvburstCpp(ms_CoverageID, strSet,':');
+	if(n == 4) {
+    	msDataTypeName=strSet[0];
+    	msEastWest = strSet[1];
+    	mSrcFilename = strSet[2];
+    	msDatasetName = strSet[3];
+    } else {
+		SetWCS_ErrorLocator("AsdtaSmoke_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Incorrect coverage ID.");
+    	return CE_Failure;
+	}
+	mSrcFilename = myStrTrimsIn(mSrcFilename," \'\"");
+	string fileBase = CPLGetBasename(mSrcFilename.c_str());
+
+	FILE *fp = fopen(mSrcFilename.c_str(), "rb");
+	if(fp == NULL) {
+		SetWCS_ErrorLocator("GaspAOD_Dataset::getRequestDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to open file: %s.", mSrcFilename.c_str());
+		return CE_Failure;
+	}
+
+	fseek(fp,0,SEEK_END);
+	long filesize = ftell(fp);
+	rewind(fp);
+
+	msNativeFormat = "binary";
+
+	if(EQUAL(msEastWest.c_str(), "WEST")) {
+		miXSize = AOD_WEST_X_SIZE;
+		miYSize = AOD_WEST_Y_SIZE;
+		long int pixels = AOD_WEST_X_SIZE * AOD_WEST_Y_SIZE;
+
+		if(Find_Compare_SubStr(fileBase, "US.all.aod") || filesize == AOD_WEST_ALL_FILE_SIZE) {
+			for(int i = 0; i < 10; i++) {
+				if(EQUAL(AODAllVariable[i], msDatasetName.c_str())) {
+					miStartPos = pixels * i;
+					meDataType = GDT_Byte;
+					miPixelOffset = 1;
+					break;
+				}
+			}
+		}else if(Find_Compare_SubStr(fileBase, "US.aod") || filesize == AOD_WEST_US_FILE_SIZE) {
+			if(EQUAL(msDatasetName.c_str(), "BAOD")) {
+				miStartPos = 0;
+				meDataType = GDT_Float32;
+				miPixelOffset = 4;
+			} else if(EQUAL(msDatasetName.c_str(), "AEROSOLSIGNAL")) {
+				miStartPos = pixels * 4;
+				meDataType = GDT_Float32;
+				miPixelOffset = 4;
+			} else if(EQUAL(msDatasetName.c_str(), "ACCMASK")) {
+				miStartPos = pixels * 8;
+				meDataType = GDT_Byte;
+				miPixelOffset = 1;
+			}
+		}
+	} else if(EQUAL(msEastWest.c_str(), "EAST")) {
+		miXSize = AOD_EAST_X_SIZE;
+		miYSize = AOD_EAST_Y_SIZE;
+		long int pixels = AOD_EAST_X_SIZE * AOD_EAST_Y_SIZE;
+
+		if(Find_Compare_SubStr(fileBase, "US.all.aod") || filesize == AOD_EAST_ALL_FILE_SIZE) {
+			for(int i = 0; i < 10; i++) {
+				if(EQUAL(AODAllVariable[i], msDatasetName.c_str())) {
+					miStartPos = pixels * i;
+					meDataType = GDT_Byte;
+					miPixelOffset = 1;
+					break;
+				}
+			}
+		} else if(Find_Compare_SubStr(fileBase, "US.aod") || filesize == AOD_EAST_US_FILE_SIZE) {
+			if(EQUAL(msDatasetName.c_str(), "BAOD")) {
+				miStartPos = 0;
+				meDataType = GDT_Float32;
+				miPixelOffset = 4;
+			} else if(EQUAL(msDatasetName.c_str(), "AEROSOLSIGNAL")) {
+				miStartPos = pixels * 4;
+				meDataType = GDT_Float32;
+				miPixelOffset =4;
+			} else if(EQUAL(msDatasetName.c_str(), "ACCMASK")) {
+				miStartPos = pixels * 8;
+				meDataType = GDT_Byte;
+				miPixelOffset = 1;
+			}
+		}
+	}
+
+	char* buffer = (char*) malloc(sizeof(char) * filesize);
+	fread(buffer, 1, filesize, fp);
+	char outPrint[256];
+	sprintf(outPrint,"MEM:::DATAPOINTER=%d,PIXELS=%d,LINES=%d,DATATYPE=%d,PIXELOFFSET=%d",
+			(int)(buffer+miStartPos),miXSize,miYSize,meDataType,miPixelOffset);
+	GDALDataset* pSrcDS = (GDALDataset*)GDALOpenShared(outPrint,GA_ReadOnly);
+	if(pSrcDS == NULL) {
+		fclose(fp);
+		free(buffer);
+		SetWCS_ErrorLocator("GaspAOD_Dataset::getRequestDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to create data set in memory raster.");
+		return CE_Failure;		fclose(fp);
+		free(buffer);
+	}
+	maptrDS.reset(pSrcDS);
+
+	if(CE_None!=setNativeCRS()|| CE_None!=setGeoTransform()|| CE_None!=setGDALDataset(isSimple))
+	{
+		fclose(fp);
+		free(buffer);
+		GDALClose(maptrDS.release());
+	   	return CE_Failure;
+	}
+
+	free(buffer);
+	fclose(fp);
+
+	return CE_None;
+}
+
+CPLErr GaspAOD_Dataset::setNativeCRS()
+{
+	moNativeCRS.SetWellKnownGeogCS( "WGS84" );
+	return CE_None;
+}
+
+CPLErr GaspAOD_Dataset::setGeoTransform()
+{
+	if(EQUAL(msEastWest.c_str(), "WEST")) {
+		mfGeoXMin = AOD_WEST_GEO_X_MIN;
+		mfGeoXMax = AOD_WEST_GEO_X_MAX;
+		mfGeoYMin = AOD_WEST_GEO_Y_MIN;
+		mfGeoYMax = AOD_WEST_GEO_Y_MAX;
+	}else if(EQUAL(msEastWest.c_str(), "EAST")) {
+		mfGeoXMin = AOD_EAST_GEO_X_MIN;
+		mfGeoXMax = AOD_EAST_GEO_X_MAX;
+		mfGeoYMin = AOD_EAST_GEO_Y_MIN;
+		mfGeoYMax = AOD_EAST_GEO_Y_MAX;
+	}
+
+	double res = MIN ( (mfGeoXMax - mfGeoXMin) / miXSize, (mfGeoYMax - mfGeoYMin) / miYSize );
+	mdGeotransform[0] = mfGeoXMin;
+	mdGeotransform[1] = res;
+	mdGeotransform[2] = 0;
+ 	mdGeotransform[3] = mfGeoYMax;
+	mdGeotransform[4] = 0;
+	mdGeotransform[5] = -res;
+
+	miRectifiedImageXSize = (int) ((mfGeoXMax - mfGeoXMin) / res + 0.5);
+	miRectifiedImageYSize = (int) ((mfGeoYMax - mfGeoYMin) / res + 0.5);
+
+	mbGeoTransformSet = TRUE;
+	return CE_None;
+}
+
+CPLErr GaspAOD_Dataset::setGDALDataset(const int isSimple)
+{
+
+	VRTDataset *poVDS = (VRTDataset *)VRTCreate(miRectifiedImageXSize, miRectifiedImageYSize);
+	if (poVDS == NULL) {
+		SetWCS_ErrorLocator("GaspAOD_Dataset::setGDALDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to create VRT DataSet.");
+		return CE_Failure;
+	}
+
+	VRTSourcedRasterBand *poVRTBand = NULL;
+	GDALRasterBand *poSrcBand = maptrDS->GetRasterBand(1);
+	GDALDataType eBandType = poSrcBand->GetRasterDataType();
+	poVDS->AddBand(eBandType, NULL);
+	poVRTBand = (VRTSourcedRasterBand *) poVDS->GetRasterBand(1);
+	poVRTBand->SetNoDataValue(mdMissingValue);
+
+	if (CE_None != poVRTBand->AddSimpleSource(poSrcBand, 0, 0, miRectifiedImageXSize, miRectifiedImageYSize,
+			0, 0, miRectifiedImageXSize, miRectifiedImageYSize, NULL, mdMissingValue))
+	{
+		GDALClose((GDALDatasetH) poVDS);
+		SetWCS_ErrorLocator("GaspAOD_Dataset::setGDALDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Add Simple Source into VRT DataSet.");
+		return CE_Failure;
+	}
+
+	if (isSimple) //For getCapabilities & DescribeCoverage operations, return now
+		return CE_None;
+	else{
+		if (CE_None != setGCPGeoRef4VRTDataset(poVDS))
+		{
+			GDALClose((GDALDatasetH) poVDS);
+			return CE_Failure;
+		}
+		GDALClose(maptrDS.release());
+		maptrDS.reset(poVDS);
+
+		return rectifyAODDataSet();
+	}
+}
+
+CPLErr GaspAOD_Dataset::setGCPGeoRef4VRTDataset(GDALDataset* poVDS)
+{
+	//Step 1: Read the lat/lon files to get the GCPs
+	FILE *fplat = NULL, *fplon =NULL;
+	if(EQUAL(msEastWest.c_str(), "WEST")) {
+		fplat = fopen(msWestLatFilePath.c_str(), "rb");
+		fplon = fopen(msWestLonFilePath.c_str(), "rb");
+	} else if(EQUAL(msEastWest.c_str(), "EAST")) {
+		fplat = fopen(msEastLatFilePath.c_str(), "rb");
+		fplon = fopen(msEastLonFilePath.c_str(), "rb");
+	}
+
+	if(fplat == NULL || fplon == NULL)
+	{
+		SetWCS_ErrorLocator("GaspAOD_Dataset::setGCPGeoRef4VRTDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to open the latitude and longitude binary files for AOD data. West Latitude: %s ", (char*)msWestLatFilePath.c_str());
+		return CE_Failure;
+	}
+
+	fseek(fplat, 0, SEEK_END);
+	fseek(fplon, 0, SEEK_END);
+	long int latsize = ftell(fplat);
+	long int lonsize = ftell(fplon);
+	rewind(fplat);
+	rewind(fplon);
+
+	char* buflat = (char*) malloc(sizeof(char) * latsize);
+	char* buflon = (char*) malloc(sizeof(char) * lonsize);
+	long int resultlat = fread(buflat, 1, latsize, fplat);
+	long int resultlon = fread(buflon, 1, lonsize, fplon);
+	if(resultlat != latsize || resultlon != lonsize)
+	{
+		SetWCS_ErrorLocator("GaspAOD_Dataset::setGCPGeoRef4VRTDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to allocate the memory for latitude and longitude binary files.");
+		return CE_Failure;
+	}
+
+	int nGCPs = 0;
+	GDAL_GCP gdalCGP;
+
+	//To reduce the processing time, set the GCP stride to 10
+	for(int i = 0; i < latsize; i+=40)
+	{
+		char curlatarr[4] = {buflat[i], buflat[i+1], buflat[i+2], buflat[i+3]};
+		char curlonarr[4] = {buflon[i], buflon[i+1], buflon[i+2], buflon[i+3]};
+		float curlatv = *(float*)curlatarr;
+		float curlonv = *(float*)curlonarr;
+
+		int iLine = (i / 4) / miXSize;
+		int iPixel = (i / 4) % miXSize;
+
+		if(curlatv >= -90.0 && curlatv <= 90.0 && curlonv >= -180.0 && curlonv <= 180.0)//valid
+		{
+			char pChr[64];
+			sprintf(pChr, "%d", ++nGCPs);
+			GDALInitGCPs(1, &gdalCGP);
+			gdalCGP.pszId = strdup(pChr);
+			gdalCGP.pszInfo = strdup("");
+			gdalCGP.dfGCPLine = iLine;
+			gdalCGP.dfGCPPixel = iPixel;
+			gdalCGP.dfGCPX = curlonv;
+			gdalCGP.dfGCPY = curlatv;
+			gdalCGP.dfGCPZ = 0;
+			m_gdalGCPs.push_back(gdalCGP);
+		}
+	}
+
+	fclose(fplat);
+	fclose(fplon);
+	free(buflat);
+	free(buflon);
+
+	//Step 2: Assign the GCPs to VRT data set
+	char* psTargetSRS;
+	moNativeCRS.exportToWkt(&psTargetSRS);
+
+	if (CE_None != poVDS->SetGCPs(m_gdalGCPs.size(), (GDAL_GCP*) (&m_gdalGCPs[0]), psTargetSRS))
+	{
+		OGRFree(psTargetSRS);
+		SetWCS_ErrorLocator("GaspAOD_Dataset::setGCPGeoRef4VRTDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to set GCPs.");
+		return CE_Failure;
+	}
+
+	OGRFree(psTargetSRS);
+	return CE_None;
+}
+
+CPLErr GaspAOD_Dataset::rectifyAODDataSet()
+{
+	char *pszDstWKT;
+	moNativeCRS.exportToWkt(&pszDstWKT);
+
+	GDALDriverH poDriver = GDALGetDriverByName("MEM");
+	GDALDataset* rectDS = (GDALDataset*) GDALCreate(poDriver, "", miRectifiedImageXSize,
+			miRectifiedImageYSize, 1, maptrDS->GetRasterBand(1)->GetRasterDataType(), NULL);
+	if (NULL == rectDS)
+	{
+		GDALClose(poDriver);
+		OGRFree(pszDstWKT);
+		SetWCS_ErrorLocator("GaspAOD_Dataset::rectifyAODDataSet");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to create \"MEM\" dataSet for AOD data.");
+		return CE_Failure;
+	}
+
+	rectDS->SetProjection(pszDstWKT);
+	rectDS->SetGeoTransform(mdGeotransform);
+
+	if (CE_None != GDALReprojectImage(maptrDS.get(), NULL, rectDS, pszDstWKT, GRA_Bilinear, 0, 0.125, NULL, NULL, NULL))
+	{
+		GDALClose(rectDS);
+		GDALClose(poDriver);
+		OGRFree(pszDstWKT);
+		SetWCS_ErrorLocator("GaspAOD_Dataset::rectifyDataSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to re-project AOD data.");
+		return CE_Failure;
+	}
+
+	OGRFree(pszDstWKT);
+	GDALClose(maptrDS.release());
+	maptrDS.reset(rectDS);
+	return CE_None;
+}
+
+CPLErr GaspAOD_Dataset::setMetaDataList(GDALDataset*)
+{
+	mvtrMeteDataList.push_back("Product_Description=This file was created by CSISS-WCS from AOD data.");
+	return CE_None;
+}
+
+CPLErr GaspAOD_Dataset::setExtraParameters(vector<string> & latlonVec)
+{
+	msWestLatFilePath = latlonVec.at(0);
+	msWestLonFilePath = latlonVec.at(1);
+	msEastLatFilePath = latlonVec.at(2);
+	msEastLonFilePath = latlonVec.at(3);
+
+	return CE_None;
+}
+

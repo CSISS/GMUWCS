@@ -1,0 +1,858 @@
+/*
+ * wcsUtil.cpp
+ * Modified By Yuanzheng Shao
+*/
+
+#include <unistd.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <stdexcept>
+#include <uuid/uuid.h>
+#include "wcsUtil.h"
+
+string CPL_STDCALL getUUID()
+{
+	uuid_t uuid;
+	uuid_generate(uuid);
+	char uuidstr[36];
+	uuid_unparse(uuid, uuidstr);
+	return uuidstr;
+}
+
+string SPrintArrayIn(GDALDataType eDataType, const void *paDataArray,
+		int nValues, const char *pszDelimiter)
+{
+	char *pszString, *pszField;
+	int i, iFieldSize, iStringSize;
+
+	iFieldSize = 32 + strlen(pszDelimiter);
+	pszField = (char *) CPLMalloc(iFieldSize + 1);
+	iStringSize = nValues * iFieldSize + 1;
+	pszString = (char *) CPLMalloc(iStringSize);
+	memset(pszString, 0, iStringSize);
+	for (i = 0; i < nValues; i++)
+	{
+		switch (eDataType)
+		{
+		case GDT_Byte:
+			sprintf(pszField, "%d%s", ((GByte *) paDataArray)[i], (i < nValues
+					- 1) ? pszDelimiter : "");
+			break;
+		case GDT_UInt16:
+			sprintf(pszField, "%u%s", ((GUInt16 *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		case GDT_Int16:
+		default:
+			sprintf(pszField, "%d%s", ((GInt16 *) paDataArray)[i], (i < nValues
+					- 1) ? pszDelimiter : "");
+			break;
+		case GDT_UInt32:
+			sprintf(pszField, "%u%s", ((GUInt32 *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		case GDT_Int32:
+			sprintf(pszField, "%d%s", ((GInt32 *) paDataArray)[i], (i < nValues
+					- 1) ? pszDelimiter : "");
+			break;
+		case GDT_Float32:
+			sprintf(pszField, "%.7g%s", ((float *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		case GDT_Float64:
+			sprintf(pszField, "%.15g%s", ((double *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		}
+		strcat(pszString, pszField);
+	}
+
+	CPLFree(pszField);
+	//return pszString;
+	//Yuanzheng Shao
+	string rtnStr = std::string(pszString);
+	return rtnStr;
+}
+
+string CPL_STDCALL SPrintArray(GDALDataType eDataType, const void *paDataArray,
+		int nValues, const char *pszDelimiter)
+{
+	char *pszString, *pszField;
+	int i, iFieldSize, iStringSize;
+
+	iFieldSize = 32 + strlen(pszDelimiter);
+	pszField = (char *) CPLMalloc(iFieldSize + 1);
+	iStringSize = nValues * iFieldSize + 1;
+	pszString = (char *) CPLMalloc(iStringSize);
+	memset(pszString, 0, iStringSize);
+	for (i = 0; i < nValues; i++)
+	{
+		switch (eDataType)
+		{
+		case GDT_Byte:
+			sprintf(pszField, "%d%s", ((GByte *) paDataArray)[i], (i < nValues
+					- 1) ? pszDelimiter : "");
+			break;
+		case GDT_UInt16:
+			sprintf(pszField, "%u%s", ((GUInt16 *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		case GDT_Int16:
+		default:
+			sprintf(pszField, "%d%s", ((GInt16 *) paDataArray)[i], (i < nValues
+					- 1) ? pszDelimiter : "");
+			break;
+		case GDT_UInt32:
+			sprintf(pszField, "%u%s", ((GUInt32 *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		case GDT_Int32:
+			sprintf(pszField, "%d%s", ((GInt32 *) paDataArray)[i], (i < nValues
+					- 1) ? pszDelimiter : "");
+			break;
+		case GDT_Float32:
+			sprintf(pszField, "%.7g%s", ((float *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		case GDT_Float64:
+			sprintf(pszField, "%.15g%s", ((double *) paDataArray)[i], (i
+					< nValues - 1) ? pszDelimiter : "");
+			break;
+		}
+		strcat(pszString, pszField);
+	}
+
+	CPLFree(pszField);
+	//return pszString;
+	//Yuanzheng Shao
+	string rtnStr = std::string(pszString);
+	return rtnStr;
+}
+
+/*
+ * Find lower-left corner point coordinate and
+ * upper-right corner point coordinate
+ * in/out:lowLeft(x,y),upRight(x,y)
+ *
+ * Change Log Yuanzheng Shao
+ * 10/16/2009 Adding CPL_STDCALL to compile WCST on Windows
+ * 11/02/2009 for (int j = 1; j <= nGCPs; j++) -> for (int j = 0; j < nGCPs; j++) 0-based
+ *		Modify the code for calculating boundingbox when testing IMAGERY_318912101_1.5bpp.jp2
+ *		remove else in the for loop
+*/
+void CPL_STDCALL GetCornerPoints(const GDAL_GCP* &pGCPList, const int &nGCPs,
+		My2DPoint& lowLeft, My2DPoint& upRight)
+{
+	double xLeft = (numeric_limits<double>::max)();
+	double xRight = -xLeft;
+	double yLower = (numeric_limits<double>::max)();
+	double yUpper = -yLower;
+
+	for (int j = 0; j < nGCPs; j++)
+	{
+		yUpper = MAX(yUpper,pGCPList[j].dfGCPY);
+		yLower = MIN(yLower,pGCPList[j].dfGCPY);
+		if(pGCPList[j].dfGCPX != -999)//test MOD021KM.A2000065.1900.005.2008235220315.hdf, error GCP X value (-999)
+			xLeft = MIN(xLeft,pGCPList[j].dfGCPX);
+		xRight = MAX(xRight,pGCPList[j].dfGCPX);
+	}
+
+	lowLeft.mi_X = xLeft;
+	lowLeft.mi_Y = yLower;
+	upRight.mi_X = xRight;
+	upRight.mi_Y = yUpper;
+	return;
+}
+
+/*
+ * Name: int csvburst(char *line, char *arr[], int narr,const char tok);
+ * Purpose: get substring in a string.
+ *	In: char *line--source string;
+ *		int narr--number of arr array;
+ *		const char tok--token char;
+ *	In-Out:
+ *		char *arr[]--gotten substring;
+ *	Return:
+ *		int--number of find substring
+ */
+unsigned int CPL_STDCALL csvburst(const char *line, const char *arr[],
+		int narr, const char tok)
+{
+#define TRUE 1
+#define FALSE 0
+
+	const char *p;
+	int na = 0;
+	char prevc = tok; /* force recognizing first field */
+	char *dp = 0;
+	unsigned int inquote = FALSE;
+
+	for (p = line; *p != '\0'; prevc = *p, p++)
+	{
+		if (prevc == tok && !inquote)
+		{
+			/* start new field */
+			if (dp != 0)
+				*dp = '\0'; /*terminate prev*/
+			if (na >= narr)
+				return na;
+			arr[na++] = p;
+			dp = (char *) p;
+			if (*p == '"')
+			{
+				inquote = TRUE;
+				continue; /* skip quote */
+			}
+		}
+
+		if (inquote && *p == '"')
+		{
+			/* doubled quote goes to one quote; */
+			/* otherwise quote ends quote mode */
+			if (*(p + 1) != '"')
+				inquote = FALSE;
+			p++; /* skip first quote */
+		}
+
+		if (*p != tok || inquote)
+			*dp++ = *p;
+	}
+
+	if (dp != 0)
+		*dp = '\0';
+
+	if (na < narr)
+		arr[na] = 0;
+
+	return na;
+}
+
+string CPL_STDCALL StrTrimHead(const string &str)
+{
+	string::size_type p = 0;
+	/* leading space? */
+	while ((p < str.size()) && (str[p] == ' ' || str[p] == '\t' || str[p] == 13
+			|| str[p] == 10))
+		p++;
+	if (p >= str.size())
+		return "";
+	else
+		return str.substr(p);
+}
+
+string CPL_STDCALL StrTrimTail(const string &str)
+{
+	string::size_type p = str.size() - 1;
+	/* trailing space? */
+	while (p >= 0 && (str[p] == ' ' || str[p] == '\t' || str[p] == 13 || str[p]
+			== 10))
+		p--;
+	if (p < 0)
+		return "";
+	else
+		return str.substr(0, p + 1);
+}
+string /*CPL_STDCALL*/ StrTrim(const string &str)
+{
+	string s = StrTrimTail(str);
+	return StrTrimHead(s);
+}
+
+/*
+ strslip();
+ This function is used to parse slip a string end of '\0', slip strings are
+ dup in one arrar[2].
+ IN: const char* str: a c string, it is like "ststs[hxxhhxh,sjsjsjs]";
+ const char leftdlm: left delim char,like '[';
+ const char leftdlm: left delim char,like ']';
+ OUT: char **arrStr: two dimension pointer array, put result sliped string.
+ */
+
+void CPL_STDCALL strslip(const char* str, const char* arrStr[],
+		const char leftdlm, const char rightdlm)
+{
+	char* pdest1 = 0;
+	char* pdest2 = 0;
+
+	arrStr[0] = str;
+	pdest1 = (char*)strchr(str, leftdlm);
+	if (!pdest1)
+	{
+		arrStr[1] = str;
+		return;
+	}
+	pdest2 = (char*)strrchr(str, rightdlm);
+	if (!pdest2)
+		return;
+	arrStr[1] = pdest1 + 1;
+	*pdest1 = '\0';
+	*pdest2 = '\0';
+	return;
+}
+
+void CPL_STDCALL strslipCpp(const string& str, vector<string> &strSet,
+		const char leftdlm, const char rightdlm)
+{
+	string::size_type idx1 = str.find_first_of(leftdlm);
+	string::size_type idx2 = str.find_last_of(rightdlm);
+	if (idx1 == string::npos || idx2 == string::npos)
+	{
+		strSet.push_back(str);
+		return;
+	}
+	strSet.push_back(StrTrim(str.substr(0, idx1)));
+	idx1++;
+	strSet.push_back(StrTrim(str.substr(idx1, (idx2 - idx1))));
+}
+
+unsigned int CPL_STDCALL csvburstComplexCpp(const string& line,
+		vector<string> &strSet, const char *tok)
+{
+	if (line.empty() || line == "")
+		return 0;
+
+	strSet.clear();
+	string::size_type firstPos, idx;
+
+	firstPos = idx = 0;
+	idx = line.find_first_of(tok, firstPos);
+
+	while (idx != string::npos)
+	{
+		string tmpStr = StrTrim(line.substr(firstPos, (idx - firstPos)));
+		if (!tmpStr.empty() && tmpStr != "")
+			strSet.push_back(tmpStr);
+
+		firstPos = idx + 1;
+		if (firstPos == string::npos)
+			break;
+		idx = line.find_first_of(tok, firstPos);
+	}
+	if (firstPos != string::npos)
+	{
+		strSet.push_back(StrTrim(line.substr(firstPos)));
+	}
+	return strSet.size();
+
+}
+
+//GEOTIFF:"C:/data/data.tif":Band
+unsigned int CPL_STDCALL csvburstCpp(const string& line,
+		vector<string> &strSet, const char tok)
+{
+	if (line.empty() || line == "")
+		return 0;
+
+	strSet.clear();
+	string::size_type firstPos, idx;
+	string::size_type panfuPos;
+	panfuPos = 0;
+	firstPos = idx = 0;
+
+	idx = line.find_first_of(tok, firstPos);
+
+	while (idx != string::npos)
+	{
+		if(line[idx-2] == '\"' || line[idx-2] == '\'')//Add By Yuanzheng Shao
+		{
+			firstPos = idx + 1;
+			if (firstPos == string::npos)
+				break;
+			panfuPos = idx-2;
+			idx = line.find_first_of(tok, firstPos);
+
+			string tmpStr = StrTrim(line.substr(panfuPos, (idx - panfuPos)));
+			if (!tmpStr.empty() && tmpStr != "")
+				strSet.push_back(tmpStr);
+
+			firstPos = idx + 1;
+			idx = line.find_first_of(tok, firstPos);
+		}
+		else
+		{
+			string tmpStr = StrTrim(line.substr(firstPos, (idx - firstPos)));
+			if (!tmpStr.empty() && tmpStr != "")
+				strSet.push_back(tmpStr);
+
+			firstPos = idx + 1;
+			if (firstPos == string::npos)
+				break;
+			idx = line.find_first_of(tok, firstPos);
+		}
+	}
+
+	if (firstPos != string::npos)
+	{
+		strSet.push_back(StrTrim(line.substr(firstPos)));
+	}
+	return strSet.size();
+
+}
+
+int CPL_STDCALL Find_Compare_SubStr(string line, string sub)
+{
+	if (line.empty() || line == "" || sub.empty() || sub == "")
+		return 0;
+
+	for (unsigned int i = 0; i < line.size(); ++i)
+	{
+		line[i] = (char) toupper((char) line[i]);
+	}
+	for (unsigned int j = 0; j < sub.size(); ++j)
+	{
+		sub[j] = (char) toupper((char) sub[j]);
+	}
+	if (string::npos == line.find(sub))
+		return 0;
+	else
+		return 1;
+}
+
+/*
+ * Name:	getFileNameList()
+ * Purpose: 	Read all name file into a list from a given directory
+ * Parameter:	strList: string list read;
+ * Return: 	FALSE if false,TRUE if succeed
+ * */
+CPLErr CPL_STDCALL getFileNameList(char* dir, vector<string> &strList)
+{
+	char pwdBuf[256];
+	char *pwd=getcwd (pwdBuf, 256);
+	DIR *dp;
+	struct dirent *entry;
+	struct stat statbuf;
+	if ((dp = opendir(dir)) == NULL)
+	{
+		SetWCS_ErrorLocator("getFileNameList()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to Open Director %s", dir);
+		return CE_Failure;
+	}
+	if (dir[strlen(dir) - 1] == '/')
+		dir[strlen(dir) - 1] = '\0';
+	chdir(dir);
+	while ((entry = readdir(dp)) != NULL)
+	{
+		lstat(entry->d_name, &statbuf);
+		if (S_ISDIR(statbuf.st_mode))
+		{
+			/* Found a directory, but ignore . and .. */
+			if (strcmp(".", entry->d_name) == 0 || strcmp("..", entry->d_name) == 0)
+				continue;
+			/* Recurse at a new indent level, Yuanzheng Shao */
+			string subdir=dir;
+			subdir = subdir+"/"+entry->d_name;
+			getFileNameList((char*)subdir.c_str(), strList);
+		}
+		else if (S_ISREG(statbuf.st_mode))
+		{
+			string fname = getcwd(NULL, 0);
+			//string fname=get_current_dir_name();
+			fname = fname + "/" + entry->d_name;
+			strList.push_back(fname);
+		}
+	}
+	chdir(pwd);
+	closedir(dp);
+	return CE_None;
+}
+
+string myStrTrimsIn(const string& srcStr, const char* tok)
+{
+	if (srcStr.empty())
+		return srcStr;
+
+	string::size_type beginIdx, endIdx;
+	beginIdx = srcStr.find_first_not_of(tok);
+	endIdx = srcStr.find_last_not_of(tok);
+
+	if (beginIdx != string::npos && endIdx != string::npos)
+		return srcStr.substr(beginIdx, endIdx - beginIdx + 1);
+	else
+		return "";
+}
+
+string CPL_STDCALL myStrTrims(const string& srcStr, const char* tok)
+{
+	if (srcStr.empty())
+		return srcStr;
+
+	string::size_type beginIdx, endIdx;
+	beginIdx = srcStr.find_first_not_of(tok);
+	endIdx = srcStr.find_last_not_of(tok);
+
+	if (beginIdx != string::npos && endIdx != string::npos)
+		return srcStr.substr(beginIdx, endIdx - beginIdx + 1);
+	else
+		return "";
+}
+
+//YYYYMMDDHHMMSS
+string getTimeString()
+{
+	struct tm* ptime;
+	time_t now;
+	time(&now);
+	ptime = localtime(&now);
+	int year = ptime->tm_year + 1900;
+	int month = ptime->tm_mon + 1;
+	int day = ptime->tm_mday;
+	int hour = ptime->tm_hour;
+	int minute = ptime->tm_min;
+	int second = ptime->tm_sec;
+	string ye, mo, da, ho, mi, se;
+	mo = (month < 10) ? "0" + convertToString(month) : convertToString(month);
+	da = (day < 10)	? "0" + convertToString(day) : convertToString(day);
+	ho = (hour < 10)	? "0" + convertToString(hour) : convertToString(hour);
+	mi = (minute < 10)	? "0" + convertToString(minute) : convertToString(minute);
+	se = (second < 10)	? "0" + convertToString(second) : convertToString(second);
+
+	string timestring = convertToString(year) + mo + da + ho + mi +se;
+	return timestring;
+}
+
+string makeTempFile(string dir, string covID, string subfix)
+{
+	string sOutFileName;
+
+	if (!dir.empty() && dir != "")
+	{
+		if (dir[dir.length() - 1] != '/')
+		{
+			dir += "/";
+		}
+	}
+	if (!subfix.empty() && subfix != "")
+	{
+		if (subfix[0] != '.')
+			subfix = "." + subfix;
+	}
+
+	if(covID == "")
+	{
+		sOutFileName = dir + getUUID() + subfix;
+	} else if (EQUALN(covID.c_str(),"HDF4_EOS:EOS_SWATH:",19) ||
+		EQUALN(covID.c_str(),"HDF4_EOS:EOS_GRID:",18) ||
+		EQUALN(covID.c_str(),"HDF5:",5))
+	{
+		vector<string> strSet;
+		int n = csvburstCpp(covID, strSet, ':');
+		if(n == 5){//Terra&Aqua
+			string srcFilePath = myStrTrims(strSet[2], "\'\"");
+			string srcFileName = string(CPLGetBasename(srcFilePath.c_str()));
+			string datasetname = myStrTrims(strSet[4], "\'\"");
+			string_replace(datasetname, " ", "_");
+			sOutFileName = dir + srcFileName + "." + datasetname + "." + getTimeString() + subfix;
+		}else if(n == 3) {//Aura
+			string srcFilePath = myStrTrims(strSet[1], "\'\"");
+			string srcFileName = string(CPLGetBasename(srcFilePath.c_str()));
+			string datasetname = myStrTrims(strSet[2], "\'\"");
+			string_replace(datasetname, "//", "");
+			string_replace(datasetname, "/", "_");
+			string_replace(datasetname, " ", "");
+			sOutFileName = dir + srcFileName + "." + datasetname + "." + getTimeString() + subfix;
+		}else
+			sOutFileName = dir + getUUID() + subfix;
+	}else if(EQUALN( covID.c_str(), "GOES:NetCDF:",12))
+	{
+		vector<string> strSet;
+		int n = csvburstCpp(covID, strSet, ':');
+		if(n == 4){
+			string srcFilePath = myStrTrimsIn(strSet[2], " \'\"");
+			string srcFileName = string(CPLGetBasename(srcFilePath.c_str()));
+			sOutFileName = dir + srcFileName + "." + getTimeString() + subfix;
+		}else
+			sOutFileName = dir + getUUID() + subfix;
+	}
+	else if(EQUALN(covID.c_str(),"GEOTIFF:",8))
+	{
+		vector<string> strSet;
+		int n = csvburstCpp(covID, strSet, ':');
+		if(n == 3){
+			string srcFilePath = myStrTrimsIn(strSet[1], " \'\"");
+			string srcFileName = string(CPLGetBasename(srcFilePath.c_str()));
+			sOutFileName = dir + srcFileName + "." + getTimeString() + subfix;
+		}else
+			sOutFileName = dir + getUUID() + subfix;
+	}else
+		sOutFileName = dir + getUUID() + subfix;
+
+	return sOutFileName;
+}
+
+StringList::StringList(const string& sstrings, const char delimiter)
+{
+	string str = sstrings + delimiter;
+	string::size_type np, op = 0;
+	while ((op < str.size())
+			&& ((np = str.find(delimiter, op)) != string::npos))
+	{
+		add(str.substr(op, np - op));
+		op = ++np;
+	}
+}
+
+StringList::StringList(const string& sstrings, const string& delimiters)
+{
+	string str = sstrings + delimiters;
+	string::size_type np, op = 0;
+	while ((op < str.size()) && ((np = str.find(delimiters, op))
+			!= string::npos))
+	{
+		add(str.substr(op, np - op));
+		op = np + delimiters.length();
+	}
+}
+
+void StringList::append(StringList & s)
+{
+	for (int i = 0; i < s.size(); i++)
+		add(s[i]);
+}
+
+void StringList::append(const string sstrings, const char delimiter)
+{
+	StringList n(sstrings, delimiter);
+	append(n);
+}
+
+void StringList::append(const string sstrings, const string& delimiters)
+{
+	StringList n(sstrings, delimiters);
+	append(n);
+}
+
+int StringList::indexof(string qstr)
+{
+	for (int i = 0; i < size(); i++)
+	{
+		if (strings[i] == qstr)
+			return i;
+	}
+	return -1;
+}
+
+KVP::KVP(string namevaluepair)
+{
+	//	string nv = StrTrim(namevaluepair);
+	StringList ss(namevaluepair, '=');
+	if (ss.size() == 2)
+	{
+		name = StrTrim(ss[0]);
+		value = StrTrim(ss[1]);
+
+	}
+	else
+	{
+		name = namevaluepair;
+		value = "";
+	}
+}
+
+CFGReader::CFGReader(const string &configfilename)
+{
+	ifstream cfgfile(configfilename.c_str());
+	if (!cfgfile)
+	{
+		SetWCS_ErrorLocator("CFGReader");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to open configure file.");
+		throw runtime_error("");
+	}
+
+	char line[MAX_LINE_LEN];
+	while (!cfgfile.eof())
+	{
+		cfgfile.getline(line, MAX_LINE_LEN - 1, '\n');
+		if (!cfgfile.fail())
+		{
+			if (line[0] != '#')
+			{
+				KVP kvp(line);
+				kvps.push_back(kvp);
+			}
+		}
+	}
+	cfgfile.close();
+}
+/*
+ string CFGReader::getValue(const string &keyname, const int noquotation) {
+ string s = getValue(keyname);
+ if (noquotation && (s.size() > 1) && (((s[0] == '"') && (s[s.size()-1] == '"')) || ((s[0] == '\'') && (s[s.size()-1] == '\'')))) {
+ return s.substr(1, s.size()-2);
+ } else return s;
+ }
+ */
+string CFGReader::getValue(const string &keyname)
+{
+	for (int i = 0; i < size(); i++)
+	{
+
+		if (EQUAL(kvps[i].name.c_str(), keyname.c_str()))
+			return kvps[i].value;
+	}
+	return "";
+}
+
+string CFGReader::getValue(const string &keyname, const string &defaultvalue)
+{
+	string ret = getValue(keyname);
+	if (ret.empty() || ret == "")
+		return defaultvalue;
+	else
+		return ret;
+}
+
+CPLErr MyCGI::Run()
+{
+	/* get request parameters*/
+	char *gm = getenv("REQUEST_METHOD");
+	if (NULL == gm)
+	{
+		SetWCS_ErrorLocator("MyCGI::Run()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to Get \"REQUEST_METHOD\" Environment variable.");
+
+		return CE_Failure;
+	}
+
+	if (EQUAL(gm, "POST"))//Yuanzheng Shao
+		me_CGIMethod = HTTP_XML_POST;
+	else if (EQUAL(gm, "GET"))
+		me_CGIMethod = HTTP_GET;
+
+	switch (me_CGIMethod)
+	{
+	case HTTP_XML_POST:
+	{
+		char* aString = getenv("CONTENT_LENGTH");
+		if (NULL == aString || aString[0] == '\0')
+		{
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Get \"CONTENT_LENGTH\" Environment variable.");
+			SetWCS_ErrorLocator("MyCGI::Run()");
+			return CE_Failure;
+		}
+
+		unsigned int cLength = atoi(aString);
+
+		string cString;
+		cString.resize(cLength + 1);
+
+		if (cLength != fread((char*) cString.c_str(), 1, cLength, stdin))
+		{
+			SetWCS_ErrorLocator("MyCGI::Run()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Read Data Stream from Internet.");
+
+			return CE_Failure;
+		}
+		string_replace(cString, "&amps;", "%26");
+		string_replace(cString, "&amp;", "%26");
+		string tmpStr = CPLUnescapeString(cString.c_str(), NULL, CPLES_URL);
+		ms_CGIContent = CPLUnescapeString((char*) tmpStr.c_str(), NULL, CPLES_XML);
+
+		string::size_type beginIdx, endIdx;
+		//search beginning of first "<"
+
+		beginIdx = ms_CGIContent.find("<?");//Yuanzheng Shao
+		endIdx = ms_CGIContent.rfind(">");
+		if (beginIdx != string::npos && endIdx != string::npos)
+			ms_CGIContent = ms_CGIContent.substr(beginIdx, endIdx - beginIdx + 1);
+/*	The post contents could be KVPs
+ * 		else
+		{
+			SetWCS_ErrorLocator("MyCGI::Run()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Get Posted XML String.");
+
+			return CE_Failure;
+		}
+*/
+	}
+		break;
+	case HTTP_GET:
+	{
+		string tmpStr = getenv("QUERY_STRING");
+		string_replace(tmpStr, "&amps;", "%26");
+		string_replace(tmpStr, "&amp;", "%26");
+		if (tmpStr.empty() || tmpStr == "")
+		{
+			SetWCS_ErrorLocator("MyCGI::Run()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"No \"QUERY_STRING\" Content.");
+
+			return CE_Failure;
+		}
+
+		ms_CGIContent = CPLUnescapeString((char*) tmpStr.c_str(), NULL,
+				CPLES_URL);
+	}
+		break;
+	default:
+	{
+		SetWCS_ErrorLocator("MyCGI::Run()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Unkown \"REQUEST_METHOD\".");
+
+		return CE_Failure;
+	}
+	}
+
+	return CE_None;
+}
+
+KVPsReader::KVPsReader(const string& urlStr, const char &tok)
+{
+	StringList strLit(urlStr, tok);
+
+	for (int i = 0; i < strLit.size(); ++i)
+	{
+		KVP kvp(StrTrim(strLit[i]));
+		m_kvps.push_back(kvp);
+	}
+}
+string KVPsReader::getValue(const string &keyname)
+{
+	for (unsigned int i = 0; i < m_kvps.size(); i++)
+	{
+		if (EQUAL(m_kvps[i].name.c_str() , keyname.c_str()))
+			return m_kvps[i].value;
+	}
+	return "";
+}
+string KVPsReader::getValue(const string &keyname, const string &defaultvalue)
+{
+	string ret = getValue(keyname);
+	if (ret.empty() || ret == "")
+		return defaultvalue;
+	else
+		return ret;
+}
+
+void CPL_STDCALL string_replace(string & strBig, const string & strsrc, const string &strdst)
+{
+	string::size_type pos=0;
+    string::size_type srclen=strsrc.size();
+    string::size_type dstlen=strdst.size();
+    while((pos=strBig.find(strsrc, pos)) != string::npos)
+	{
+		strBig.replace(pos, srclen, strdst);
+		pos += dstlen;
+	}
+}
+
+string CPL_STDCALL replace_all(string& str , const string oldword, const string newword )
+{
+	while(true)
+	{
+		string::size_type pos(0);
+		if( ( pos = str.find(oldword) ) != string::npos )
+		{
+			str.replace( pos, oldword.length(), newword );
+		}else {
+			break;
+		}
+	}
+	return str;
+}

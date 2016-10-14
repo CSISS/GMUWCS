@@ -1,0 +1,858 @@
+#include "AbstractDataset.h"
+
+AbstractDataset::AbstractDataset()
+{
+}
+
+AbstractDataset::~AbstractDataset()
+{
+	if (maptrDS.get())
+		GDALClose(maptrDS.release());
+}
+
+AbstractDataset::AbstractDataset(const string& id, vector<int> &rBandList) :
+	ms_CoverageID(id), mpBandList(rBandList)
+{
+
+}
+
+CPLErr AbstractDataset::setLatLonRequestBBox(double latlonbbx[])
+{
+	return CE_Failure;
+}
+
+CPLErr AbstractDataset::setExtraParameters(vector<string> &)
+{
+	return CE_Failure;
+}
+
+CPLErr AbstractDataset::initialDataset(const int isSimple)
+{
+	return CE_Failure;
+}
+
+GDALDataset* AbstractDataset::getGDALDataset()
+{
+	return maptrDS.get();
+}
+CPLErr AbstractDataset::setGDALDataset(const int isSimple)
+{
+	return CE_Failure;
+}
+
+const OGRSpatialReference& AbstractDataset::getNativeCRS()
+{
+	return moNativeCRS;
+}
+
+CPLErr AbstractDataset::setNativeCRS()
+{
+	//set moNativeCRS
+	char* wktStr = (char*) maptrDS->GetProjectionRef();
+
+	if (wktStr && OGRERR_NONE == moNativeCRS.importFromWkt(&wktStr))
+		return CE_None;
+	return CE_Failure;
+}
+
+CPLErr AbstractDataset::setGeoTransform()
+{
+	if (CE_None != maptrDS->GetGeoTransform(mdGeotransform))
+		return CE_Failure;
+
+	//Is the returned matrix correct? check the resolution values;
+	if(mdGeotransform[2] == 0 && mdGeotransform[5] == 0)
+		return CE_Failure;
+
+	mbGeoTransformSet = TRUE;
+	return CE_None;
+}
+
+int AbstractDataset::getGeoTransform(double geoTrans[])
+{
+	if (!mbGeoTransformSet)
+	{
+		geoTrans[0]=0.;
+		geoTrans[0]=1.0;
+		geoTrans[0]=0.;
+		geoTrans[0]=0.;
+		geoTrans[0]=0.;
+		geoTrans[0]=1.0;
+		return FALSE;
+	}
+	memcpy(geoTrans, mdGeotransform, sizeof(double) * 6);
+	return TRUE;
+
+}
+
+const string& AbstractDataset::getCoverageID()
+{
+	return ms_CoverageID;
+}
+
+const string& AbstractDataset::getResourceFileName()
+{
+	return mSrcFilename;
+}
+const string& AbstractDataset::getDatasetName()
+{
+	return msDatasetName;
+}
+const string& AbstractDataset::getDataTypeName()
+{
+	return msDataTypeName;
+}
+
+const string AbstractDataset::getDatasetDescription()
+{
+	//[15x2030x1354] Band JPEG2000 (16-bit unsigned integer)
+	string rtnBuf;
+	int aiDimSizes[3];
+	int nBandCount = maptrDS->GetRasterCount();
+	string pszString;
+	if (nBandCount > 1)
+	{
+		aiDimSizes[0] = nBandCount;
+		aiDimSizes[1] = GetImageYSize();
+		aiDimSizes[2] = GetImageXSize();
+		pszString = SPrintArrayIn(GDT_UInt32, aiDimSizes, 3, "x");
+	}
+	else
+	{
+		aiDimSizes[0] = GetImageYSize();
+		aiDimSizes[1] = GetImageXSize();
+		pszString = SPrintArrayIn(GDT_UInt32, aiDimSizes, 2, "x");
+	}
+
+	rtnBuf = "[" + pszString + "] " + msDatasetName + " " + msDataTypeName + " (" +
+			GDALGetDataTypeName(maptrDS->GetRasterBand(1)->GetRasterDataType()) + ")";
+
+	return rtnBuf;
+}
+
+const string& AbstractDataset::getNativeFormat()
+{
+	return msNativeFormat;
+}
+
+int AbstractDataset::isVirtualDS()
+{
+	return mbIsVirtualDS;
+}
+
+int AbstractDataset::isbGeoTransformSet()
+{
+	return mbGeoTransformSet;
+}
+
+void AbstractDataset::getNativeBBox(double bBox[])
+{
+	//xmin,xmax,ymin,ymax
+	if (mbGeoTransformSet)
+	{
+		bBox[0] = mdGeotransform[0];// - 0.5 * mdGeotransform[1];
+		bBox[1] = bBox[0] + GetImageXSize() /*maptrDS->GetRasterXSize()*/ * mdGeotransform[1];
+		bBox[3] = mdGeotransform[3];// - 0.5 * mdGeotransform[5];
+		bBox[2] = bBox[3] + GetImageYSize() /*maptrDS->GetRasterYSize()*/ * mdGeotransform[5];
+	}
+	else
+	{
+		bBox[0] = 0;
+		bBox[1] = maptrDS->GetRasterXSize() - 1;
+		bBox[2] = 0;
+		bBox[3] = maptrDS->GetRasterYSize() - 1;
+	}
+
+}
+CPLErr AbstractDataset::getGeoMinMax(double geoMinMax[])
+{
+	if (!mbGeoTransformSet)
+	{
+		SetWCS_ErrorLocator("AbstractDataset::getGeoMinMax()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to get Geo-BoundingBox Coordinates");
+		return CE_Failure;
+	}
+
+	geoMinMax[0] = mdGeotransform[0];
+	geoMinMax[1] = geoMinMax[0] + GetImageXSize() * mdGeotransform[1];
+	geoMinMax[3] = mdGeotransform[3];
+	geoMinMax[2] = geoMinMax[3] + GetImageYSize() * mdGeotransform[5];
+
+	if (moNativeCRS.IsGeographic())
+	{
+		return CE_None;
+	}
+
+	OGRSpatialReference oGeoSRS;
+	oGeoSRS.CopyGeogCSFrom(&moNativeCRS);
+
+	My2DPoint llPt(geoMinMax[0], geoMinMax[2]);
+	My2DPoint urPt(geoMinMax[1], geoMinMax[3]);
+	if (CE_None != bBox_transFormmate(moNativeCRS, oGeoSRS, llPt, urPt))
+	{
+		SetWCS_ErrorLocator("AbstractDataset::getGeoMinMax()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Transform bbox Coordinate.");
+		return CE_Failure;
+	}
+
+	geoMinMax[0] = llPt.mi_X;
+	geoMinMax[1] = urPt.mi_X;
+	geoMinMax[2] = llPt.mi_Y;
+	geoMinMax[3] = urPt.mi_Y;
+	return CE_None;
+}
+
+CPLErr AbstractDataset::setMetaDataList(GDALDataset* hSrc)
+{
+	return CE_Failure;
+}
+
+CPLErr AbstractDataset::setGeoRefFromXML(string& desFile)
+{
+	CPLXMLNode *DscCovRoot = CPLParseXMLFile(desFile.c_str());
+	if (DscCovRoot == NULL)
+		return CE_Failure;
+
+	const char* pChrVersion = CPLGetXMLValue(DscCovRoot, "Version", "1.0.0");
+
+	if (EQUAL(pChrVersion,"1.0.0") || EQUAL(pChrVersion,"1.0"))
+		return ExtractGridInfo100AndSet(DscCovRoot);
+	else if (EQUAL(pChrVersion,"1.1.0") || EQUAL(pChrVersion,"1.1") || EQUAL(pChrVersion,"1.1.1"))
+		return ExtractGridInfo110AndSet(DscCovRoot);
+	else
+	{
+		SetWCS_ErrorLocator("AbstractDataset::setGeoRefFromXML()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to get GeoReference from \"desFile\" file.");
+		return CE_Failure;
+	}
+	CPLDestroyXMLNode(DscCovRoot);
+
+	return CE_None;
+}
+/************************************************************************/
+/*                          ExtractGridInfoAndSet110()      			*/
+/*                                                                      */
+/*      Collect info about grid from describe coverage for WCS 1.1      */
+/*      and above.                                                      */
+/************************************************************************/
+
+CPLErr AbstractDataset::ExtractGridInfo110AndSet(CPLXMLNode *DscCovRoot)
+{
+	CPLXMLNode * psCO = CPLGetXMLNode(DscCovRoot, "CoverageDescription");
+
+	if (psCO == NULL)
+	{
+		SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+		return CE_Failure;
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      We need to strip off name spaces so it is easier to             */
+	/*      searchfor plain gml names.                                      */
+	/* -------------------------------------------------------------------- */
+	CPLStripXMLNamespace(psCO, NULL, TRUE);
+
+	/* -------------------------------------------------------------------- */
+	/*      Verify we have a SpatialDomain and GridCRS.                     */
+	/* -------------------------------------------------------------------- */
+	CPLXMLNode *psSD = CPLGetXMLNode(psCO, "Domain.SpatialDomain");
+	CPLXMLNode *psGCRS = CPLGetXMLNode(psSD, "GridCRS");
+
+	if (psSD == NULL || psGCRS == NULL)
+	{
+		SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+		return CE_Failure;
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Extract Geotransform from GridCRS.                              */
+	/* -------------------------------------------------------------------- */
+	const char *pszGridType = CPLGetXMLValue(psGCRS, "GridType", "urn:ogc:def:method:WCS::2dSimpleGrid");
+
+	char **papszOriginTokens = CSLTokenizeStringComplex(CPLGetXMLValue(psGCRS, "GridOrigin", ""), " ", FALSE, FALSE);
+	char **papszOffsetTokens = CSLTokenizeStringComplex(CPLGetXMLValue(psGCRS, "GridOffsets", ""), " ", FALSE, FALSE);
+
+	if (strstr(pszGridType, ":2dGridIn2dCrs") || strstr(pszGridType, ":2dGridin2dCrs"))
+	{
+		if (CSLCount(papszOffsetTokens) == 4 && CSLCount(papszOriginTokens) == 2)
+		{
+			mdGeotransform[0] = atof(papszOriginTokens[0]);
+			mdGeotransform[1] = atof(papszOffsetTokens[0]);
+			mdGeotransform[2] = atof(papszOffsetTokens[1]);
+			mdGeotransform[3] = atof(papszOriginTokens[1]);
+			mdGeotransform[4] = atof(papszOffsetTokens[2]);
+			mdGeotransform[5] = atof(papszOffsetTokens[3]);
+		}
+		else
+		{
+			SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+			return CE_Failure;
+		}
+	}
+
+	else if (strstr(pszGridType, ":2dGridIn3dCrs"))
+	{
+		if (CSLCount(papszOffsetTokens) == 6 && CSLCount(papszOriginTokens) == 3)
+		{
+			mdGeotransform[0] = atof(papszOriginTokens[0]);
+			mdGeotransform[1] = atof(papszOffsetTokens[0]);
+			mdGeotransform[2] = atof(papszOffsetTokens[1]);
+			mdGeotransform[3] = atof(papszOriginTokens[1]);
+			mdGeotransform[4] = atof(papszOffsetTokens[3]);
+			mdGeotransform[5] = atof(papszOffsetTokens[4]);
+		}
+		else
+		{
+			SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+			return CE_Failure;
+		}
+	}
+
+	else if (strstr(pszGridType, ":2dSimpleGrid"))
+	{
+		if (CSLCount(papszOffsetTokens) == 2 && CSLCount(papszOriginTokens) == 2)
+		{
+			mdGeotransform[0] = atof(papszOriginTokens[0]);
+			mdGeotransform[1] = atof(papszOffsetTokens[0]);
+			mdGeotransform[2] = 0.0;
+			mdGeotransform[3] = atof(papszOriginTokens[1]);
+			mdGeotransform[4] = 0.0;
+			mdGeotransform[5] = atof(papszOffsetTokens[1]);
+		}
+		else
+		{
+			SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+			return CE_Failure;
+		}
+	}
+	else
+	{
+		SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+		return CE_Failure;
+	}
+
+	CSLDestroy(papszOffsetTokens);
+	CSLDestroy(papszOriginTokens);
+
+	// GridOrigin is center of pixel ... offset half pixel to adjust.
+	mdGeotransform[0] -= (mdGeotransform[1] + mdGeotransform[2]) * 0.5;
+	mdGeotransform[3] -= (mdGeotransform[4] + mdGeotransform[5]) * 0.5;
+
+	/* -------------------------------------------------------------------- */
+	/*      Establish our coordinate system.                                */
+	/* -------------------------------------------------------------------- */
+	string osCRS = CPLGetXMLValue(psGCRS, "GridBaseCRS", "");
+	if (osCRS.empty() || osCRS == "")
+	{
+		SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+		return CE_Failure;
+	}
+	else
+	{
+		if (moNativeCRS.importFromURN(osCRS.c_str()) != OGRERR_NONE)
+		{
+			SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo110AndSet()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Extract Grid Information from \"CoverageDescription\".");
+			return CE_Failure;
+		}
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Try to identify a nodata value.  For now we only support the    */
+	/*      singleValue mechanism.                                          */
+	/* -------------------------------------------------------------------- */
+	if (CPLGetXMLValue(DscCovRoot, "NoDataValue", NULL) == NULL)
+	{
+		const char *pszSV = CPLGetXMLValue(psCO, "Range.Field.NullValue", NULL);
+		if (pszSV != NULL)
+		{
+			mdMissingValue = atof(pszSV);
+		}
+	}
+
+	return CE_None;
+}
+
+/************************************************************************/
+/*                         ExtractGridInfo100()                         */
+/*                                                                      */
+/*      Collect info about grid from describe coverage for WCS 1.0.0    */
+/*      and above.                                                      */
+/************************************************************************/
+
+CPLErr AbstractDataset::ExtractGridInfo100AndSet(CPLXMLNode *DscCovRoot)
+
+{
+	CPLXMLNode * psCO = CPLGetXMLNode(DscCovRoot, "CoverageOffering");
+
+	if (psCO == NULL)
+	{
+		SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo100AndSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to Extract Grid Information from \"CoverageOffering\".");
+
+		return CE_Failure;
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      We need to strip off name spaces so it is easier to             */
+	/*      searchfor plain gml names.                                      */
+	/* -------------------------------------------------------------------- */
+	CPLStripXMLNamespace(psCO, NULL, TRUE);
+
+	/* -------------------------------------------------------------------- */
+	/*      Verify we have a Rectified Grid.                                */
+	/* -------------------------------------------------------------------- */
+	CPLXMLNode *psRG = CPLGetXMLNode(psCO,
+			"domainSet.spatialDomain.RectifiedGrid");
+
+	if (psRG == NULL)
+	{
+		SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo100AndSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to Extract Grid Information from \"CoverageOffering\".");
+
+		return CE_Failure;
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Extract size, geotransform and coordinate system.               */
+	/* -------------------------------------------------------------------- */
+	int nRasterXSize, nRasterYSize;
+	char *pszProjection;
+
+	if (GDALParseGMLCoverage(psRG, &nRasterXSize, &nRasterYSize,
+			mdGeotransform, &pszProjection) != CE_None)
+	{
+		SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo100AndSet()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to Extract Grid Information from \"CoverageOffering\".");
+
+		return CE_Failure;
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Fallback to nativeCRSs declaration.                             */
+	/* -------------------------------------------------------------------- */
+	const char *pszNativeCRSs = CPLGetXMLValue(psCO,
+			"supportedCRSs.nativeCRSs", NULL);
+
+	if (pszNativeCRSs == NULL)
+		pszNativeCRSs = CPLGetXMLValue(psCO,
+				"supportedCRSs.requestResponseCRSs", NULL);
+
+	if (pszNativeCRSs == NULL)
+		pszNativeCRSs = CPLGetXMLValue(psCO, "supportedCRSs.requestCRSs", NULL);
+
+	if (pszNativeCRSs == NULL)
+		pszNativeCRSs
+				= CPLGetXMLValue(psCO, "supportedCRSs.responseCRSs", NULL);
+
+	if (pszNativeCRSs != NULL && (pszProjection == NULL
+			|| strlen(pszProjection) == 0))
+	{
+
+		if (moNativeCRS.SetFromUserInput(pszNativeCRSs) == OGRERR_NONE)
+		{
+
+			moNativeCRS.exportToWkt(&pszProjection);
+		}
+		else
+		{
+			SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo100AndSet()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Extract Grid Information from \"CoverageOffering\".");
+
+			return CE_Failure;
+		}
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Do we have a coordinate system override?                        */
+	/* -------------------------------------------------------------------- */
+	const char *pszProjOverride = CPLGetXMLValue(DscCovRoot, "SRS", NULL);
+
+	if (pszProjOverride)
+	{
+		moNativeCRS.Clear();
+		if (moNativeCRS.SetFromUserInput(pszProjOverride) != OGRERR_NONE)
+		{
+			OGRFree(pszProjection);
+			SetWCS_ErrorLocator("AbstractDataset::ExtractGridInfo100AndSet()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Extract Grid Information from \"CoverageOffering\".");
+
+			return CE_Failure;
+		}
+
+		OGRFree(pszProjection);
+		moNativeCRS.exportToWkt(&pszProjection);
+	}
+	/* -------------------------------------------------------------------- */
+	/*      Try to identify a nodata value.  For now we only support the    */
+	/*      singleValue mechanism.                                          */
+	/* -------------------------------------------------------------------- */
+	if (CPLGetXMLValue(DscCovRoot, "NoDataValue", NULL) == NULL)
+	{
+		const char *pszSV = CPLGetXMLValue(psCO,
+				"rangeSet.RangeSet.nullValues.singleValue", NULL);
+
+		if (pszSV != NULL)
+		{
+			mdMissingValue = atof(pszSV);
+		}
+	}
+	OGRFree(pszProjection);
+	return CE_None;
+}
+
+int AbstractDataset::GetImageXSize()
+{
+	return maptrDS->GetRasterXSize();
+}
+int AbstractDataset::GetImageYSize()
+{
+	return maptrDS->GetRasterYSize();
+}
+int AbstractDataset::GetImageBandCount()
+{
+	return maptrDS->GetRasterCount();
+}
+const double& AbstractDataset::getMissingValue()
+{
+	return mdMissingValue;
+}
+string AbstractDataset::GetProjectionRef()
+{
+	char* pszProjection = NULL;
+	moNativeCRS.exportToWkt(&pszProjection);
+	string tmpStr = pszProjection;
+	CPLFree(pszProjection);
+	return tmpStr;
+}
+vector<string> AbstractDataset::getMetaDataList()
+{
+	return mvtrMeteDataList;
+}
+
+const string AbstractDataset::getNativeCRS_URN()
+{
+	string urn;
+
+	if (moNativeCRS.IsProjected())
+	{
+		const char* nativeAuthorityName =
+				moNativeCRS.GetAuthorityName("PROJCS");
+		const char* nativeAuthorityCode =
+				moNativeCRS.GetAuthorityCode("PROJCS");
+
+		urn = "urn:ogc:def:crs:";
+
+		if (nativeAuthorityName && (EQUAL(nativeAuthorityName,"EPSG")
+				|| EQUAL(nativeAuthorityName,"OGP")
+				|| EQUAL(nativeAuthorityName,"OGC")))
+			urn += (string) nativeAuthorityName + (string) ":6.3:";
+		else
+			urn += "CSISS:0.0:";
+
+		if (nativeAuthorityCode)
+			urn += (string) nativeAuthorityCode;
+		else
+			urn += "80000000";
+	}
+	else if (moNativeCRS.IsGeographic())
+	{
+		const char* geoAuthorityName = moNativeCRS.GetAuthorityName("GEOGCS");
+		const char* geoAuthorityCode = moNativeCRS.GetAuthorityCode("GEOGCS");
+
+		urn = "urn:ogc:def:crs:";
+		if (geoAuthorityName && (EQUAL(geoAuthorityName,"EPSG")
+				|| EQUAL(geoAuthorityName,"OGP")
+				|| EQUAL(geoAuthorityName,"OGC")))
+			urn += (string) geoAuthorityName + (string) ":6.3:";
+		else
+			urn += "CSISS:0.0:";
+
+		if (geoAuthorityCode)
+			urn += (string) geoAuthorityCode;
+		else
+			//urn += ":70000000";
+			urn += "70000000";//Yuanzheng Shao
+	}
+	else
+		urn = "urn:ogc:def:crs:OGC:0.0:imageCRS";
+
+	return urn;
+}
+const string AbstractDataset::getGeoCRS_URN()
+{
+	string urn;
+
+	if (moNativeCRS.IsProjected() || moNativeCRS.IsGeographic())
+	{
+		const char* geoAuthorityName = moNativeCRS.GetAuthorityName("GEOGCS");
+		const char* geoAuthorityCode = moNativeCRS.GetAuthorityCode("GEOGCS");
+
+		urn = "urn:ogc:def:crs:";
+		if (geoAuthorityName && (EQUAL(geoAuthorityName,"EPSG")
+				|| EQUAL(geoAuthorityName,"OGP")
+				|| EQUAL(geoAuthorityName,"OGC")))
+			urn += (string) geoAuthorityName + (string) ":6.3:";
+		else
+			urn += "CSISS:0.0:";
+
+		if (geoAuthorityCode)
+			urn += (string) geoAuthorityCode;
+		else
+			urn += "70000000";
+
+	}
+	else
+		urn = "urn:ogc:def:crs:OGC:0.0:imageCRS";
+
+	return urn;
+}
+
+CPLErr AbstractDataset::GetSuggestedWarpResolution(OGRSpatialReference& dstCRS,
+		double adfDstGeoTransform[], int &nPixels, int &nLines)
+{
+	if (!dstCRS.IsProjected() && !dstCRS.IsGeographic())
+	{
+		adfDstGeoTransform[0] = 0;
+		adfDstGeoTransform[1] = 1;
+		adfDstGeoTransform[2] = 0;
+		adfDstGeoTransform[3] = 0;
+		adfDstGeoTransform[4] = 0;
+		adfDstGeoTransform[5] = 1;
+
+		nPixels = GetImageXSize();
+		nLines = GetImageYSize();
+
+	}
+	else if (dstCRS.IsSame(&moNativeCRS))
+	{
+		memcpy(adfDstGeoTransform, mdGeotransform, sizeof(double) * 6);
+		nPixels = GetImageXSize();
+		nLines = GetImageYSize();
+	}
+	else
+	{
+		//	const char *pszSrcWKT=hSrcAbsDS->GetProjectionRef().c_str();
+		char *pszDstWKT;
+		dstCRS.exportToWkt(&pszDstWKT);
+		char *pszSrcWKT;
+		moNativeCRS.exportToWkt(&pszSrcWKT);
+
+		void *hTransformArg = GDALCreateGenImgProjTransformer(maptrDS.get(),
+				(const char*) pszSrcWKT, NULL, (const char*) pszDstWKT, TRUE,
+				1000.0, 0);
+		OGRFree(pszDstWKT);
+		OGRFree(pszSrcWKT);
+		if (hTransformArg == NULL)
+		{
+			SetWCS_ErrorLocator("AbstractDataset::GetSuggestedWarpResolution()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Create GDAL GenImgProjTransformer.");
+
+			return CE_Failure;
+		}
+		/* -------------------------------------------------------------------- */
+		/*      Get approximate output definition.                              */
+		/* -------------------------------------------------------------------- */
+		if (GDALSuggestedWarpOutput(maptrDS.get(), GDALGenImgProjTransform,
+				hTransformArg, adfDstGeoTransform, &nPixels, &nLines)
+				!= CE_None)
+		{
+			SetWCS_ErrorLocator("AbstractDataset::GetSuggestedWarpResolution()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Computing Output Resolution.");
+
+			return CE_Failure;
+		}
+		GDALDestroyGenImgProjTransformer(hTransformArg);
+	}
+	return CE_None;
+
+}
+
+int AbstractDataset::isCrossingIDL()
+{
+	double bboxArray[4];
+	getNativeBBox(bboxArray);
+
+	OGRSpatialReference latlonSRS;
+	latlonSRS.SetWellKnownGeogCS("WGS84");
+	My2DPoint llPtex(bboxArray[0], bboxArray[2]);
+	My2DPoint urPtex(bboxArray[1], bboxArray[3]);
+	if (CE_None != bBox_transFormmate(moNativeCRS, latlonSRS, llPtex, urPtex))
+		return false;
+
+	int bCrossCenter = false;
+	if(urPtex.mi_X < 0 && llPtex.mi_X > 0)
+		bCrossCenter = true;
+
+	return bCrossCenter;
+}
+
+CPLErr AbstractDataset::GetSuggestedWarpResolution2(OGRSpatialReference& dstCRS,
+		double adfDstGeoTransform[], int &nPixels, int &nLines)
+{
+	if (dstCRS.IsLocal())
+	{
+		adfDstGeoTransform[0] = 0;
+		adfDstGeoTransform[1] = 1;
+		adfDstGeoTransform[2] = 0;
+		adfDstGeoTransform[3] = 0;
+		adfDstGeoTransform[4] = 0;
+		adfDstGeoTransform[5] = 1;
+
+		nPixels = GetImageXSize();
+		nLines = GetImageYSize();
+	}
+	else if (dstCRS.IsSame(&moNativeCRS))
+	{
+		memcpy(adfDstGeoTransform, mdGeotransform, sizeof(double) * 6);
+		nPixels = GetImageXSize();
+		nLines = GetImageYSize();
+	}
+	else
+	{
+		double bboxArray[4];
+		getNativeBBox(bboxArray);
+
+		/* Special handle for Polar CRS, with global extend
+		 * */
+		OGRSpatialReference latlonCRS;
+		latlonCRS.SetFromUserInput("EPSG:4326");
+		char* wkt;
+		string dstWKT;
+		dstCRS.exportToWkt(&wkt);
+		dstWKT = wkt;
+
+		if(Find_Compare_SubStr(dstWKT, "Polar_Stereographic"))
+		{
+			if(latlonCRS.IsSame(&moNativeCRS))
+			{
+				if(bboxArray[1] - bboxArray[0] > 180)
+					bboxArray[1] = bboxArray[0] + 180;
+				if(bboxArray[3] - bboxArray[2] > 90)
+					bboxArray[2] = bboxArray[3] - 90;
+			}
+		}
+		/* End
+		 * */
+
+		My2DPoint llPt(bboxArray[0], bboxArray[2]);
+		My2DPoint urPt(bboxArray[1], bboxArray[3]);
+		if (CE_None != bBox_transFormmate(moNativeCRS, dstCRS, llPt, urPt))
+		{
+			SetWCS_ErrorLocator(
+					"AbstractDataset::GetSuggestedWarpResolution2()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+					"Failed to Transform bbox Coordinate.");
+
+			return CE_Failure;
+		}
+
+		double xRes, yRes;
+		if(isCrossingIDL())
+		{
+			yRes = (urPt.mi_Y - llPt.mi_Y) / GetImageYSize();
+			xRes = fabs((llPt.mi_X - urPt.mi_X) / GetImageXSize());
+			nLines = (urPt.mi_Y - llPt.mi_Y) / yRes + 0.5;
+			nPixels = fabs((llPt.mi_X - urPt.mi_X) / xRes + 0.5);
+		}else
+		{
+			xRes = (urPt.mi_X - llPt.mi_X) / GetImageXSize();
+			yRes = (urPt.mi_Y - llPt.mi_Y) / GetImageYSize();
+			nPixels = (urPt.mi_X - llPt.mi_X) / xRes + 0.5;
+			nLines = (urPt.mi_Y - llPt.mi_Y) / yRes + 0.5;
+		}
+
+		xRes = MIN(xRes,yRes);
+		yRes = MIN(xRes,yRes);
+
+		adfDstGeoTransform[0] = llPt.mi_X;
+		adfDstGeoTransform[1] = xRes;
+		adfDstGeoTransform[2] = 0;
+		adfDstGeoTransform[3] = urPt.mi_Y;
+		adfDstGeoTransform[4] = 0;
+		adfDstGeoTransform[5] = -yRes;
+	}
+
+	return CE_None;
+}
+
+GDALDataset* AbstractDataset::DatasetWarper(int& IsRefDS,
+		OGRSpatialReference& dstCRS, int& iDstRasterXsize,
+		int& iDstRasterYsize, double pDstGeoTransform[],
+		GDALResampleAlg eResampleAlg)
+{
+	OGRSpatialReference locCRS=dstCRS;
+	if (dstCRS.IsLocal())
+		locCRS=moNativeCRS;
+
+	if((moNativeCRS.IsSame(&locCRS) &&
+			iDstRasterXsize	== maptrDS->GetRasterXSize() &&
+			iDstRasterYsize == maptrDS->GetRasterYSize())&&
+			CPLIsEqual(mdGeotransform[0],pDstGeoTransform[0])&&
+			CPLIsEqual(mdGeotransform[1],pDstGeoTransform[1])&&
+			CPLIsEqual(mdGeotransform[3],pDstGeoTransform[3])&&
+			CPLIsEqual(mdGeotransform[5],pDstGeoTransform[5]))
+	{
+		IsRefDS = TRUE;
+		return maptrDS.get();
+	}
+
+	char *sDstCRS_WKT;
+	locCRS.exportToWkt(&sDstCRS_WKT);
+	/*
+	 * Create a memory dataset for reprojection
+	 */
+	GDALDriverH poDriver = GDALGetDriverByName("MEM");
+
+	int nBand = maptrDS->GetRasterCount();
+	GDALDataset* hMemDS = (GDALDataset*) GDALCreate(poDriver, "",
+			iDstRasterXsize, iDstRasterYsize, nBand, GDALGetRasterDataType(
+					maptrDS->GetRasterBand(1)), NULL);
+	if (NULL == hMemDS)
+	{
+		GDALClose(poDriver);
+		OGRFree(sDstCRS_WKT);
+		return NULL;
+	}
+	hMemDS->SetProjection(sDstCRS_WKT);
+	hMemDS->SetGeoTransform(pDstGeoTransform);
+
+	for (int i = 1; i <= nBand; i++)
+	{
+		hMemDS->GetRasterBand(i)->SetNoDataValue(mdMissingValue);
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Perform the reprojection.                                       */
+	/* -------------------------------------------------------------------- */
+	char *srcWKT;
+	moNativeCRS.exportToWkt(&srcWKT);
+	if (CE_None != GDALReprojectImage(maptrDS.get(), srcWKT, hMemDS,
+			sDstCRS_WKT, eResampleAlg, 0, 0, NULL, NULL, NULL))
+	{
+		GDALClose(poDriver);
+		GDALClose(GDALDatasetH(hMemDS));
+		OGRFree(sDstCRS_WKT);
+		OGRFree(srcWKT);
+		return NULL;
+	}
+	IsRefDS = FALSE;
+	OGRFree(sDstCRS_WKT);
+	OGRFree(srcWKT);
+
+	return hMemDS;
+}

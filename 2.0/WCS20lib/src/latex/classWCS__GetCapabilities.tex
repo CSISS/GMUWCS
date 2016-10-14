@@ -1,0 +1,189 @@
+\hypertarget{classWCS__GetCapabilities}{
+\section{WCS\_\-GetCapabilities Class Reference}
+\label{classWCS__GetCapabilities}\index{WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}}
+}
+
+
+This class is used to handle GetCapabilities request.  
+
+
+
+
+{\ttfamily \#include $<$WCS\_\-GetCapabilities.h$>$}
+
+Inheritance diagram for WCS\_\-GetCapabilities:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classWCS__GetCapabilities}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classWCS__GetCapabilities_a305c85654f218ad2e30e763b0e173cb1}{WCS\_\-GetCapabilities} (const string \&conf)
+\begin{DoxyCompactList}\small\item\em Constructor of a \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classWCS__GetCapabilities_ad640c177b1cc20859640090adc608d3e}{GetReqMessageFromXMLTree} (CPLXMLNode $\ast$xmlRoot)
+\begin{DoxyCompactList}\small\item\em Fetch the request GetCapabilities parameters from XML tree object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classWCS__GetCapabilities_a5e0c27a53f396893afd5f796e7c38ee0}{GetReqMessageFromURLString} (const string \&)
+\begin{DoxyCompactList}\small\item\em Fetch the request parameters from URL string. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classWCS__GetCapabilities_a5da60bec7f2ebce37b1acbcea547cf1d}{WCST\_\-Respond} (string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em The enter point for \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} class (Command line environment). \end{DoxyCompactList}\item 
+virtual void \hyperlink{classWCS__GetCapabilities_af250d7ecba600be323a1eb6778bdd4e7}{WCST\_\-Respond} ()
+\begin{DoxyCompactList}\small\item\em The enter point for \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} class (CGI environment). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classWCS__GetCapabilities_a3ffc84e44c2bad1dc5cf048d9c787719}{
+vector$<$ string $>$ {\bfseries mv\_\-sections}}
+\label{classWCS__GetCapabilities_a3ffc84e44c2bad1dc5cf048d9c787719}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is used to handle GetCapabilities request. 
+
+This class is used to handle GetCapabilities request. Several functions for parsing request parameters, generating the response XML document, are provided. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classWCS__GetCapabilities_a305c85654f218ad2e30e763b0e173cb1}{
+\index{WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}!WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}}
+\index{WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}!WCS_GetCapabilities@{WCS\_\-GetCapabilities}}
+\subsubsection[{WCS\_\-GetCapabilities}]{\setlength{\rightskip}{0pt plus 5cm}WCS\_\-GetCapabilities::WCS\_\-GetCapabilities (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{conf}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__GetCapabilities_a305c85654f218ad2e30e763b0e173cb1}
+
+
+Constructor of a \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} object. 
+
+This is the accepted method of creating an \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em conf} & String of the full path of the configuration file. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classWCS__GetCapabilities_a5e0c27a53f396893afd5f796e7c38ee0}{
+\index{WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}!GetReqMessageFromURLString@{GetReqMessageFromURLString}}
+\index{GetReqMessageFromURLString@{GetReqMessageFromURLString}!WCS_GetCapabilities@{WCS\_\-GetCapabilities}}
+\subsubsection[{GetReqMessageFromURLString}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCapabilities::GetReqMessageFromURLString (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{urlStr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCapabilities_a5e0c27a53f396893afd5f796e7c38ee0}
+
+
+Fetch the request parameters from URL string. 
+
+This method is used to fetch the GetCapabilities parameters from an URL string (HTTP GET method).
+
+
+\begin{DoxyParams}{Parameters}
+{\em urlStr} & String of the GetCapabilities request.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__GetCapabilities_ad640c177b1cc20859640090adc608d3e}{
+\index{WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}!GetReqMessageFromXMLTree@{GetReqMessageFromXMLTree}}
+\index{GetReqMessageFromXMLTree@{GetReqMessageFromXMLTree}!WCS_GetCapabilities@{WCS\_\-GetCapabilities}}
+\subsubsection[{GetReqMessageFromXMLTree}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCapabilities::GetReqMessageFromXMLTree (
+\begin{DoxyParamCaption}
+\item[{CPLXMLNode $\ast$}]{xmlRoot}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCapabilities_ad640c177b1cc20859640090adc608d3e}
+
+
+Fetch the request GetCapabilities parameters from XML tree object. 
+
+This method is used to fetch the GetCapabilities parameters from an XML object (HTTP POST method).
+
+Sample request XML document 
+\begin{DoxyCode}
+<?xml version="1.0" encoding="UTF-8"?>
+<GetCapabilities
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:ows="http://www.opengis.net/ows/1.1"
+  xmlns:wcs="http://www.opengis.net/wcs/2.0"
+  xsi:schemaLocation=
+    "http://schemas.opengis.net/wcs/2.0 ../wcsAll.xsd"
+  service="WCS">
+  <ows:AcceptVersions>
+    <ows:Version>2.0.0</ows:Version>
+  </ows:AcceptVersions>
+</GetCapabilities>
+\end{DoxyCode}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em xmlRoot} & XML Node object created by GDAL library.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__GetCapabilities_a5da60bec7f2ebce37b1acbcea547cf1d}{
+\index{WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}!WCST\_\-Respond@{WCST\_\-Respond}}
+\index{WCST\_\-Respond@{WCST\_\-Respond}!WCS_GetCapabilities@{WCS\_\-GetCapabilities}}
+\subsubsection[{WCST\_\-Respond}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-GetCapabilities::WCST\_\-Respond (
+\begin{DoxyParamCaption}
+\item[{string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCapabilities_a5da60bec7f2ebce37b1acbcea547cf1d}
+
+
+The enter point for \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} class (Command line environment). 
+
+This method is the enter point for \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} class, which is used under command line environment. In order to debug WCS and use WCS as a command line, the user could issue a request under command line. The response information will be stored in the specified file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sOutFileName} & The path of the response file. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__GetCapabilities_af250d7ecba600be323a1eb6778bdd4e7}{
+\index{WCS\_\-GetCapabilities@{WCS\_\-GetCapabilities}!WCST\_\-Respond@{WCST\_\-Respond}}
+\index{WCST\_\-Respond@{WCST\_\-Respond}!WCS_GetCapabilities@{WCS\_\-GetCapabilities}}
+\subsubsection[{WCST\_\-Respond}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-GetCapabilities::WCST\_\-Respond (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCapabilities_af250d7ecba600be323a1eb6778bdd4e7}
+
+
+The enter point for \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} class (CGI environment). 
+
+This method is the enter point for \hyperlink{classWCS__GetCapabilities}{WCS\_\-GetCapabilities} class, which is used under CGI environment. The response information will be displayed in the browser. 
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+WCS\_\-GetCapabilities.h\item 
+WCS\_\-GetCapabilities.cpp\end{DoxyCompactItemize}

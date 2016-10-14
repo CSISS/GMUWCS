@@ -1,0 +1,37 @@
+/*
+ * ASDTASmoke_Dataset.h
+ *
+ *  Created on: Sep 2, 2010
+ *      Author: yshao
+ */
+
+#ifndef ASDTASMOKE_DATASET_H_
+#define ASDTASMOKE_DATASET_H_
+
+#include "AbstractDataset.h"
+
+/*
+ * The ASDTA (Automated Smoke Detection and Tracking Algorithm) Smoke-East AOD is generated
+ * by NOAA / NESDIS to provide observational support for verification of NOAA / NWS HYSPLIT
+ * smoke (PM2.5) forecasts. ASDTA uses a source apportionment technique by fusing GOES
+ * observations of fire hot spots and GASP-East AOD maps at a 30-minute interval. GASP AOD
+ * is not retrieved where clouds are present. Plume direction and extent from all observed
+ * fire sources are first determined, then AOD values not associated with the fires are dropped.
+ * A pattern recognition technique is used for plumes transported long distances from fire sources.
+ * ASDTA provides wind speed and direction associated with the plumes; however, the vertical
+ * location of the plumes is not known.
+ * */
+class ASDTASmoke_Dataset : public AbstractDataset {
+public:
+	ASDTASmoke_Dataset();
+	ASDTASmoke_Dataset(const string& id, vector<int> &rBandList);
+	virtual ~ASDTASmoke_Dataset();
+
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setMetaDataList(GDALDataset*);
+	virtual CPLErr initialDataset(const int isSimple=0);
+};
+
+#endif /* ASDTASMOKE_DATASET_H_ */

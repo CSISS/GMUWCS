@@ -1,0 +1,1094 @@
+\hypertarget{classAbstractDataset}{
+\section{AbstractDataset Class Reference}
+\label{classAbstractDataset}\index{AbstractDataset@{AbstractDataset}}
+}
+
+
+Abstract dataset model definition. Based on GDAL dataset model.  
+
+
+
+
+{\ttfamily \#include $<$AbstractDataset.h$>$}
+
+Inheritance diagram for AbstractDataset:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.296296cm]{classAbstractDataset}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classAbstractDataset_ad00421fe0b425cdbc26c68c5dc724bee}{AbstractDataset} (const string \&, vector$<$ int $>$ \&)
+\begin{DoxyCompactList}\small\item\em Constructor of an \hyperlink{classAbstractDataset}{AbstractDataset}. \end{DoxyCompactList}\item 
+virtual \hyperlink{classAbstractDataset_a144cd670169b00b62afbdc2ded2639fa}{$\sim$AbstractDataset} ()
+\begin{DoxyCompactList}\small\item\em Destroy an open \hyperlink{classAbstractDataset}{AbstractDataset} object. \end{DoxyCompactList}\item 
+GDALDataset $\ast$ \hyperlink{classAbstractDataset_aed8db0cfc46d0171f692364bbf1a7dcf}{GetGDALDataset} ()
+\begin{DoxyCompactList}\small\item\em Get the GDALDataset object from AbstarctDataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classAbstractDataset_a45924895c6bf26c7f75d503b8f6e388a}{InitialDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Initialize the data set. \end{DoxyCompactList}\item 
+const OGRSpatialReference \& \hyperlink{classAbstractDataset_a4d92be8700505a6a7ef6655e35b05725}{GetNativeCRS} ()
+\begin{DoxyCompactList}\small\item\em Get the Native CRS of an AbstarctDataset. \end{DoxyCompactList}\item 
+const double \& \hyperlink{classAbstractDataset_aada8065023ba9b718c0d759698365b40}{GetMissingValue} ()
+\begin{DoxyCompactList}\small\item\em Fetch the filled value (missing value) of a coverage. \end{DoxyCompactList}\item 
+int \hyperlink{classAbstractDataset_adbf83ce500a0f30b79ca682df26638e4}{GetGeoTransform} (double geoTrans\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Fetch the affine transformation coefficients. \end{DoxyCompactList}\item 
+vector$<$ string $>$ \hyperlink{classAbstractDataset_a736080454f7ac794c710f00da26e37f9}{GetMetaDataList} ()
+\begin{DoxyCompactList}\small\item\em Fetch the metadata list for this coverage. \end{DoxyCompactList}\item 
+vector$<$ int $>$ \hyperlink{classAbstractDataset_a83b521f96ef4b5fe5b5062707ecc7f40}{GetBandList} ()
+\begin{DoxyCompactList}\small\item\em Fetch the contained band list of request coverage. \end{DoxyCompactList}\item 
+void \hyperlink{classAbstractDataset_a919760d8e60c26b105740bc2bc109b0e}{GetNativeBBox} (double bBox\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Fetch the bounding box of a coverage under the native CRS. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classAbstractDataset_a66a65ce60f813d0ef683919a098b8a98}{GetGeoMinMax} (double geoMinMax\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Fetch the bounding box of a coverage under EPSG:4326. \end{DoxyCompactList}\item 
+int \hyperlink{classAbstractDataset_a83c0bc843f701e8b20b5408b9c7e0731}{GetImageBandCount} ()
+\begin{DoxyCompactList}\small\item\em Fetch the number of raster bands on this dataset. \end{DoxyCompactList}\item 
+int \hyperlink{classAbstractDataset_a950e120c5a1e9fa06ee5b02ed4fc6c42}{GetImageXSize} ()
+\begin{DoxyCompactList}\small\item\em Fetch coverage width in pixels. \end{DoxyCompactList}\item 
+int \hyperlink{classAbstractDataset_a4f7ceb09ad968d28a5282c7652fb6975}{GetImageYSize} ()
+\begin{DoxyCompactList}\small\item\em Fetch coverage height in pixels. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_ab7b76c03b2a94853b631b83ebb1be453}{GetResourceFileName} ()
+\begin{DoxyCompactList}\small\item\em Fetch the resource file name of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a93b5fa34e8ace1dd9c30abad1f3e2f72}{GetDatasetName} ()
+\begin{DoxyCompactList}\small\item\em Fetch the dataset name of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a5a6c03e8c1f796ef1ffd018016b342fa}{GetDataTypeName} ()
+\begin{DoxyCompactList}\small\item\em Fetch the dataset type name of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a9c37d346022864bf92f5d9d33e45fd42}{GetNativeFormat} ()
+\begin{DoxyCompactList}\small\item\em Fetch the native format of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a6d91e0d5d812e4a9b796796cb8fc45a3}{GetCoverageID} ()
+\begin{DoxyCompactList}\small\item\em Fetch the identifier of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_ace176d7bf4a12ae58e48ded2da210a86}{GetDatasetDescription} ()
+\begin{DoxyCompactList}\small\item\em Fetch the dataset description of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_ab4509cea5f99f8ebeb836d85828c3470}{GetNativeCRS\_\-URN} ()
+\begin{DoxyCompactList}\small\item\em Fetch the native CRS code of coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a8172c4de7f03007cd17a54149c801627}{GetGeoCRS\_\-URN} ()
+\begin{DoxyCompactList}\small\item\em Fetch the Geographic CRS code of coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a2e6cdb6c0d165543a8a4d936835db73b}{GetProjectionRef} ()
+\begin{DoxyCompactList}\small\item\em Fetch the native projection reference of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a90a2e56cacec8d9aa13b6fb66a862bf6}{GetCoverageBeginTime} ()
+\begin{DoxyCompactList}\small\item\em Fetch the begin date/time of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a8193da35dd2e264834ac3af2bd89a0c0}{GetCoverageEndTime} ()
+\begin{DoxyCompactList}\small\item\em Fetch the end date/time of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a505f9a6143ef694db5c7ff324f5c891a}{GetCoverageSubType} ()
+\begin{DoxyCompactList}\small\item\em Fetch the coverage type. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a641d024862d22d4b8598ffa3dd5ef43e}{GetFieldQuantityDef} ()
+\begin{DoxyCompactList}\small\item\em Fetch the field units of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_aa4e7985dc41a9eb44254bbc9782e6b1d}{GetAllowValues} ()
+\begin{DoxyCompactList}\small\item\em Fetch the allow values of a coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a6dab64e60c0cd4799408caf7afffb1cb}{GetISO19115Metadata} ()
+\begin{DoxyCompactList}\small\item\em Fetch the coverage metadata which is compliant to ISO 19115:2003. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a25e49f67a2e5e84465d2b32a8b2457cb}{GetCoverageArchiveTime} ()
+\begin{DoxyCompactList}\small\item\em Fetch the archive date/time of this dataset. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_af98c41e04bc2f1f6ca57cf88b7dc34c4}{GetCoveragePlatform} ()
+\begin{DoxyCompactList}\small\item\em Fetch the platform name of this dataset. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a258a7f882e62f899fe1ceb75fa8849f9}{GetCoverageInstrument} ()
+\begin{DoxyCompactList}\small\item\em Fetch the instrument name of this dataset. \end{DoxyCompactList}\item 
+string \hyperlink{classAbstractDataset_a9a60a3d1b5b094c58bbc927a58f22e6d}{GetCoverageSensor} ()
+\begin{DoxyCompactList}\small\item\em Fetch the sensor name of this dataset. \end{DoxyCompactList}\item 
+int \hyperlink{classAbstractDataset_a206bf47490d90bd0698fe2c491106c84}{IsbGeoTransformSet} ()
+\begin{DoxyCompactList}\small\item\em Determine whether set the affine geoTransform for a coverage. \end{DoxyCompactList}\item 
+int \hyperlink{classAbstractDataset_a3597ba14546a8fd5b0ea0bad7f9583e0}{IsCrossingIDL} ()
+\begin{DoxyCompactList}\small\item\em Determine whether the extend of coverage cross the International Date Line (IDL). \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classAbstractDataset_a339c58a6e439d0877d8b09e1d2d26b31}{GetSuggestedWarpResolution} (OGRSpatialReference \&dstCRS, double adfDstGeoTransform\mbox{[}$\,$\mbox{]}, int \&nPixels, int \&nLines)
+\begin{DoxyCompactList}\small\item\em Get the suggested warp option, method 1. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classAbstractDataset_aed58e61df99fd00c205fafef519639ee}{GetSuggestedWarpResolution2} (OGRSpatialReference \&dstCRS, double adfDstGeoTransform\mbox{[}$\,$\mbox{]}, int \&nPixels, int \&nLines)
+\begin{DoxyCompactList}\small\item\em Get the suggested warp option, method 2. \end{DoxyCompactList}\item 
+GDALDataset $\ast$ \hyperlink{classAbstractDataset_a55257132908f4fa578f44b1bb485dcaa}{DatasetWarper} (int \&IsRefDS, OGRSpatialReference \&dstCRS, int \&iDstRasterXsize, int \&iDstRasterYsize, double pDstGeoTransform\mbox{[}$\,$\mbox{]}, GDALResampleAlg eResampleAlg=GRA\_\-NearestNeighbour)
+\begin{DoxyCompactList}\small\item\em Wrap the dataset to a GDALDataset object based on input parameters. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual CPLErr \hyperlink{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}{SetNativeCRS} ()
+\begin{DoxyCompactList}\small\item\em Set the Native CRS for an AbstarctDataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}{SetGeoTransform} ()
+\begin{DoxyCompactList}\small\item\em Set the affine GeoTransform matrix for a coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}{SetGDALDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Set the GDALDataset object to AbstarctDataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classAbstractDataset_af3f0b55b14f660b79751bf88489a2c10}{SetMetaDataList} (GDALDataset $\ast$)
+\begin{DoxyCompactList}\small\item\em Set the metadata list for this coverage based on dataset object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classAbstractDataset_a0a7aa031c18bc61b12eb8e23a0852ade}{
+auto\_\-ptr$<$ GDALDataset $>$ {\bfseries maptrDS}}
+\label{classAbstractDataset_a0a7aa031c18bc61b12eb8e23a0852ade}
+
+\item 
+\hypertarget{classAbstractDataset_ad241c44de1a16de00a88195bb3b08deb}{
+string {\bfseries ms\_\-CoverageID}}
+\label{classAbstractDataset_ad241c44de1a16de00a88195bb3b08deb}
+
+\item 
+\hypertarget{classAbstractDataset_a5f3f63f66c91ce61213ae966ed0a593b}{
+string {\bfseries ms\_\-CoverageBeginTime}}
+\label{classAbstractDataset_a5f3f63f66c91ce61213ae966ed0a593b}
+
+\item 
+\hypertarget{classAbstractDataset_a2bf942bae502e9b9a02ee8b5cc4d4fb7}{
+string {\bfseries ms\_\-CoverageEndTime}}
+\label{classAbstractDataset_a2bf942bae502e9b9a02ee8b5cc4d4fb7}
+
+\item 
+\hypertarget{classAbstractDataset_ac8fd3b9fb9f9e1d8921e2cde2c75ecaf}{
+string {\bfseries ms\_\-CoverageSubType}}
+\label{classAbstractDataset_ac8fd3b9fb9f9e1d8921e2cde2c75ecaf}
+
+\item 
+\hypertarget{classAbstractDataset_a603719678668fef176a65bd33d426d0b}{
+string {\bfseries ms\_\-CoverageArchiveTime}}
+\label{classAbstractDataset_a603719678668fef176a65bd33d426d0b}
+
+\item 
+\hypertarget{classAbstractDataset_ad7f7925c2866e662f75ff10364d01ba6}{
+string {\bfseries ms\_\-CoveragePlatform}}
+\label{classAbstractDataset_ad7f7925c2866e662f75ff10364d01ba6}
+
+\item 
+\hypertarget{classAbstractDataset_afe2f6a655cd353db5c0e111ef2690edf}{
+string {\bfseries ms\_\-CoverageInstrument}}
+\label{classAbstractDataset_afe2f6a655cd353db5c0e111ef2690edf}
+
+\item 
+\hypertarget{classAbstractDataset_a23ea7b2d8b63056c481ec42014db4c4c}{
+string {\bfseries ms\_\-CoverageSensor}}
+\label{classAbstractDataset_a23ea7b2d8b63056c481ec42014db4c4c}
+
+\item 
+\hypertarget{classAbstractDataset_ad432bb31a7c73f5ccfa5e38c59cee950}{
+string {\bfseries ms\_\-SrcFilename}}
+\label{classAbstractDataset_ad432bb31a7c73f5ccfa5e38c59cee950}
+
+\item 
+\hypertarget{classAbstractDataset_afd00d5bdfa29b266b71d54e543b0d31f}{
+string {\bfseries ms\_\-DatasetName}}
+\label{classAbstractDataset_afd00d5bdfa29b266b71d54e543b0d31f}
+
+\item 
+\hypertarget{classAbstractDataset_ad226ee89e3bc3264a1443b5fa38bc49c}{
+string {\bfseries ms\_\-DataTypeName}}
+\label{classAbstractDataset_ad226ee89e3bc3264a1443b5fa38bc49c}
+
+\item 
+\hypertarget{classAbstractDataset_ac003715ef548373ed0504bb5383cf03b}{
+string {\bfseries ms\_\-NativeFormat}}
+\label{classAbstractDataset_ac003715ef548373ed0504bb5383cf03b}
+
+\item 
+\hypertarget{classAbstractDataset_ab0c3eac75d38db6ba50d0bc43361eac2}{
+string {\bfseries ms\_\-FieldQuantityDef}}
+\label{classAbstractDataset_ab0c3eac75d38db6ba50d0bc43361eac2}
+
+\item 
+\hypertarget{classAbstractDataset_af56c63636750a88521d6da9ed1225495}{
+string {\bfseries ms\_\-AllowRanges}}
+\label{classAbstractDataset_af56c63636750a88521d6da9ed1225495}
+
+\item 
+\hypertarget{classAbstractDataset_ac3ae79d84fdf4e0058091b47be0b2f10}{
+string {\bfseries ms\_\-ISO19115Metadata}}
+\label{classAbstractDataset_ac3ae79d84fdf4e0058091b47be0b2f10}
+
+\item 
+\hypertarget{classAbstractDataset_a2769492120ab8786156dc008f4df66ba}{
+vector$<$ int $>$ {\bfseries mv\_\-BandList}}
+\label{classAbstractDataset_a2769492120ab8786156dc008f4df66ba}
+
+\item 
+\hypertarget{classAbstractDataset_a305de13cdca7f2333a22c7128e6636df}{
+vector$<$ string $>$ {\bfseries mv\_\-MeteDataList}}
+\label{classAbstractDataset_a305de13cdca7f2333a22c7128e6636df}
+
+\item 
+\hypertarget{classAbstractDataset_abb20036310c1fe91a9f32ff52c4f0418}{
+double {\bfseries md\_\-Geotransform} \mbox{[}6\mbox{]}}
+\label{classAbstractDataset_abb20036310c1fe91a9f32ff52c4f0418}
+
+\item 
+\hypertarget{classAbstractDataset_a34ebf17165933f54cf1e556ae7aa7ed3}{
+double {\bfseries md\_\-GeoMinMax} \mbox{[}4\mbox{]}}
+\label{classAbstractDataset_a34ebf17165933f54cf1e556ae7aa7ed3}
+
+\item 
+\hypertarget{classAbstractDataset_a4ff76800a2f8e561fc5aa86d536c396c}{
+double {\bfseries md\_\-MissingValue}}
+\label{classAbstractDataset_a4ff76800a2f8e561fc5aa86d536c396c}
+
+\item 
+\hypertarget{classAbstractDataset_a4bb09d130d94e550ece8145f1e5498e0}{
+int {\bfseries mb\_\-GeoTransformSet}}
+\label{classAbstractDataset_a4bb09d130d94e550ece8145f1e5498e0}
+
+\item 
+\hypertarget{classAbstractDataset_a7233ac7625660c30f9b82e4aa61701cb}{
+int {\bfseries mb\_\-IsVirtualDS}}
+\label{classAbstractDataset_a7233ac7625660c30f9b82e4aa61701cb}
+
+\item 
+\hypertarget{classAbstractDataset_abac7fcd9967f805f3cc81053f9c6576e}{
+OGRSpatialReference {\bfseries mo\_\-NativeCRS}}
+\label{classAbstractDataset_abac7fcd9967f805f3cc81053f9c6576e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Abstract dataset model definition. Based on GDAL dataset model. 
+
+An abstract dataset encapsulating one or more raster bands, which is based on GDALDataset, and add the support to metadata model: ISO 19115 and 1SO 19115 (2). A series of Fetch functions are provided for the implementation of Web Coverage Service.
+
+Use WCSTCreateDataset() to create a \hyperlink{classAbstractDataset}{AbstractDataset} for a named coverage identifier and band list. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classAbstractDataset_ad00421fe0b425cdbc26c68c5dc724bee}{
+\index{AbstractDataset@{AbstractDataset}!AbstractDataset@{AbstractDataset}}
+\index{AbstractDataset@{AbstractDataset}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{AbstractDataset}]{\setlength{\rightskip}{0pt plus 5cm}AbstractDataset::AbstractDataset (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{id, }
+\item[{vector$<$ int $>$ \&}]{rBandList}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_ad00421fe0b425cdbc26c68c5dc724bee}
+
+
+Constructor of an \hyperlink{classAbstractDataset}{AbstractDataset}. 
+
+This is the accepted method of opening an abstract dataset and allocating all resources associated with it. \hypertarget{classAbstractDataset_a144cd670169b00b62afbdc2ded2639fa}{
+\index{AbstractDataset@{AbstractDataset}!$\sim$AbstractDataset@{$\sim$AbstractDataset}}
+\index{$\sim$AbstractDataset@{$\sim$AbstractDataset}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{$\sim$AbstractDataset}]{\setlength{\rightskip}{0pt plus 5cm}AbstractDataset::$\sim$AbstractDataset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classAbstractDataset_a144cd670169b00b62afbdc2ded2639fa}
+
+
+Destroy an open \hyperlink{classAbstractDataset}{AbstractDataset} object. 
+
+This is the accepted method of closing a \hyperlink{classAbstractDataset}{AbstractDataset} dataset and deallocating all resources associated with it. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classAbstractDataset_a55257132908f4fa578f44b1bb485dcaa}{
+\index{AbstractDataset@{AbstractDataset}!DatasetWarper@{DatasetWarper}}
+\index{DatasetWarper@{DatasetWarper}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{DatasetWarper}]{\setlength{\rightskip}{0pt plus 5cm}GDALDataset $\ast$ AbstractDataset::DatasetWarper (
+\begin{DoxyParamCaption}
+\item[{int \&}]{IsRefDS, }
+\item[{OGRSpatialReference \&}]{dstCRS, }
+\item[{int \&}]{iDstRasterXsize, }
+\item[{int \&}]{iDstRasterYsize, }
+\item[{double}]{pDstGeoTransform\mbox{[}$\,$\mbox{]}, }
+\item[{GDALResampleAlg}]{eResampleAlg = {\ttfamily GRA\_\-NearestNeighbour}}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a55257132908f4fa578f44b1bb485dcaa}
+
+
+Wrap the dataset to a GDALDataset object based on input parameters. 
+
+Wrap the dataset to a GDALDataset object based on input parameters.
+
+\begin{DoxyReturn}{Returns}
+the warpped GDALDataset object. 
+
+GDALDatset object. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_aa4e7985dc41a9eb44254bbc9782e6b1d}{
+\index{AbstractDataset@{AbstractDataset}!GetAllowValues@{GetAllowValues}}
+\index{GetAllowValues@{GetAllowValues}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetAllowValues}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetAllowValues (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_aa4e7985dc41a9eb44254bbc9782e6b1d}
+
+
+Fetch the allow values of a coverage. 
+
+The method will return the valid range of a coverage. For example to MOD09GQ(collection name) sur\_\-refl\_\-b01\_\-1(dataset name) data, valid\_\-range equals to (-\/100, 16000).
+
+\begin{DoxyReturn}{Returns}
+the string of valid range of a coverage, in the forms of \char`\"{}min, max\char`\"{}. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a83b521f96ef4b5fe5b5062707ecc7f40}{
+\index{AbstractDataset@{AbstractDataset}!GetBandList@{GetBandList}}
+\index{GetBandList@{GetBandList}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetBandList}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ int $>$ AbstractDataset::GetBandList (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a83b521f96ef4b5fe5b5062707ecc7f40}
+
+
+Fetch the contained band list of request coverage. 
+
+The method will return the contained band list of request coverage.
+
+\begin{DoxyReturn}{Returns}
+the band array. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a25e49f67a2e5e84465d2b32a8b2457cb}{
+\index{AbstractDataset@{AbstractDataset}!GetCoverageArchiveTime@{GetCoverageArchiveTime}}
+\index{GetCoverageArchiveTime@{GetCoverageArchiveTime}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoverageArchiveTime}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoverageArchiveTime (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a25e49f67a2e5e84465d2b32a8b2457cb}
+
+
+Fetch the archive date/time of this dataset. 
+
+The method will return the archive date/time of dataset (granule).
+
+\begin{DoxyReturn}{Returns}
+The string of archive date/time. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a90a2e56cacec8d9aa13b6fb66a862bf6}{
+\index{AbstractDataset@{AbstractDataset}!GetCoverageBeginTime@{GetCoverageBeginTime}}
+\index{GetCoverageBeginTime@{GetCoverageBeginTime}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoverageBeginTime}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoverageBeginTime (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a90a2e56cacec8d9aa13b6fb66a862bf6}
+
+
+Fetch the begin date/time of a coverage. 
+
+The method will return the begin date/time of a coverage. For MODIS data, each granule will cover a range of time; for TRMM data, the daily data will cover a whole day, and monthly data will cover a whole month.
+
+\begin{DoxyReturn}{Returns}
+the string of begin date/time corresponding to the coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a8193da35dd2e264834ac3af2bd89a0c0}{
+\index{AbstractDataset@{AbstractDataset}!GetCoverageEndTime@{GetCoverageEndTime}}
+\index{GetCoverageEndTime@{GetCoverageEndTime}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoverageEndTime}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoverageEndTime (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a8193da35dd2e264834ac3af2bd89a0c0}
+
+
+Fetch the end date/time of a coverage. 
+
+The method will return the end date/time of a coverage. For MODIS data, each granule will cover a range of time; for TRMM data, the daily data will cover a whole day, and monthly data will cover a whole month.
+
+\begin{DoxyReturn}{Returns}
+the string of end date/time corresponding to the coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a6d91e0d5d812e4a9b796796cb8fc45a3}{
+\index{AbstractDataset@{AbstractDataset}!GetCoverageID@{GetCoverageID}}
+\index{GetCoverageID@{GetCoverageID}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoverageID}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoverageID (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a6d91e0d5d812e4a9b796796cb8fc45a3}
+
+
+Fetch the identifier of a coverage. 
+
+The method will return the coverage identifier related to the abstarct dataset. As to TRMM data, the coverage identifier likes: TRMM:/Volumes/RAIDL1/GeoData/TRMM/TRMM\_\-3B42\_\-daily.2000.hdf:Daily
+
+As to MODIS data, the coverage identifier likes: HDF4\_\-EOS:EOS\_\-GRID:\char`\"{}/Volumes/RAIDL1/GeoData/MOD15A2/2007/MYD15A2.A2007241.h12v09.005.2007256053902.hdf\char`\"{}:MOD\_\-Grid\_\-MOD15A2:Lai\_\-1km
+
+\begin{DoxyReturn}{Returns}
+the string of coverage identifier. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a258a7f882e62f899fe1ceb75fa8849f9}{
+\index{AbstractDataset@{AbstractDataset}!GetCoverageInstrument@{GetCoverageInstrument}}
+\index{GetCoverageInstrument@{GetCoverageInstrument}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoverageInstrument}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoverageInstrument (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a258a7f882e62f899fe1ceb75fa8849f9}
+
+
+Fetch the instrument name of this dataset. 
+
+The method will return the instrument name of dataset (granule).
+
+\begin{DoxyReturn}{Returns}
+The string of instrument name. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_af98c41e04bc2f1f6ca57cf88b7dc34c4}{
+\index{AbstractDataset@{AbstractDataset}!GetCoveragePlatform@{GetCoveragePlatform}}
+\index{GetCoveragePlatform@{GetCoveragePlatform}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoveragePlatform}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoveragePlatform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_af98c41e04bc2f1f6ca57cf88b7dc34c4}
+
+
+Fetch the platform name of this dataset. 
+
+The method will return the platform name of dataset (granule).
+
+\begin{DoxyReturn}{Returns}
+The string of platform name. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a9a60a3d1b5b094c58bbc927a58f22e6d}{
+\index{AbstractDataset@{AbstractDataset}!GetCoverageSensor@{GetCoverageSensor}}
+\index{GetCoverageSensor@{GetCoverageSensor}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoverageSensor}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoverageSensor (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a9a60a3d1b5b094c58bbc927a58f22e6d}
+
+
+Fetch the sensor name of this dataset. 
+
+The method will return the sensor name of dataset (granule).
+
+\begin{DoxyReturn}{Returns}
+The string of sensor name. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a505f9a6143ef694db5c7ff324f5c891a}{
+\index{AbstractDataset@{AbstractDataset}!GetCoverageSubType@{GetCoverageSubType}}
+\index{GetCoverageSubType@{GetCoverageSubType}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetCoverageSubType}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetCoverageSubType (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a505f9a6143ef694db5c7ff324f5c891a}
+
+
+Fetch the coverage type. 
+
+The method will return the type of the coverage, such as \char`\"{}ReferenceableDataset\char`\"{} and \char`\"{}RectifiedDataset\char`\"{}.
+
+\begin{DoxyReturn}{Returns}
+the string of coverage type. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_ace176d7bf4a12ae58e48ded2da210a86}{
+\index{AbstractDataset@{AbstractDataset}!GetDatasetDescription@{GetDatasetDescription}}
+\index{GetDatasetDescription@{GetDatasetDescription}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetDatasetDescription}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetDatasetDescription (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_ace176d7bf4a12ae58e48ded2da210a86}
+
+
+Fetch the dataset description of a coverage. 
+
+The method will build a description for the coverage. The coverage extent, dataset name, dataset type name will be contained in the description,
+
+\begin{DoxyReturn}{Returns}
+the string of dataset description. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a93b5fa34e8ace1dd9c30abad1f3e2f72}{
+\index{AbstractDataset@{AbstractDataset}!GetDatasetName@{GetDatasetName}}
+\index{GetDatasetName@{GetDatasetName}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetDatasetName}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetDatasetName (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a93b5fa34e8ace1dd9c30abad1f3e2f72}
+
+
+Fetch the dataset name of a coverage. 
+
+The method will return the data set name corresponding the file contained coverage. For example, MOD09GQ data has the coverage identifier as following; HDF4\_\-EOS:EOS\_\-GRID:\char`\"{}/Volumes/RAIDL1/GeoData/MODISData/MOD09GQ/MOD09GQ.A2010001.h12v05.005.2010007003100.hdf\char`\"{}:MODIS\_\-Grid\_\-2D:sur\_\-refl\_\-b01\_\-1
+
+sur\_\-refl\_\-b01\_\-1 is seemed as the dataset name.
+
+\begin{DoxyReturn}{Returns}
+the string of dataset name. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a5a6c03e8c1f796ef1ffd018016b342fa}{
+\index{AbstractDataset@{AbstractDataset}!GetDataTypeName@{GetDataTypeName}}
+\index{GetDataTypeName@{GetDataTypeName}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetDataTypeName}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetDataTypeName (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a5a6c03e8c1f796ef1ffd018016b342fa}
+
+
+Fetch the dataset type name of a coverage. 
+
+The method will return the data set name corresponding the file contained coverage. For example, MOD09GQ data has the coverage identifier as following; HDF4\_\-EOS:EOS\_\-GRID:\char`\"{}/Volumes/RAIDL1/GeoData/MODISData/MOD09GQ/MOD09GQ.A2010001.h12v05.005.2010007003100.hdf\char`\"{}:MODIS\_\-Grid\_\-2D:sur\_\-refl\_\-b01\_\-1
+
+MODIS\_\-Grid\_\-2D is seemed as the dataset type name.
+
+\begin{DoxyReturn}{Returns}
+the string of dataset type name. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a641d024862d22d4b8598ffa3dd5ef43e}{
+\index{AbstractDataset@{AbstractDataset}!GetFieldQuantityDef@{GetFieldQuantityDef}}
+\index{GetFieldQuantityDef@{GetFieldQuantityDef}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetFieldQuantityDef}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetFieldQuantityDef (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a641d024862d22d4b8598ffa3dd5ef43e}
+
+
+Fetch the field units of a coverage. 
+
+The method will return the field units of coverage. For example to MOD09GQ(collection name) sur\_\-refl\_\-b01\_\-1(dataset name) data, units equals to reflectance.
+
+\begin{DoxyReturn}{Returns}
+the string of coverage field units. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_aed8db0cfc46d0171f692364bbf1a7dcf}{
+\index{AbstractDataset@{AbstractDataset}!GetGDALDataset@{GetGDALDataset}}
+\index{GetGDALDataset@{GetGDALDataset}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetGDALDataset}]{\setlength{\rightskip}{0pt plus 5cm}GDALDataset $\ast$ AbstractDataset::GetGDALDataset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_aed8db0cfc46d0171f692364bbf1a7dcf}
+
+
+Get the GDALDataset object from AbstarctDataset. 
+
+An AbstarctDataset encapsulating one GDALDataset. \hyperlink{classAbstractDataset_aed8db0cfc46d0171f692364bbf1a7dcf}{GetGDALDataset()} returns a GDALDatset object, which is used to fetch its information through GDAL APIs.
+
+\begin{DoxyReturn}{Returns}
+GDALDatset object. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a8172c4de7f03007cd17a54149c801627}{
+\index{AbstractDataset@{AbstractDataset}!GetGeoCRS\_\-URN@{GetGeoCRS\_\-URN}}
+\index{GetGeoCRS\_\-URN@{GetGeoCRS\_\-URN}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetGeoCRS\_\-URN}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetGeoCRS\_\-URN (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a8172c4de7f03007cd17a54149c801627}
+
+
+Fetch the Geographic CRS code of coverage. 
+
+The method will return the Geographic CRS code of coverage.
+
+\begin{DoxyReturn}{Returns}
+the URN for Geographic CRS of coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a66a65ce60f813d0ef683919a098b8a98}{
+\index{AbstractDataset@{AbstractDataset}!GetGeoMinMax@{GetGeoMinMax}}
+\index{GetGeoMinMax@{GetGeoMinMax}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetGeoMinMax}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::GetGeoMinMax (
+\begin{DoxyParamCaption}
+\item[{double}]{geoMinMax\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a66a65ce60f813d0ef683919a098b8a98}
+
+
+Fetch the bounding box of a coverage under EPSG:4326. 
+
+The method will fetch the bounding box of the coverage under EPSG:4326 CRS. The sequence of values stored in array is: xmin, xmax, ymin, ymax
+
+
+\begin{DoxyParams}{Parameters}
+{\em bBox} & an existing four double buffer into which the geographic bounding box values will be placed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classNC__GOES__Dataset_a5d2fa4d635bae04a1b488b1917dd7ab3}{NC\_\-GOES\_\-Dataset}.
+
+\hypertarget{classAbstractDataset_adbf83ce500a0f30b79ca682df26638e4}{
+\index{AbstractDataset@{AbstractDataset}!GetGeoTransform@{GetGeoTransform}}
+\index{GetGeoTransform@{GetGeoTransform}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetGeoTransform}]{\setlength{\rightskip}{0pt plus 5cm}int AbstractDataset::GetGeoTransform (
+\begin{DoxyParamCaption}
+\item[{double}]{geoTrans\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_adbf83ce500a0f30b79ca682df26638e4}
+
+
+Fetch the affine transformation coefficients. 
+
+Fetches the coefficients for transforming between pixel/line (P,L) raster space, and projection coordinates (Xp,Yp) space.
+
+
+\begin{DoxyCode}
+   Xp = padfTransform[0] + P*padfTransform[1] + L*padfTransform[2];
+   Yp = padfTransform[3] + P*padfTransform[4] + L*padfTransform[5];
+\end{DoxyCode}
+
+
+In a north up image, padfTransform\mbox{[}1\mbox{]} is the pixel width, and padfTransform\mbox{[}5\mbox{]} is the pixel height. The upper left corner of the upper left pixel is at position (padfTransform\mbox{[}0\mbox{]},padfTransform\mbox{[}3\mbox{]}).
+
+The default transform is (0,1,0,0,0,1) and should be returned even when a CE\_\-Failure error is returned, such as for formats that don't support transformation to projection coordinates.
+
+NOTE: \hyperlink{classAbstractDataset_adbf83ce500a0f30b79ca682df26638e4}{GetGeoTransform()} isn't expressive enough to handle the variety of OGC Grid Coverages pixel/line to projection transformation schemes. Eventually this method will be depreciated in favour of a more general scheme.
+
+
+\begin{DoxyParams}{Parameters}
+{\em geoTrans} & an existing six double buffer into which the transformation will be placed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+TRUE on success or FALSE on failure. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a83c0bc843f701e8b20b5408b9c7e0731}{
+\index{AbstractDataset@{AbstractDataset}!GetImageBandCount@{GetImageBandCount}}
+\index{GetImageBandCount@{GetImageBandCount}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetImageBandCount}]{\setlength{\rightskip}{0pt plus 5cm}int AbstractDataset::GetImageBandCount (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a83c0bc843f701e8b20b5408b9c7e0731}
+
+
+Fetch the number of raster bands on this dataset. 
+
+The method will return the number of raster bands on this dataset. GDAL API GetRasterCount() will be called to get the count number.
+
+\begin{DoxyReturn}{Returns}
+the number of raster bands on this dataset. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a950e120c5a1e9fa06ee5b02ed4fc6c42}{
+\index{AbstractDataset@{AbstractDataset}!GetImageXSize@{GetImageXSize}}
+\index{GetImageXSize@{GetImageXSize}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetImageXSize}]{\setlength{\rightskip}{0pt plus 5cm}int AbstractDataset::GetImageXSize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a950e120c5a1e9fa06ee5b02ed4fc6c42}
+
+
+Fetch coverage width in pixels. 
+
+The method will return the width of coverage in pixels. GDAL API GetRasterXSize() will be called to generate the width value.
+
+\begin{DoxyReturn}{Returns}
+the width in pixels of raster bands in this coverage. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classHE4__SWATH__Dataset_acbe2ea029124c791fc8fe2b9e68a8bf8}{HE4\_\-SWATH\_\-Dataset}, and \hyperlink{classHE5__SWATH__Dataset_ae942b004815ec68daa146803825d4173}{HE5\_\-SWATH\_\-Dataset}.
+
+\hypertarget{classAbstractDataset_a4f7ceb09ad968d28a5282c7652fb6975}{
+\index{AbstractDataset@{AbstractDataset}!GetImageYSize@{GetImageYSize}}
+\index{GetImageYSize@{GetImageYSize}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetImageYSize}]{\setlength{\rightskip}{0pt plus 5cm}int AbstractDataset::GetImageYSize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a4f7ceb09ad968d28a5282c7652fb6975}
+
+
+Fetch coverage height in pixels. 
+
+The method will return the height of coverage in pixels. GDAL API GetRasterYSize() will be called to generate the height value.
+
+\begin{DoxyReturn}{Returns}
+the height in pixels of raster bands in this coverage. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classHE4__SWATH__Dataset_ab8450ad5ae44927bb8aef7dba5bc1af8}{HE4\_\-SWATH\_\-Dataset}, and \hyperlink{classHE5__SWATH__Dataset_a21bc65038425406fc262c9d430a087ee}{HE5\_\-SWATH\_\-Dataset}.
+
+\hypertarget{classAbstractDataset_a6dab64e60c0cd4799408caf7afffb1cb}{
+\index{AbstractDataset@{AbstractDataset}!GetISO19115Metadata@{GetISO19115Metadata}}
+\index{GetISO19115Metadata@{GetISO19115Metadata}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetISO19115Metadata}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetISO19115Metadata (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a6dab64e60c0cd4799408caf7afffb1cb}
+
+
+Fetch the coverage metadata which is compliant to ISO 19115:2003. 
+
+
+\begin{DoxyItemize}
+\item GeoGraphic information -\/-\/ Metadata; and ISO 19115(2):2009 -\/ GeoGraphic information -\/-\/ Metadata -\/-\/ Part 2.
+\end{DoxyItemize}
+
+The method will return the metadata of a coverage based on ISO 19115 and ISO 19115(2).
+
+ISO 19115:2003 defines the schema required for describing geographic information and services. It provides information about the identification, the extent, the quality, the spatial and temporal schema, spatial reference, and distribution of digital geographic data.
+
+ISO 19115-\/2:2009 extends the existing geographic metadata standard by defining the schema required for describing imagery and gridded data. It provides information about the properties of the measuring equipment used to acquire the data, the geometry of the measuring process employed by the equipment, and the production process used to digitize the raw data. This extension deals with metadata needed to describe the derivation of geographic information from raw data, including the properties of the measuring system, and the numerical methods and computational procedures used in the derivation. The metadata required to address coverage data in general is addressed sufficiently in the general part of ISO 19115.
+
+\begin{DoxyReturn}{Returns}
+the string of metadata of a coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a736080454f7ac794c710f00da26e37f9}{
+\index{AbstractDataset@{AbstractDataset}!GetMetaDataList@{GetMetaDataList}}
+\index{GetMetaDataList@{GetMetaDataList}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetMetaDataList}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ string $>$ AbstractDataset::GetMetaDataList (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a736080454f7ac794c710f00da26e37f9}
+
+
+Fetch the metadata list for this coverage. 
+
+The method will return the metadata list for the coverage.
+
+\begin{DoxyReturn}{Returns}
+the list of metadate. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_aada8065023ba9b718c0d759698365b40}{
+\index{AbstractDataset@{AbstractDataset}!GetMissingValue@{GetMissingValue}}
+\index{GetMissingValue@{GetMissingValue}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetMissingValue}]{\setlength{\rightskip}{0pt plus 5cm}const double \& AbstractDataset::GetMissingValue (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_aada8065023ba9b718c0d759698365b40}
+
+
+Fetch the filled value (missing value) of a coverage. 
+
+The method will return the filled value of a coverage.
+
+\begin{DoxyReturn}{Returns}
+the value of filled value of a coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a919760d8e60c26b105740bc2bc109b0e}{
+\index{AbstractDataset@{AbstractDataset}!GetNativeBBox@{GetNativeBBox}}
+\index{GetNativeBBox@{GetNativeBBox}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetNativeBBox}]{\setlength{\rightskip}{0pt plus 5cm}void AbstractDataset::GetNativeBBox (
+\begin{DoxyParamCaption}
+\item[{double}]{bBox\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a919760d8e60c26b105740bc2bc109b0e}
+
+
+Fetch the bounding box of a coverage under the native CRS. 
+
+The method will fetch the bounding box of the coverage under native CRS. The sequence of values stored in array is: xmin, xmax, ymin, ymax
+
+
+\begin{DoxyParams}{Parameters}
+{\em bBox} & an existing four double buffer into which the native bounding box values will be placed. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classAbstractDataset_a4d92be8700505a6a7ef6655e35b05725}{
+\index{AbstractDataset@{AbstractDataset}!GetNativeCRS@{GetNativeCRS}}
+\index{GetNativeCRS@{GetNativeCRS}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetNativeCRS}]{\setlength{\rightskip}{0pt plus 5cm}const OGRSpatialReference \& AbstractDataset::GetNativeCRS (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a4d92be8700505a6a7ef6655e35b05725}
+
+
+Get the Native CRS of an AbstarctDataset. 
+
+The method will return the CRS obejct, which is an OGRSpatialReference object.
+
+\begin{DoxyReturn}{Returns}
+an OGRSpatialReference object corresponding the native CRS of coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_ab4509cea5f99f8ebeb836d85828c3470}{
+\index{AbstractDataset@{AbstractDataset}!GetNativeCRS\_\-URN@{GetNativeCRS\_\-URN}}
+\index{GetNativeCRS\_\-URN@{GetNativeCRS\_\-URN}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetNativeCRS\_\-URN}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetNativeCRS\_\-URN (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_ab4509cea5f99f8ebeb836d85828c3470}
+
+
+Fetch the native CRS code of coverage. 
+
+The method will return the native CRS code of coverage.
+
+\begin{DoxyReturn}{Returns}
+the string of the URN for native CRS of coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a9c37d346022864bf92f5d9d33e45fd42}{
+\index{AbstractDataset@{AbstractDataset}!GetNativeFormat@{GetNativeFormat}}
+\index{GetNativeFormat@{GetNativeFormat}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetNativeFormat}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetNativeFormat (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a9c37d346022864bf92f5d9d33e45fd42}
+
+
+Fetch the native format of a coverage. 
+
+The method will return the native format of a coverage. GDAL API GDALGetDriverShortName() will be called to generate the format.
+
+\begin{DoxyReturn}{Returns}
+the string of dataset native format, in forms of GDAL Formats Code. See \href{http://gdal.org/formats_list.html}{\tt http://gdal.org/formats\_\-list.html} for details. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a2e6cdb6c0d165543a8a4d936835db73b}{
+\index{AbstractDataset@{AbstractDataset}!GetProjectionRef@{GetProjectionRef}}
+\index{GetProjectionRef@{GetProjectionRef}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetProjectionRef}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetProjectionRef (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a2e6cdb6c0d165543a8a4d936835db73b}
+
+
+Fetch the native projection reference of a coverage. 
+
+The method will return the the native projection reference of a coverage.
+
+\begin{DoxyReturn}{Returns}
+the string of the native projection reference of a coverage. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_ab7b76c03b2a94853b631b83ebb1be453}{
+\index{AbstractDataset@{AbstractDataset}!GetResourceFileName@{GetResourceFileName}}
+\index{GetResourceFileName@{GetResourceFileName}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetResourceFileName}]{\setlength{\rightskip}{0pt plus 5cm}string AbstractDataset::GetResourceFileName (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_ab7b76c03b2a94853b631b83ebb1be453}
+
+
+Fetch the resource file name of a coverage. 
+
+The method will return the full path corresponding the file contained coverage.
+
+\begin{DoxyReturn}{Returns}
+the string of resource file path. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a339c58a6e439d0877d8b09e1d2d26b31}{
+\index{AbstractDataset@{AbstractDataset}!GetSuggestedWarpResolution@{GetSuggestedWarpResolution}}
+\index{GetSuggestedWarpResolution@{GetSuggestedWarpResolution}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetSuggestedWarpResolution}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::GetSuggestedWarpResolution (
+\begin{DoxyParamCaption}
+\item[{OGRSpatialReference \&}]{dstCRS, }
+\item[{double}]{adfDstGeoTransform\mbox{[}$\,$\mbox{]}, }
+\item[{int \&}]{nPixels, }
+\item[{int \&}]{nLines}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a339c58a6e439d0877d8b09e1d2d26b31}
+
+
+Get the suggested warp option, method 1. 
+
+\begin{DoxyReturn}{Returns}
+CE\_\-Failure if an error occurs, otherwise CE\_\-None. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_aed58e61df99fd00c205fafef519639ee}{
+\index{AbstractDataset@{AbstractDataset}!GetSuggestedWarpResolution2@{GetSuggestedWarpResolution2}}
+\index{GetSuggestedWarpResolution2@{GetSuggestedWarpResolution2}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{GetSuggestedWarpResolution2}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::GetSuggestedWarpResolution2 (
+\begin{DoxyParamCaption}
+\item[{OGRSpatialReference \&}]{dstCRS, }
+\item[{double}]{adfDstGeoTransform\mbox{[}$\,$\mbox{]}, }
+\item[{int \&}]{nPixels, }
+\item[{int \&}]{nLines}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_aed58e61df99fd00c205fafef519639ee}
+
+
+Get the suggested warp option, method 2. 
+
+\begin{DoxyReturn}{Returns}
+CE\_\-Failure if an error occurs, otherwise CE\_\-None. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a45924895c6bf26c7f75d503b8f6e388a}{
+\index{AbstractDataset@{AbstractDataset}!InitialDataset@{InitialDataset}}
+\index{InitialDataset@{InitialDataset}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{InitialDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::InitialDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classAbstractDataset_a45924895c6bf26c7f75d503b8f6e388a}
+
+
+Initialize the data set. 
+
+This is the virtual function for initializing abstract dataste. The subclasses of AbstarctDataset will call \hyperlink{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}{SetNativeCRS()}, \hyperlink{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}{SetGeoTransform()} and \hyperlink{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}{SetGDALDataset()} to initialize an abstarct dataset.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & The WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classHE4__GRID__Dataset_ae45769184c1b4453a81b7809107a6656}{HE4\_\-GRID\_\-Dataset}, \hyperlink{classHE4__SWATH__Dataset_ac65fb00ef5ac627fb996e46442c07444}{HE4\_\-SWATH\_\-Dataset}, \hyperlink{classHE5__GRID__Dataset_ac6cc1fb1d47bd7fa387fa7e5673d0c6a}{HE5\_\-GRID\_\-Dataset}, \hyperlink{classHE5__SWATH__Dataset_a2dabd5794784f3accdd3e70b0b00ea20}{HE5\_\-SWATH\_\-Dataset}, \hyperlink{classNC__GOES__Dataset_a128b874278c0ad4dd093baf22bf8d23f}{NC\_\-GOES\_\-Dataset}, and \hyperlink{classTRMM__Dataset_ad1bbde527ce349adee3eacd99d40d2a5}{TRMM\_\-Dataset}.
+
+\hypertarget{classAbstractDataset_a206bf47490d90bd0698fe2c491106c84}{
+\index{AbstractDataset@{AbstractDataset}!IsbGeoTransformSet@{IsbGeoTransformSet}}
+\index{IsbGeoTransformSet@{IsbGeoTransformSet}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{IsbGeoTransformSet}]{\setlength{\rightskip}{0pt plus 5cm}int AbstractDataset::IsbGeoTransformSet (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a206bf47490d90bd0698fe2c491106c84}
+
+
+Determine whether set the affine geoTransform for a coverage. 
+
+The method will return the status of the affine GeoTransform matrix.
+
+\begin{DoxyReturn}{Returns}
+TRUE if set already or FALSE on failure.. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a3597ba14546a8fd5b0ea0bad7f9583e0}{
+\index{AbstractDataset@{AbstractDataset}!IsCrossingIDL@{IsCrossingIDL}}
+\index{IsCrossingIDL@{IsCrossingIDL}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{IsCrossingIDL}]{\setlength{\rightskip}{0pt plus 5cm}int AbstractDataset::IsCrossingIDL (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classAbstractDataset_a3597ba14546a8fd5b0ea0bad7f9583e0}
+
+
+Determine whether the extend of coverage cross the International Date Line (IDL). 
+
+The method will return the status of whether the extend of coverage cross the International Date Line (IDL).
+
+\begin{DoxyReturn}{Returns}
+the TRUE of the coverage extent cross the IDL, otherwise FALSE. 
+\end{DoxyReturn}
+\hypertarget{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}{
+\index{AbstractDataset@{AbstractDataset}!SetGDALDataset@{SetGDALDataset}}
+\index{SetGDALDataset@{SetGDALDataset}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{SetGDALDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::SetGDALDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected, virtual\mbox{]}}}}
+\label{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}
+
+
+Set the GDALDataset object to AbstarctDataset. 
+
+This is the virtual function for setting the abstract dataset by calling GDAL functions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classHE4__GRID__Dataset_a140e522053c1010df41e680ee2ded291}{HE4\_\-GRID\_\-Dataset}, \hyperlink{classHE4__SWATH__Dataset_aba0769c876c341494ba043f5cbcdef9a}{HE4\_\-SWATH\_\-Dataset}, \hyperlink{classHE5__GRID__Dataset_afc38747b72c0862de45f897867903e57}{HE5\_\-GRID\_\-Dataset}, \hyperlink{classHE5__SWATH__Dataset_a549c0943284f1bb4dada2aa5cb8e1f80}{HE5\_\-SWATH\_\-Dataset}, \hyperlink{classNC__GOES__Dataset_a2ec90aa02b68185edbdd1fa00727ed10}{NC\_\-GOES\_\-Dataset}, and \hyperlink{classTRMM__Dataset_a4c7ca79e2b924ecc42977de339168c14}{TRMM\_\-Dataset}.
+
+\hypertarget{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}{
+\index{AbstractDataset@{AbstractDataset}!SetGeoTransform@{SetGeoTransform}}
+\index{SetGeoTransform@{SetGeoTransform}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{SetGeoTransform}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::SetGeoTransform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected, virtual\mbox{]}}}}
+\label{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}
+
+
+Set the affine GeoTransform matrix for a coverage. 
+
+The method will set a GeoTransform matrix for a coverage. The method GetGeoTransform of GDAL library will be called to get the matrix.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classHE4__GRID__Dataset_a9afcba857134a8344231286c35a0db51}{HE4\_\-GRID\_\-Dataset}, \hyperlink{classHE4__SWATH__Dataset_a898be04259ed34592cbff87b2dd2680c}{HE4\_\-SWATH\_\-Dataset}, \hyperlink{classHE5__GRID__Dataset_ab20ae6fe7456bb91c0cd8b4fdb6db1f1}{HE5\_\-GRID\_\-Dataset}, \hyperlink{classHE5__SWATH__Dataset_a77dcaecf2d402d69eb3ba0a21536e43e}{HE5\_\-SWATH\_\-Dataset}, \hyperlink{classNC__GOES__Dataset_ada85679c832ad2ff971d6291ccf9b8f8}{NC\_\-GOES\_\-Dataset}, and \hyperlink{classTRMM__Dataset_afa3309a64ccca14e96628800c69639f8}{TRMM\_\-Dataset}.
+
+\hypertarget{classAbstractDataset_af3f0b55b14f660b79751bf88489a2c10}{
+\index{AbstractDataset@{AbstractDataset}!SetMetaDataList@{SetMetaDataList}}
+\index{SetMetaDataList@{SetMetaDataList}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{SetMetaDataList}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::SetMetaDataList (
+\begin{DoxyParamCaption}
+\item[{GDALDataset $\ast$}]{hSrc}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected, virtual\mbox{]}}}}
+\label{classAbstractDataset_af3f0b55b14f660b79751bf88489a2c10}
+
+
+Set the metadata list for this coverage based on dataset object. 
+
+The method will set the metadata list for the coverage based on its corresponding GDALDataset object. Will be implemented in the subclasses of \hyperlink{classAbstractDataset}{AbstractDataset}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hSrc} & the GDALDataset object corresponding to coverage.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-Failure. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classHE4__GRID__Dataset_a553b804b33f2144f131305c3fdea617f}{HE4\_\-GRID\_\-Dataset}, \hyperlink{classHE4__SWATH__Dataset_a71289ad4d22695120264b190e9170eb1}{HE4\_\-SWATH\_\-Dataset}, \hyperlink{classHE5__GRID__Dataset_aab2d7ffe28f4b1fda41f5ec10a33e8a3}{HE5\_\-GRID\_\-Dataset}, \hyperlink{classHE5__SWATH__Dataset_a59d87c150c064547f4a9fe4aaa1215b0}{HE5\_\-SWATH\_\-Dataset}, \hyperlink{classNC__GOES__Dataset_ae5e798ca0bb105513a80fcdb0b5cf9d8}{NC\_\-GOES\_\-Dataset}, and \hyperlink{classTRMM__Dataset_aa08fe6a08a66ab7a115058a302e450a2}{TRMM\_\-Dataset}.
+
+\hypertarget{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}{
+\index{AbstractDataset@{AbstractDataset}!SetNativeCRS@{SetNativeCRS}}
+\index{SetNativeCRS@{SetNativeCRS}!AbstractDataset@{AbstractDataset}}
+\subsubsection[{SetNativeCRS}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr AbstractDataset::SetNativeCRS (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected, virtual\mbox{]}}}}
+\label{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}
+
+
+Set the Native CRS for an AbstarctDataset. 
+
+The method will set the CRS for an \hyperlink{classAbstractDataset}{AbstractDataset} as an native CRS. For some served coverage, GDAL could not tell its native CRS, this method should be called to set its native CRS.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented in \hyperlink{classHE4__GRID__Dataset_a4b37c8d0d47359e11a2dd65fe35f472f}{HE4\_\-GRID\_\-Dataset}, \hyperlink{classHE4__SWATH__Dataset_abc9a1e86eba1e386e38e3771e4102df4}{HE4\_\-SWATH\_\-Dataset}, \hyperlink{classHE5__GRID__Dataset_a2bdcf5b88ef679f6fcfd7cd909e56bb7}{HE5\_\-GRID\_\-Dataset}, \hyperlink{classHE5__SWATH__Dataset_a28eeb972e11c417dfef63d96f950318d}{HE5\_\-SWATH\_\-Dataset}, \hyperlink{classNC__GOES__Dataset_abc062e894fdf1731f5b258091ffcc5ea}{NC\_\-GOES\_\-Dataset}, and \hyperlink{classTRMM__Dataset_ac51d16647f04092ee01945f6e627550f}{TRMM\_\-Dataset}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+AbstractDataset.h\item 
+AbstractDataset.cpp\end{DoxyCompactItemize}

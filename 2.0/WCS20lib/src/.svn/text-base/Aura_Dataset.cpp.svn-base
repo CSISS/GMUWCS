@@ -1,0 +1,224 @@
+/*
+ * Aura_Dataset.cpp
+ *
+ *  Created on: Jun 16, 2010
+ *      Author: yshao
+ */
+
+#include "Aura_Dataset.h"
+
+Aura_Dataset::Aura_Dataset()
+{
+}
+
+Aura_Dataset::Aura_Dataset(const string& id, vector<int> &rBandList):
+	AbstractDataset(id,rBandList){
+	mdMissingValue=-9999;
+	mbGeoTransformSet=FALSE;
+}
+
+
+Aura_Dataset::~Aura_Dataset()
+{
+}
+
+CPLErr Aura_Dataset::initialDataset(const int isSimple)
+{
+	mbIsVirtualDS=FALSE;
+
+	if(ms_CoverageID.empty()||ms_CoverageID==""||
+		(!ms_CoverageID.empty()&&!EQUALN(ms_CoverageID.c_str(),"HDF5:",5)))
+	{
+		SetWCS_ErrorLocator("Aura_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Incorrect coverage ID.");
+
+    	return CE_Failure;
+	}
+
+	vector<string> strSet;
+	unsigned int n=csvburstCpp(ms_CoverageID, strSet,':');
+	if(n == 3)
+	{
+    	msDataTypeName=strSet[0] ;
+    	mSrcFilename = strSet[1] ;
+    	msDatasetName = strSet[2] ;
+
+    }
+	else if(n == 2)
+	{
+    	msDataTypeName=strSet[0] ;
+    	mSrcFilename = strSet[1] ;
+    	msDatasetName = "Band";
+	}
+	else
+	{
+		SetWCS_ErrorLocator("Aura_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Incorrect coverage ID.");
+
+    	return CE_Failure;
+	}
+
+	mSrcFilename = myStrTrimsIn(mSrcFilename," \'\"");
+
+	GDALDataset* pSrc = (GDALDataset*) GDALOpenShared(ms_CoverageID.c_str(), GA_ReadOnly);
+	if( pSrc == NULL )
+	{
+		SetWCS_ErrorLocator("Aura_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to open file \"%s\".",mSrcFilename.c_str());
+
+    	return CE_Failure;
+	}
+
+	msNativeFormat = GDALGetDriverShortName(pSrc->GetDriver());
+
+	if(!EQUAL(msNativeFormat.c_str(),"HDF5IMAGE") && !EQUAL(msNativeFormat.c_str(),"HDF5"))
+	{
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("Aura_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to open data format.");
+
+    	return CE_Failure;
+	}
+
+	setMetaDataList(pSrc);
+
+	//set noValue
+	unsigned int nBandCount = pSrc->GetRasterCount();
+	if(nBandCount<1)
+	{
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("Aura_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to get raster band.");
+
+    	return CE_Failure;
+	}
+	int iSuc = 0;
+	double noValue = pSrc->GetRasterBand(1)->GetNoDataValue(&iSuc);
+	if(iSuc) mdMissingValue = noValue;
+
+	maptrDS.reset(pSrc);
+
+	//set moNativeCRS and mGeoTransform
+	if(CE_None!=setNativeCRS()||
+		CE_None!=setGeoTransform()||
+		CE_None!=setGDALDataset(isSimple))
+	{
+		GDALClose(maptrDS.release());
+    	return CE_Failure;
+	}
+
+	return CE_None;
+}
+
+CPLErr Aura_Dataset::setNativeCRS()
+{
+	moNativeCRS.SetWellKnownGeogCS( "WGS84" );
+	return CE_None;
+}
+
+CPLErr Aura_Dataset::setGeoTransform()
+{
+	GDALDataset* pSrc = (GDALDataset*) GDALOpenShared(ms_CoverageID.c_str(), GA_ReadOnly);
+
+	vector<string> strSetRes, strSetBBox;
+	double mdSrcGeoMinX = 0;
+	double mdSrcGeoMaxX = 0;
+	double mdSrcGeoMinY = 0;
+	double mdSrcGeoMaxY = 0;
+	double resX, resY;
+
+    int nGCPs = pSrc->GetGCPCount();
+    GDAL_GCP* pGCPList = (GDAL_GCP*)pSrc->GetGCPs();
+
+    if(nGCPs <= 0){
+    	char **papszAll = NULL;
+    	papszAll = pSrc->GetMetadata(NULL);
+    	string res, box;
+    	int ct = CSLCount(papszAll);
+    	for (int i = 0; i < ct; i++)
+    	{
+    		string curstr = CSLGetField(papszAll, i);
+    		if(curstr.find(":GridSpacing=") != string::npos)	{
+    			KVP kvpStr1(curstr);
+    			res = kvpStr1.value;
+    		}else if(curstr.find(":GridSpan=") != string::npos){
+    			KVP kvpStr2(curstr);
+    			box = kvpStr2.value;
+    		}
+    	}
+		unsigned int ress = res.size();
+		unsigned int boxs = box.size();
+		string resm = res.substr(1, ress - 2);
+		string boxm = box.substr(1, boxs - 2);
+		csvburstCpp(resm, strSetRes, ',');
+		csvburstCpp(boxm, strSetBBox, ',');
+
+		mdSrcGeoMinX = atof(strSetBBox[0].c_str());
+    	mdSrcGeoMaxX = atof(strSetBBox[1].c_str());
+    	mdSrcGeoMinY = atof(strSetBBox[2].c_str());
+    	mdSrcGeoMaxY = atof(strSetBBox[3].c_str());
+    	resX = atof(strSetRes[0].c_str());
+    	resY = atof(strSetRes[1].c_str());
+
+    	mdGeotransform[0] = mdSrcGeoMinX;
+    	mdGeotransform[1] = resX;
+    	mdGeotransform[2] = 0;
+    	mdGeotransform[3] = mdSrcGeoMaxY;
+    	mdGeotransform[4] = 0;
+    	mdGeotransform[5] = -resY;
+
+    }else{
+
+    	double xb[2],yb[2];
+    	xb[0]=pGCPList[0].dfGCPX;
+    	xb[1]=pGCPList[0].dfGCPX;
+    	yb[0]=pGCPList[0].dfGCPY;
+    	yb[1]=pGCPList[0].dfGCPY;
+    	for(int i=1;i<nGCPs;i++)
+    	{
+    		xb[0]=MIN(xb[0],pGCPList[i].dfGCPX);
+       		xb[1]=MAX(xb[1],pGCPList[i].dfGCPX);
+       		yb[0]=MIN(yb[0],pGCPList[i].dfGCPY);
+       		yb[1]=MAX(yb[1],pGCPList[i].dfGCPY);
+    	}
+
+    	mdSrcGeoMinX = xb[0] - 180;
+    	mdSrcGeoMaxX = xb[1] - 180;
+    	mdSrcGeoMinY = yb[0];
+    	mdSrcGeoMaxY = yb[1];
+    	resX=(mdSrcGeoMaxX-mdSrcGeoMinX)/(pSrc->GetRasterXSize());
+    	resY=(mdSrcGeoMaxY-mdSrcGeoMinY)/(pSrc->GetRasterYSize());
+
+    	mdGeotransform[0] = mdSrcGeoMinX;
+    	mdGeotransform[1] = resX;
+    	mdGeotransform[2] = 0;
+    	mdGeotransform[3] = mdSrcGeoMaxY;
+    	mdGeotransform[4] = 0;
+    	mdGeotransform[5] = -resY;
+    }
+    GDALClose(pSrc);
+
+    mbGeoTransformSet = true;
+    return CE_None;
+}
+
+CPLErr Aura_Dataset::setGDALDataset(const int isSimple)
+{
+	return CE_None;
+}
+
+CPLErr Aura_Dataset::setMetaDataList(GDALDataset* hSrc)
+{
+	char** papszMetadata = hSrc->GetMetadata("");
+
+	mvtrMeteDataList.push_back(
+			"Product_Description=The data was created by GMU-WCS from Aura data.");
+	for (int i = 0; i < CSLCount((char**) papszMetadata); ++i)
+	{
+		mvtrMeteDataList.push_back(papszMetadata[i]);
+	}
+
+	return CE_None;
+}
+
+

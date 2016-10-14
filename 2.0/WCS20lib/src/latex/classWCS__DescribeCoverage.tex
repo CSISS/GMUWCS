@@ -1,0 +1,387 @@
+\hypertarget{classWCS__DescribeCoverage}{
+\section{WCS\_\-DescribeCoverage Class Reference}
+\label{classWCS__DescribeCoverage}\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}}
+}
+
+
+This class is used to handle DescribeCoverage and DescribeEOCoverageSet request.  
+
+
+
+
+{\ttfamily \#include $<$WCS\_\-DescribeCoverage.h$>$}
+
+Inheritance diagram for WCS\_\-DescribeCoverage:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classWCS__DescribeCoverage}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classWCS__DescribeCoverage_a02b9cfa4a0ba1d6bf1f6f59da9be2742}{WCS\_\-DescribeCoverage} (const string \&conf)
+\begin{DoxyCompactList}\small\item\em Constructor of a \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classWCS__DescribeCoverage_aaa1f795a02b2b266e99302cef09fbd27}{GetReqMessageFromXMLTree} (CPLXMLNode $\ast$xmlRoot)
+\begin{DoxyCompactList}\small\item\em Fetch the DescribeCoverage request parameters from XML tree object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classWCS__DescribeCoverage_a68d2ceb47305263c78f9676e11ac7387}{GetReqMessageFromURLString} (const string \&)
+\begin{DoxyCompactList}\small\item\em Fetch the request parameters from URL string. \end{DoxyCompactList}\item 
+virtual void \hyperlink{classWCS__DescribeCoverage_a0c3bbc4bf7cd2ec6d469330d636c3390}{WCST\_\-Respond} (string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em The enter point for \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} class (Command line environment). \end{DoxyCompactList}\item 
+virtual void \hyperlink{classWCS__DescribeCoverage_a6536fa20a925c8ce4b1d96f7e134e4ac}{WCST\_\-Respond} ()
+\begin{DoxyCompactList}\small\item\em The enter point for \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} class (CGI environment). \end{DoxyCompactList}\item 
+void \hyperlink{classWCS__DescribeCoverage_ab007cc5bbbfa0d7e1707af408df27710}{CreateDescribeEOCoverageSetXMLHead} (ostringstream \&outStream)
+\begin{DoxyCompactList}\small\item\em Create the XML head element for DescribeEOCoverageSet response. \end{DoxyCompactList}\item 
+void \hyperlink{classWCS__DescribeCoverage_a385756678eac712ab993ac7a36d6c640}{CreateDescribeCoverageXMLHead} (ostringstream \&outStream)
+\begin{DoxyCompactList}\small\item\em Create the XML head element for DescribeCoverage response. \end{DoxyCompactList}\item 
+void \hyperlink{classWCS__DescribeCoverage_ab34c69c2877d1205e41b4d52c0c69ab8}{CreateOneCoverageDescription} (ostringstream \&outStream, \hyperlink{classDatasetObject}{DatasetObject} \&dsObj)
+\begin{DoxyCompactList}\small\item\em Create the coverage description contents for the Dataset object. \end{DoxyCompactList}\item 
+void \hyperlink{classWCS__DescribeCoverage_ae3f1103e9c8028ee5100c3c757c2f489}{CreateOneDatasetSeriesDescription} (ostringstream \&outStream, \hyperlink{classDatasetSeriesObject}{DatasetSeriesObject} \&dsSeriesObj)
+\begin{DoxyCompactList}\small\item\em Create the coverage description contents for the DatasetSeries object. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{classDatasetObject}{DatasetObject} $>$ \hyperlink{classWCS__DescribeCoverage_a33ceb7c235cfa5827444b7e27a1c72a9}{QueryFromDatasetSeries} (\hyperlink{classDatasetSeriesObject}{DatasetSeriesObject} \&dsSeriesObj)
+\begin{DoxyCompactList}\small\item\em Query the dataset array from a datasetSeries object. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__DescribeCoverage_ab5c7b3e04cbf771c2bcfb51d26d0c6ac}{CreateDescribeCoverageXMLTree} (ostringstream \&outStream)
+\begin{DoxyCompactList}\small\item\em Create the whole response for DescribeCoverage or DescribeEOCoverageSet request. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classWCS__DescribeCoverage_a9003d4a2612ad19df154fdf86d28c12a}{
+int {\bfseries mb\_\-DescribeEOCoverage}}
+\label{classWCS__DescribeCoverage_a9003d4a2612ad19df154fdf86d28c12a}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a27d51d8a1aa35146c3caa48b4ff1d788}{
+int {\bfseries mB\_\-SubsetSpatialLat}}
+\label{classWCS__DescribeCoverage_a27d51d8a1aa35146c3caa48b4ff1d788}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a39a534b0be1be934dcfc1e13a619a479}{
+int {\bfseries mB\_\-SubsetSpatialLon}}
+\label{classWCS__DescribeCoverage_a39a534b0be1be934dcfc1e13a619a479}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a1a3853ad442117bcde89bb6e5ee70476}{
+int {\bfseries mB\_\-SubsetTemporalBegin}}
+\label{classWCS__DescribeCoverage_a1a3853ad442117bcde89bb6e5ee70476}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a777b37c1d93cedb87868e8160b484f72}{
+int {\bfseries mB\_\-SubsetTemporalEnd}}
+\label{classWCS__DescribeCoverage_a777b37c1d93cedb87868e8160b484f72}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a38828e93877a6eb1fe2614ca24db8f36}{
+double {\bfseries md\_\-RequestMinX}}
+\label{classWCS__DescribeCoverage_a38828e93877a6eb1fe2614ca24db8f36}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_ae11ae1434f07b137d82ffff97c175f0f}{
+double {\bfseries md\_\-RequestMaxX}}
+\label{classWCS__DescribeCoverage_ae11ae1434f07b137d82ffff97c175f0f}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a5140ec1a2f16699cbcfafdde54d789e9}{
+double {\bfseries md\_\-RequestMinY}}
+\label{classWCS__DescribeCoverage_a5140ec1a2f16699cbcfafdde54d789e9}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a3ffada2c06820d2a05e496aaa5ff8c65}{
+double {\bfseries md\_\-RequestMaxY}}
+\label{classWCS__DescribeCoverage_a3ffada2c06820d2a05e496aaa5ff8c65}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a8d7d1c3a7003594cfb31122e2a1c3a0a}{
+string {\bfseries ms\_\-RequestBeginTime}}
+\label{classWCS__DescribeCoverage_a8d7d1c3a7003594cfb31122e2a1c3a0a}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a066dac63a3e2a2dbc7d1257f17ca1837}{
+string {\bfseries ms\_\-RequestEndTime}}
+\label{classWCS__DescribeCoverage_a066dac63a3e2a2dbc7d1257f17ca1837}
+
+\item 
+\hypertarget{classWCS__DescribeCoverage_a35432a1be89ef566f5b9538bdf185939}{
+vector$<$ string $>$ {\bfseries mv\_\-CovIDs}}
+\label{classWCS__DescribeCoverage_a35432a1be89ef566f5b9538bdf185939}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is used to handle DescribeCoverage and DescribeEOCoverageSet request. 
+
+This class is used to handle DescribeCoverage and DescribeEOCoverageSet request. Several functions for parsing request parameters, generating the response XML document, are provided. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classWCS__DescribeCoverage_a02b9cfa4a0ba1d6bf1f6f59da9be2742}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{WCS\_\-DescribeCoverage}]{\setlength{\rightskip}{0pt plus 5cm}WCS\_\-DescribeCoverage::WCS\_\-DescribeCoverage (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{conf}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__DescribeCoverage_a02b9cfa4a0ba1d6bf1f6f59da9be2742}
+
+
+Constructor of a \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} object. 
+
+This is the accepted method of creating an \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em conf} & String of the full path of the configuration file. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classWCS__DescribeCoverage_a385756678eac712ab993ac7a36d6c640}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!CreateDescribeCoverageXMLHead@{CreateDescribeCoverageXMLHead}}
+\index{CreateDescribeCoverageXMLHead@{CreateDescribeCoverageXMLHead}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{CreateDescribeCoverageXMLHead}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-DescribeCoverage::CreateDescribeCoverageXMLHead (
+\begin{DoxyParamCaption}
+\item[{ostringstream \&}]{outStream}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__DescribeCoverage_a385756678eac712ab993ac7a36d6c640}
+
+
+Create the XML head element for DescribeCoverage response. 
+
+This method is used to create the XML head element for DescribeCoverage response and append the response to the output stream.
+
+
+\begin{DoxyParams}{Parameters}
+{\em outStream} & Stream object used to generate DescribeCoverage response. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classWCS__DescribeCoverage_ab5c7b3e04cbf771c2bcfb51d26d0c6ac}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!CreateDescribeCoverageXMLTree@{CreateDescribeCoverageXMLTree}}
+\index{CreateDescribeCoverageXMLTree@{CreateDescribeCoverageXMLTree}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{CreateDescribeCoverageXMLTree}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-DescribeCoverage::CreateDescribeCoverageXMLTree (
+\begin{DoxyParamCaption}
+\item[{ostringstream \&}]{outStream}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__DescribeCoverage_ab5c7b3e04cbf771c2bcfb51d26d0c6ac}
+
+
+Create the whole response for DescribeCoverage or DescribeEOCoverageSet request. 
+
+This method is used to create the whole response for DescribeCoverage or DescribeEOCoverageSet request.
+
+
+\begin{DoxyParams}{Parameters}
+{\em outStream} & Stream object used to generate response.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__DescribeCoverage_ab007cc5bbbfa0d7e1707af408df27710}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!CreateDescribeEOCoverageSetXMLHead@{CreateDescribeEOCoverageSetXMLHead}}
+\index{CreateDescribeEOCoverageSetXMLHead@{CreateDescribeEOCoverageSetXMLHead}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{CreateDescribeEOCoverageSetXMLHead}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-DescribeCoverage::CreateDescribeEOCoverageSetXMLHead (
+\begin{DoxyParamCaption}
+\item[{ostringstream \&}]{outStream}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__DescribeCoverage_ab007cc5bbbfa0d7e1707af408df27710}
+
+
+Create the XML head element for DescribeEOCoverageSet response. 
+
+This method is used to create the XML head element for DescribeEOCoverageSet response and append the response to the output stream.
+
+
+\begin{DoxyParams}{Parameters}
+{\em outStream} & Stream object used to generate DescribeEOCoverageSet response. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classWCS__DescribeCoverage_ab34c69c2877d1205e41b4d52c0c69ab8}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!CreateOneCoverageDescription@{CreateOneCoverageDescription}}
+\index{CreateOneCoverageDescription@{CreateOneCoverageDescription}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{CreateOneCoverageDescription}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-DescribeCoverage::CreateOneCoverageDescription (
+\begin{DoxyParamCaption}
+\item[{ostringstream \&}]{outStream, }
+\item[{{\bf DatasetObject} \&}]{dsObj}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__DescribeCoverage_ab34c69c2877d1205e41b4d52c0c69ab8}
+
+
+Create the coverage description contents for the Dataset object. 
+
+This method is used to create the coverage description XMl elements for specified Dataset object, The generated XML element will be appended to the output stream.
+
+
+\begin{DoxyParams}{Parameters}
+{\em outStream} & Stream object used to generate response.\\
+\hline
+{\em dataset} & Dataset object which includes some attribute information about this dataset. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classWCS__DescribeCoverage_ae3f1103e9c8028ee5100c3c757c2f489}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!CreateOneDatasetSeriesDescription@{CreateOneDatasetSeriesDescription}}
+\index{CreateOneDatasetSeriesDescription@{CreateOneDatasetSeriesDescription}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{CreateOneDatasetSeriesDescription}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-DescribeCoverage::CreateOneDatasetSeriesDescription (
+\begin{DoxyParamCaption}
+\item[{ostringstream \&}]{outStream, }
+\item[{{\bf DatasetSeriesObject} \&}]{dsSeriesObj}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__DescribeCoverage_ae3f1103e9c8028ee5100c3c757c2f489}
+
+
+Create the coverage description contents for the DatasetSeries object. 
+
+This method is used to create the coverage description XMl elements for specified DatasetSeries object, The generated XML element will be appended to the output stream.
+
+
+\begin{DoxyParams}{Parameters}
+{\em outStream} & Stream object used to generate response.\\
+\hline
+{\em dsSeriesObj} & DatasetSeries object which includes some attribute information about this datasetSeries. \\
+\hline
+\end{DoxyParams}
+\hypertarget{classWCS__DescribeCoverage_a68d2ceb47305263c78f9676e11ac7387}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!GetReqMessageFromURLString@{GetReqMessageFromURLString}}
+\index{GetReqMessageFromURLString@{GetReqMessageFromURLString}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{GetReqMessageFromURLString}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-DescribeCoverage::GetReqMessageFromURLString (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{urlStr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__DescribeCoverage_a68d2ceb47305263c78f9676e11ac7387}
+
+
+Fetch the request parameters from URL string. 
+
+This method is used to fetch the DescibeCoverage and DescribeEOCoverageSet parameters from an URL string (HTTP GET method). The coverage identifier(s) will be fetched.
+
+
+\begin{DoxyParams}{Parameters}
+{\em urlStr} & String of the DescibeCoverage or DescribeEOCoverageSet request.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__DescribeCoverage_aaa1f795a02b2b266e99302cef09fbd27}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!GetReqMessageFromXMLTree@{GetReqMessageFromXMLTree}}
+\index{GetReqMessageFromXMLTree@{GetReqMessageFromXMLTree}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{GetReqMessageFromXMLTree}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-DescribeCoverage::GetReqMessageFromXMLTree (
+\begin{DoxyParamCaption}
+\item[{CPLXMLNode $\ast$}]{xmlRoot}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__DescribeCoverage_aaa1f795a02b2b266e99302cef09fbd27}
+
+
+Fetch the DescribeCoverage request parameters from XML tree object. 
+
+This method is used to fetch the DescibeCoverage and DescribeEOCoverageSet parameters from an XML object (HTTP POST method). The coverage identifier(s) will be fetched.
+
+Sample request XML document 
+\begin{DoxyCode}
+<?xml version="1.0" encoding="UTF-8"?>
+<DescribeCoverage
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:wcs="http://www.opengis.net/wcs/2.0"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xsi:schemaLocation="http://schemas.opengis.net/wcs/2.0 ../wcsAll.xsd"
+  service="WCS" version="2.0.0">
+  <wcs:CoverageId>MOD05_L2.A2008205.0255.005.2008206170326.hdf:Water_Vapor_Infrar
+      ed</wcs:CoverageId>
+  <wcs:CoverageId>MOD13C1.A2007145.005.2007184062524.hdf:NDVI</wcs:CoverageId>
+</DescribeCoverage>
+\end{DoxyCode}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em xmlRoot} & XML Node object created by GDAL library.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__DescribeCoverage_a33ceb7c235cfa5827444b7e27a1c72a9}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!QueryFromDatasetSeries@{QueryFromDatasetSeries}}
+\index{QueryFromDatasetSeries@{QueryFromDatasetSeries}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{QueryFromDatasetSeries}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf DatasetObject} $>$ WCS\_\-DescribeCoverage::QueryFromDatasetSeries (
+\begin{DoxyParamCaption}
+\item[{{\bf DatasetSeriesObject} \&}]{dso}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__DescribeCoverage_a33ceb7c235cfa5827444b7e27a1c72a9}
+
+
+Query the dataset array from a datasetSeries object. 
+
+This method is used to query the dataset array from DatasetSeries object based on specified spatial-\/temporal parameters.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dso} & DatasetSeries object.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The array of result Dataset object. 
+\end{DoxyReturn}
+\hypertarget{classWCS__DescribeCoverage_a6536fa20a925c8ce4b1d96f7e134e4ac}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!WCST\_\-Respond@{WCST\_\-Respond}}
+\index{WCST\_\-Respond@{WCST\_\-Respond}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{WCST\_\-Respond}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-DescribeCoverage::WCST\_\-Respond (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__DescribeCoverage_a6536fa20a925c8ce4b1d96f7e134e4ac}
+
+
+The enter point for \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} class (CGI environment). 
+
+This method is the enter point for \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} class, which is used under CGI environment. The response information will be displayed in the browser. 
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__DescribeCoverage_a0c3bbc4bf7cd2ec6d469330d636c3390}{
+\index{WCS\_\-DescribeCoverage@{WCS\_\-DescribeCoverage}!WCST\_\-Respond@{WCST\_\-Respond}}
+\index{WCST\_\-Respond@{WCST\_\-Respond}!WCS_DescribeCoverage@{WCS\_\-DescribeCoverage}}
+\subsubsection[{WCST\_\-Respond}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-DescribeCoverage::WCST\_\-Respond (
+\begin{DoxyParamCaption}
+\item[{string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__DescribeCoverage_a0c3bbc4bf7cd2ec6d469330d636c3390}
+
+
+The enter point for \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} class (Command line environment). 
+
+This method is the enter point for \hyperlink{classWCS__DescribeCoverage}{WCS\_\-DescribeCoverage} class, which is used under command line environment. In order to debug WCS and use WCS as a command line, the user could issue a request under command line. The response information will be stored in the specified file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sOutFileName} & The path of the response file. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+WCS\_\-DescribeCoverage.h\item 
+WCS\_\-DescribeCoverage.cpp\end{DoxyCompactItemize}

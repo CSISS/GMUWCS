@@ -1,0 +1,627 @@
+\hypertarget{classWCS__GetCoverage}{
+\section{WCS\_\-GetCoverage Class Reference}
+\label{classWCS__GetCoverage}\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}}
+}
+
+
+This class is used to handle GetCoverage request.  
+
+
+
+
+{\ttfamily \#include $<$WCS\_\-GetCoverage.h$>$}
+
+Inheritance diagram for WCS\_\-GetCoverage:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classWCS__GetCoverage}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classWCS__GetCoverage_a2bc572e0a90baf87f5d572d29db7e32e}{WCS\_\-GetCoverage} (const string \&conf)
+\begin{DoxyCompactList}\small\item\em Constructor of a \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classWCS__GetCoverage_a1a23003ebbaef4915fdc88863abf987c}{GetReqMessageFromXMLTree} (CPLXMLNode $\ast$xmlRoot)
+\begin{DoxyCompactList}\small\item\em Fetch the \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} request parameters from XML tree object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classWCS__GetCoverage_aff25c578374abc386dc1455990198276}{GetReqMessageFromURLString} (const string \&)
+\begin{DoxyCompactList}\small\item\em Fetch the request parameters from URL string. \end{DoxyCompactList}\item 
+\hypertarget{classWCS__GetCoverage_aa5828099182998b05b50418161d01c8d}{
+virtual void {\bfseries SetSoapMessage} (const int \&soapMsg)}
+\label{classWCS__GetCoverage_aa5828099182998b05b50418161d01c8d}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a2091115ee1479ddef8071f8fca80cf6b}{
+virtual int {\bfseries IsSoapRequested} ()}
+\label{classWCS__GetCoverage_a2091115ee1479ddef8071f8fca80cf6b}
+
+\item 
+virtual void \hyperlink{classWCS__GetCoverage_ad6d663aa5cd34f1cfeec96a8aa67fe6d}{WCST\_\-Respond} (string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em The enter point for \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} class (Command line environment). \end{DoxyCompactList}\item 
+virtual void \hyperlink{classWCS__GetCoverage_ad8123a3ce047ab51e943bec28c6bca02}{WCST\_\-Respond} ()
+\begin{DoxyCompactList}\small\item\em The enter point for \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} class (CGI environment). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+string \hyperlink{classWCS__GetCoverage_af70345de7d0cd908c28d9008d73569bf}{CreateOutputFileSuffix} ()
+\begin{DoxyCompactList}\small\item\em Create the output suffix corresponding specified format. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a0b4bdb2cf27cf85bea24529215daa372}{CreateISO19115Metadata} (\hyperlink{classDatasetObject}{DatasetObject} dsObj)
+\begin{DoxyCompactList}\small\item\em Create an XML document following ISO 19115 and ISO 19115-\/2 standards. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a1ef04fe1f8036a6347167b05eaaaa674}{CreateEOMetadata} (const string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em Create an EO metadata for the output. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a2b1cb91bae3d6cd3098d74ac666d557d}{GetCoverageInitial} ()
+\begin{DoxyCompactList}\small\item\em Initialize the coverage object. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a907d391b5e85ec4d3ca17316f69d3be0}{SetCRSFromURN} (OGRSpatialReference \&crs\_\-ID, const char $\ast$CRS\_\-urn)
+\begin{DoxyCompactList}\small\item\em Set the OGRSpatialReference object based on CRS code. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_af624f4a8cac34ccd1bd16bbd67a685be}{CreateBinaryFile} (const string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em Create the file in binary stream. \end{DoxyCompactList}\item 
+\hypertarget{classWCS__GetCoverage_af3b045ddefc1f5859e85234674a4b813}{
+CPLErr {\bfseries CreateHDFEOS2File} (const string \&sSourceFile, string hdfeosFile)}
+\label{classWCS__GetCoverage_af3b045ddefc1f5859e85234674a4b813}
+
+\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a38ebb99c11736874a5fdf9898aa3ce7f}{CreateOutputFile} (const string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em Create the output file. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a32d3c6edbb677534e0036c4acb6a327c}{SetOutputResolution} ()
+\begin{DoxyCompactList}\small\item\em Set the output resolution based on specified resolution or width/height. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a890b915a63bc56d6057981527d3f680e}{HttpDirectoryRespond} (const string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em Delivery the output file stream to user directly. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a1e8c186ce55e8f06e60681334dd38715}{HttpStoreRespond} (const string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em Delivery the output file URL to user. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_aed557090f7ea436d261959393f878e32}{HttpMultiPartsDirectoryRespond} (const string \&sOutFileName)
+\begin{DoxyCompactList}\small\item\em Delivery the output file stream to user and the metadata to browser. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__GetCoverage_a3d3409267ed54560783523097a75f966}{ExeCommand} (string logFilePath, string cmd)
+\begin{DoxyCompactList}\small\item\em Execute the command line by calling system function. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classWCS__GetCoverage_a0b020807d7c60cdaf046d44d3edce819}{
+auto\_\-ptr$<$ \hyperlink{classAbstractDataset}{AbstractDataset} $>$ {\bfseries mp\_\-AbsDS}}
+\label{classWCS__GetCoverage_a0b020807d7c60cdaf046d44d3edce819}
+
+\item 
+\hypertarget{classWCS__GetCoverage_aca3c07c25bff3602c7e40013975ee35e}{
+double {\bfseries md\_\-RequestMinX}}
+\label{classWCS__GetCoverage_aca3c07c25bff3602c7e40013975ee35e}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a1fce35d813d5d03123ceba262e08e17f}{
+double {\bfseries md\_\-RequestMinY}}
+\label{classWCS__GetCoverage_a1fce35d813d5d03123ceba262e08e17f}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a7be6a006f5e415b000e414c679ddc3fa}{
+double {\bfseries md\_\-RequestMaxX}}
+\label{classWCS__GetCoverage_a7be6a006f5e415b000e414c679ddc3fa}
+
+\item 
+\hypertarget{classWCS__GetCoverage_af59dd0be9bf9071e728566f188f340a2}{
+double {\bfseries md\_\-RequestMaxY}}
+\label{classWCS__GetCoverage_af59dd0be9bf9071e728566f188f340a2}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a3bfddcafea9a4e37a5c9b907cdb22f05}{
+int {\bfseries mi\_\-OutputWidth}}
+\label{classWCS__GetCoverage_a3bfddcafea9a4e37a5c9b907cdb22f05}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a983a30695a9383899f37e6122a256707}{
+int {\bfseries mi\_\-OutputHeight}}
+\label{classWCS__GetCoverage_a983a30695a9383899f37e6122a256707}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a9af081fe2292169313de72854de2ae65}{
+vector$<$ int $>$ {\bfseries mvi\_\-OutputWH}}
+\label{classWCS__GetCoverage_a9af081fe2292169313de72854de2ae65}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a35d80545e0d1c13ba2a87e047a8ff46c}{
+vector$<$ double $>$ {\bfseries mvd\_\-OutputResXY}}
+\label{classWCS__GetCoverage_a35d80545e0d1c13ba2a87e047a8ff46c}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a829197779be16e6f042be3efcb0076f5}{
+string {\bfseries ms\_\-CovID}}
+\label{classWCS__GetCoverage_a829197779be16e6f042be3efcb0076f5}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a1d630f3a3f415a4bf69cda05748bd119}{
+string {\bfseries ms\_\-CovGDALID}}
+\label{classWCS__GetCoverage_a1d630f3a3f415a4bf69cda05748bd119}
+
+\item 
+\hypertarget{classWCS__GetCoverage_ac9fdb17263aa227ca78dca3fad7c8dd9}{
+string {\bfseries ms\_\-RequestCRS\_\-URN}}
+\label{classWCS__GetCoverage_ac9fdb17263aa227ca78dca3fad7c8dd9}
+
+\item 
+\hypertarget{classWCS__GetCoverage_afc537ff82939218286269ce8ba50446d}{
+string {\bfseries ms\_\-ResponseCRS\_\-URN}}
+\label{classWCS__GetCoverage_afc537ff82939218286269ce8ba50446d}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a2d654c6172b5ed16ae6fc9439a8131e8}{
+string {\bfseries ms\_\-OutputFormat}}
+\label{classWCS__GetCoverage_a2d654c6172b5ed16ae6fc9439a8131e8}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a85a1fdbc04a32a3c8fb64bad27cfa94d}{
+string {\bfseries ms\_\-OutputFormatCode}}
+\label{classWCS__GetCoverage_a85a1fdbc04a32a3c8fb64bad27cfa94d}
+
+\item 
+\hypertarget{classWCS__GetCoverage_ad47ad94e7acd9cc7e53befaaef5a14bb}{
+string {\bfseries ms\_\-OutputContentType}}
+\label{classWCS__GetCoverage_ad47ad94e7acd9cc7e53befaaef5a14bb}
+
+\item 
+\hypertarget{classWCS__GetCoverage_acf98719a81dc740af138f8df7c71d5c3}{
+string {\bfseries ms\_\-RequestBeginTime}}
+\label{classWCS__GetCoverage_acf98719a81dc740af138f8df7c71d5c3}
+
+\item 
+\hypertarget{classWCS__GetCoverage_aec61f2f3ec14e51f8592fe692b7dcd1b}{
+string {\bfseries ms\_\-RequestEndTime}}
+\label{classWCS__GetCoverage_aec61f2f3ec14e51f8592fe692b7dcd1b}
+
+\item 
+\hypertarget{classWCS__GetCoverage_abf29f4df2c170376a2dcbebe4f38dc2b}{
+string {\bfseries ms\_\-Interpolation}}
+\label{classWCS__GetCoverage_abf29f4df2c170376a2dcbebe4f38dc2b}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a2b325ed109ae7b9578a4ea92d1a85b01}{
+int {\bfseries mb\_\-IsStore}}
+\label{classWCS__GetCoverage_a2b325ed109ae7b9578a4ea92d1a85b01}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a6ff57c181b18c4f56d14178d83f25d52}{
+int {\bfseries mb\_\-SubsetSpatial}}
+\label{classWCS__GetCoverage_a6ff57c181b18c4f56d14178d83f25d52}
+
+\item 
+\hypertarget{classWCS__GetCoverage_acadd942be00df0c80ad95f8eddec19ff}{
+int {\bfseries mb\_\-MultiPart}}
+\label{classWCS__GetCoverage_acadd942be00df0c80ad95f8eddec19ff}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a5f1b0349f1e4977ae38110749590e709}{
+OGRSpatialReference {\bfseries mo\_\-NativeCRS}}
+\label{classWCS__GetCoverage_a5f1b0349f1e4977ae38110749590e709}
+
+\item 
+\hypertarget{classWCS__GetCoverage_adbe146d4c5abcbd811772e22e2712b9b}{
+OGRSpatialReference {\bfseries mo\_\-RequestedCRS}}
+\label{classWCS__GetCoverage_adbe146d4c5abcbd811772e22e2712b9b}
+
+\item 
+\hypertarget{classWCS__GetCoverage_aa2af672aaf0d65ef46d6edc067486170}{
+OGRSpatialReference {\bfseries mo\_\-ResponseCRS}}
+\label{classWCS__GetCoverage_aa2af672aaf0d65ef46d6edc067486170}
+
+\item 
+\hypertarget{classWCS__GetCoverage_aff40bdde8e489d0647d07d0c1342dcae}{
+vector$<$ int $>$ {\bfseries mvi\_\-BandList}}
+\label{classWCS__GetCoverage_aff40bdde8e489d0647d07d0c1342dcae}
+
+\item 
+\hypertarget{classWCS__GetCoverage_aa7873d69344c6495a7a72655c753e48f}{
+double {\bfseries md\_\-OutGeoTransform} \mbox{[}6\mbox{]}}
+\label{classWCS__GetCoverage_aa7873d69344c6495a7a72655c753e48f}
+
+\item 
+\hypertarget{classWCS__GetCoverage_a28b6f3ae72b3a62e0841375395200518}{
+GDALResampleAlg {\bfseries me\_\-Interplation}}
+\label{classWCS__GetCoverage_a28b6f3ae72b3a62e0841375395200518}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class is used to handle GetCoverage request. 
+
+This class is used to handle GetCoverage request. Several functions for parsing request parameters, generating the response file, are provided. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classWCS__GetCoverage_a2bc572e0a90baf87f5d572d29db7e32e}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!WCS\_\-GetCoverage@{WCS\_\-GetCoverage}}
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{WCS\_\-GetCoverage}]{\setlength{\rightskip}{0pt plus 5cm}WCS\_\-GetCoverage::WCS\_\-GetCoverage (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{conf}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__GetCoverage_a2bc572e0a90baf87f5d572d29db7e32e}
+
+
+Constructor of a \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} object. 
+
+This is the accepted method of creating an \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em conf} & String of the full path of the configuration file. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classWCS__GetCoverage_af624f4a8cac34ccd1bd16bbd67a685be}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!CreateBinaryFile@{CreateBinaryFile}}
+\index{CreateBinaryFile@{CreateBinaryFile}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{CreateBinaryFile}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::CreateBinaryFile (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_af624f4a8cac34ccd1bd16bbd67a685be}
+
+
+Create the file in binary stream. 
+
+This method is used to create the file in binary stream.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a1ef04fe1f8036a6347167b05eaaaa674}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!CreateEOMetadata@{CreateEOMetadata}}
+\index{CreateEOMetadata@{CreateEOMetadata}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{CreateEOMetadata}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::CreateEOMetadata (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a1ef04fe1f8036a6347167b05eaaaa674}
+
+
+Create an EO metadata for the output. 
+
+This method is used to create ann EO metadata for the output.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sOutFileName} & The path of output file.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a0b4bdb2cf27cf85bea24529215daa372}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!CreateISO19115Metadata@{CreateISO19115Metadata}}
+\index{CreateISO19115Metadata@{CreateISO19115Metadata}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{CreateISO19115Metadata}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::CreateISO19115Metadata (
+\begin{DoxyParamCaption}
+\item[{{\bf DatasetObject}}]{dsObj}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a0b4bdb2cf27cf85bea24529215daa372}
+
+
+Create an XML document following ISO 19115 and ISO 19115-\/2 standards. 
+
+This method is used to create an XML document following ISO 19115 and ISO 19115-\/2 standards, which is based on specified dataset object. There is a template file which is available through configuration file. After reading the template to memory, some keywords will be replace based on specified dataset object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em dsObj} & Dataset object.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a38ebb99c11736874a5fdf9898aa3ce7f}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!CreateOutputFile@{CreateOutputFile}}
+\index{CreateOutputFile@{CreateOutputFile}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{CreateOutputFile}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::CreateOutputFile (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a38ebb99c11736874a5fdf9898aa3ce7f}
+
+
+Create the output file. 
+
+This method is used to create the output file.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_af70345de7d0cd908c28d9008d73569bf}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!CreateOutputFileSuffix@{CreateOutputFileSuffix}}
+\index{CreateOutputFileSuffix@{CreateOutputFileSuffix}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{CreateOutputFileSuffix}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-GetCoverage::CreateOutputFileSuffix (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_af70345de7d0cd908c28d9008d73569bf}
+
+
+Create the output suffix corresponding specified format. 
+
+This method is used to create the output suffix corresponding specified format, also the format code in GDAL and the content type (MIME type) will be created.
+
+\begin{DoxyReturn}{Returns}
+The string of suffix. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a3d3409267ed54560783523097a75f966}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!ExeCommand@{ExeCommand}}
+\index{ExeCommand@{ExeCommand}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{ExeCommand}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::ExeCommand (
+\begin{DoxyParamCaption}
+\item[{string}]{logFilePath, }
+\item[{string}]{cmd}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a3d3409267ed54560783523097a75f966}
+
+
+Execute the command line by calling system function. 
+
+This method is used to execute the command line by calling system function.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a2b1cb91bae3d6cd3098d74ac666d557d}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!GetCoverageInitial@{GetCoverageInitial}}
+\index{GetCoverageInitial@{GetCoverageInitial}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{GetCoverageInitial}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::GetCoverageInitial (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a2b1cb91bae3d6cd3098d74ac666d557d}
+
+
+Initialize the coverage object. 
+
+This method is used to initialize the \hyperlink{classAbstractDataset}{AbstractDataset} object based on coverage identifier and band list, also query the \hyperlink{classDatasetObject}{DatasetObject} from the dataset/datasetSeries configuration files.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_aff25c578374abc386dc1455990198276}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!GetReqMessageFromURLString@{GetReqMessageFromURLString}}
+\index{GetReqMessageFromURLString@{GetReqMessageFromURLString}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{GetReqMessageFromURLString}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::GetReqMessageFromURLString (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{urlStr}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCoverage_aff25c578374abc386dc1455990198276}
+
+
+Fetch the request parameters from URL string. 
+
+This method is used to fetch the GetCoverage parameters from an URL string (HTTP GET method).
+
+
+\begin{DoxyParams}{Parameters}
+{\em urlStr} & String of the DescibeCoverage or DescribeEOCoverageSet request.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__GetCoverage_a1a23003ebbaef4915fdc88863abf987c}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!GetReqMessageFromXMLTree@{GetReqMessageFromXMLTree}}
+\index{GetReqMessageFromXMLTree@{GetReqMessageFromXMLTree}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{GetReqMessageFromXMLTree}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::GetReqMessageFromXMLTree (
+\begin{DoxyParamCaption}
+\item[{CPLXMLNode $\ast$}]{xmlRoot}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCoverage_a1a23003ebbaef4915fdc88863abf987c}
+
+
+Fetch the \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} request parameters from XML tree object. 
+
+This method is used to fetch the \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} parameters from an XML object (HTTP POST method).
+
+Sample request XML document 
+\begin{DoxyCode}
+<?xml version="1.0" encoding="UTF-8"?>
+<wcs:GetCoverage
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:wcs="http://www.opengis.net/wcs/2.0"
+  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xsi:schemaLocation=
+    "http://schemas.opengis.net/wcs/2.0 ../wcsAll.xsd"
+  service="WCS" version="2.0.0">
+  <wcs:CoverageId>MOD13C1.A2007145.005.2007184062524.hdf:NDVI</wcs:CoverageId>
+  <wcs:trimDimension>
+    <wcs:dimension>Long</wcs:dimension>
+    <wcs:trimLow>20</wcs:trimLow>
+    <wcs:trimHigh>29</wcs:trimHigh>
+  </wcs:trimDimension>
+  <wcs:trimDimension>
+    <wcs:dimension>Lat</wcs:dimension>
+    <wcs:trimLow>20</wcs:trimLow>
+    <wcs:trimHigh>30</wcs:trimHigh>
+  </wcs:trimDimension>
+  <wcs:Output format="image/geotiff" store="false">
+        <wcs:outputCRS>EPSG:4326</wcs:outputCRS>
+  </wcs:Output>
+</wcs:GetCoverage>
+\end{DoxyCode}
+
+
+
+\begin{DoxyParams}{Parameters}
+{\em xmlRoot} & XML Node object created by GDAL library.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__GetCoverage_a890b915a63bc56d6057981527d3f680e}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!HttpDirectoryRespond@{HttpDirectoryRespond}}
+\index{HttpDirectoryRespond@{HttpDirectoryRespond}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{HttpDirectoryRespond}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::HttpDirectoryRespond (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a890b915a63bc56d6057981527d3f680e}
+
+
+Delivery the output file stream to user directly. 
+
+This method is used to delivery the output file stream to user directly.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sOutFileName} & The path of the response file needs to be delivered..\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_aed557090f7ea436d261959393f878e32}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!HttpMultiPartsDirectoryRespond@{HttpMultiPartsDirectoryRespond}}
+\index{HttpMultiPartsDirectoryRespond@{HttpMultiPartsDirectoryRespond}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{HttpMultiPartsDirectoryRespond}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::HttpMultiPartsDirectoryRespond (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_aed557090f7ea436d261959393f878e32}
+
+
+Delivery the output file stream to user and the metadata to browser. 
+
+This method is used to delivery the output file stream to user and the metadata to browser.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sOutFileName} & The path of the response file needs to be delivered..\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a1e8c186ce55e8f06e60681334dd38715}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!HttpStoreRespond@{HttpStoreRespond}}
+\index{HttpStoreRespond@{HttpStoreRespond}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{HttpStoreRespond}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::HttpStoreRespond (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a1e8c186ce55e8f06e60681334dd38715}
+
+
+Delivery the output file URL to user. 
+
+This method is used to delivery the output file URL to user.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sOutFileName} & The path of the response file needs to be delivered..\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a907d391b5e85ec4d3ca17316f69d3be0}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!SetCRSFromURN@{SetCRSFromURN}}
+\index{SetCRSFromURN@{SetCRSFromURN}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{SetCRSFromURN}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::SetCRSFromURN (
+\begin{DoxyParamCaption}
+\item[{OGRSpatialReference \&}]{crs\_\-ID, }
+\item[{const char $\ast$}]{CRS\_\-urn}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a907d391b5e85ec4d3ca17316f69d3be0}
+
+
+Set the OGRSpatialReference object based on CRS code. 
+
+This method is used to set the OGRSpatialReference object based on CRS code.
+
+
+\begin{DoxyParams}{Parameters}
+{\em crs\_\-ID} & The OGRSpatialReference object to store CRS information corresponding to specified CRS code.\\
+\hline
+{\em CRS\_\-urn} & The CRS code.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_a32d3c6edbb677534e0036c4acb6a327c}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!SetOutputResolution@{SetOutputResolution}}
+\index{SetOutputResolution@{SetOutputResolution}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{SetOutputResolution}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-GetCoverage::SetOutputResolution (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}protected\mbox{]}}}}
+\label{classWCS__GetCoverage_a32d3c6edbb677534e0036c4acb6a327c}
+
+
+Set the output resolution based on specified resolution or width/height. 
+
+This method is used to set the output resolution based on specified resolution or width/height.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__GetCoverage_ad8123a3ce047ab51e943bec28c6bca02}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!WCST\_\-Respond@{WCST\_\-Respond}}
+\index{WCST\_\-Respond@{WCST\_\-Respond}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{WCST\_\-Respond}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-GetCoverage::WCST\_\-Respond (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCoverage_ad8123a3ce047ab51e943bec28c6bca02}
+
+
+The enter point for \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} class (CGI environment). 
+
+This method is the enter point for \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} class, which is used under CGI environment. The response information will be displayed in the browser. 
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+\hypertarget{classWCS__GetCoverage_ad6d663aa5cd34f1cfeec96a8aa67fe6d}{
+\index{WCS\_\-GetCoverage@{WCS\_\-GetCoverage}!WCST\_\-Respond@{WCST\_\-Respond}}
+\index{WCST\_\-Respond@{WCST\_\-Respond}!WCS_GetCoverage@{WCS\_\-GetCoverage}}
+\subsubsection[{WCST\_\-Respond}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-GetCoverage::WCST\_\-Respond (
+\begin{DoxyParamCaption}
+\item[{string \&}]{sOutFileName}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classWCS__GetCoverage_ad6d663aa5cd34f1cfeec96a8aa67fe6d}
+
+
+The enter point for \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} class (Command line environment). 
+
+This method is the enter point for \hyperlink{classWCS__GetCoverage}{WCS\_\-GetCoverage} class, which is used under command line environment. In order to debug WCS and use WCS as a command line, the user could issue a request under command line. The response information will be stored in the specified file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sOutFileName} & The path of the response file. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{classWCS__T}{WCS\_\-T}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+WCS\_\-GetCoverage.h\item 
+WCS\_\-GetCoverage.cpp\end{DoxyCompactItemize}

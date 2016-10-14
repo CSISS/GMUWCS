@@ -1,0 +1,53 @@
+\hypertarget{classWCSCGI}{
+\section{WCSCGI Class Reference}
+\label{classWCSCGI}\index{WCSCGI@{WCSCGI}}
+}
+
+
+{\ttfamily \#include \char`\"{}wcsUtil.h\char`\"{}}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+CPLErr \hyperlink{classWCSCGI_a63c7630dd9f2df7186b533552f898f04}{Run} ()
+\begin{DoxyCompactList}\small\item\em The entry point for CGI program. \end{DoxyCompactList}\item 
+\hypertarget{classWCSCGI_aa680e2c779778dc6bd8b974735d1debc}{
+string {\bfseries GetRqstContent} ()}
+\label{classWCSCGI_aa680e2c779778dc6bd8b974735d1debc}
+
+\item 
+\hypertarget{classWCSCGI_aa995556ffcea2aa59059b9112c4b11ef}{
+CGI\_\-METHOD\_\-FLAG {\bfseries GetCGImethod} ()}
+\label{classWCSCGI_aa995556ffcea2aa59059b9112c4b11ef}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classWCSCGI}{WCSCGI} class is used to acquire WCS request, both GET and POST method are supported. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classWCSCGI_a63c7630dd9f2df7186b533552f898f04}{
+\index{WCSCGI@{WCSCGI}!Run@{Run}}
+\index{Run@{Run}!WCSCGI@{WCSCGI}}
+\subsubsection[{Run}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCSCGI::Run (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCSCGI_a63c7630dd9f2df7186b533552f898f04}
+
+
+The entry point for CGI program. 
+
+This method is used to fetch CGI parameters. Supports both HTTP GET and POST method. POST content could be KVPs and XML string, and GET content must be KVPs.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+wcsUtil.h\item 
+wcsUtil.cpp\end{DoxyCompactItemize}

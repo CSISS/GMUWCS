@@ -1,0 +1,231 @@
+\hypertarget{classTRMM__Dataset}{
+\section{TRMM\_\-Dataset Class Reference}
+\label{classTRMM__Dataset}\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}}
+}
+
+
+\hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process TRMM coverage.  
+
+
+
+
+{\ttfamily \#include \char`\"{}TRMM\_\-Dataset.h\char`\"{}}
+
+Inheritance diagram for TRMM\_\-Dataset:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classTRMM__Dataset}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual \hyperlink{classTRMM__Dataset_a0f192409c4b2fe59ccf4d3ff949112ea}{$\sim$TRMM\_\-Dataset} ()
+\begin{DoxyCompactList}\small\item\em Destroy an open \hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classTRMM__Dataset_aa08fe6a08a66ab7a115058a302e450a2}{SetMetaDataList} (GDALDataset $\ast$)
+\begin{DoxyCompactList}\small\item\em Set the metadata list for this coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classTRMM__Dataset_ac51d16647f04092ee01945f6e627550f}{SetNativeCRS} ()
+\begin{DoxyCompactList}\small\item\em Set the Native CRS for a TRMM dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classTRMM__Dataset_afa3309a64ccca14e96628800c69639f8}{SetGeoTransform} ()
+\begin{DoxyCompactList}\small\item\em Set the affine GeoTransform matrix for a TRMM coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classTRMM__Dataset_a4c7ca79e2b924ecc42977de339168c14}{SetGDALDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Set the GDALDataset object to TRMM dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classTRMM__Dataset_ad1bbde527ce349adee3eacd99d40d2a5}{InitialDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Initialize the TRMM dataset . \end{DoxyCompactList}\item 
+\hyperlink{classTRMM__Dataset_abcf4bc48213b91a104597302e7e4917b}{TRMM\_\-Dataset} (const string \&id, vector$<$ int $>$ \&rBandList)
+\begin{DoxyCompactList}\small\item\em Create an \hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classTRMM__Dataset_a326399d39e963d99900ae8197d9ff841}{
+int {\bfseries m\_\-bDaily}}
+\label{classTRMM__Dataset_a326399d39e963d99900ae8197d9ff841}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process TRMM coverage. 
+
+The Tropical Rainfall Measuring Mission (TRMM) is a joint space mission between NASA and the Japan Aerospace Exploration Agency (JAXA) designed to monitor and study tropical rainfall. The term refers to both the mission itself and the satellite that the mission uses to collect data. TRMM is part of NASA's Mission to Planet Earth, a long-\/term, coordinated research effort to study the Earth as a global system. The satellite was launched on November 27, 1997 from the Tanegashima Space Center in Tanegashima, Japan.
+
+\hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, which is used to process TRMM products. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classTRMM__Dataset_a0f192409c4b2fe59ccf4d3ff949112ea}{
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!$\sim$TRMM\_\-Dataset@{$\sim$TRMM\_\-Dataset}}
+\index{$\sim$TRMM\_\-Dataset@{$\sim$TRMM\_\-Dataset}!TRMM_Dataset@{TRMM\_\-Dataset}}
+\subsubsection[{$\sim$TRMM\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}TRMM\_\-Dataset::$\sim$TRMM\_\-Dataset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classTRMM__Dataset_a0f192409c4b2fe59ccf4d3ff949112ea}
+
+
+Destroy an open \hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} object. 
+
+This is the accepted method of closing a \hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} dataset and deallocating all resources associated with it. \hypertarget{classTRMM__Dataset_abcf4bc48213b91a104597302e7e4917b}{
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!TRMM\_\-Dataset@{TRMM\_\-Dataset}}
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!TRMM_Dataset@{TRMM\_\-Dataset}}
+\subsubsection[{TRMM\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}TRMM\_\-Dataset::TRMM\_\-Dataset (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{id, }
+\item[{vector$<$ int $>$ \&}]{rBandList}
+\end{DoxyParamCaption}
+)}}
+\label{classTRMM__Dataset_abcf4bc48213b91a104597302e7e4917b}
+
+
+Create an \hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} object. 
+
+This is the accepted method of creating a \hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} object and allocating all resources associated with it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The coverage identifier.\\
+\hline
+{\em rBandList} & The field list selected for this coverage. For TRMM daily data, the user could specify multiple days range in request. Each day is seemed as one field.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \hyperlink{classTRMM__Dataset}{TRMM\_\-Dataset} object. 
+\end{DoxyReturn}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classTRMM__Dataset_ad1bbde527ce349adee3eacd99d40d2a5}{
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!InitialDataset@{InitialDataset}}
+\index{InitialDataset@{InitialDataset}!TRMM_Dataset@{TRMM\_\-Dataset}}
+\subsubsection[{InitialDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr TRMM\_\-Dataset::InitialDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classTRMM__Dataset_ad1bbde527ce349adee3eacd99d40d2a5}
+
+
+Initialize the TRMM dataset . 
+
+This method is the implementation for initializing a TRMM dataset. Within this method, \hyperlink{classTRMM__Dataset_ac51d16647f04092ee01945f6e627550f}{SetNativeCRS()}, \hyperlink{classTRMM__Dataset_afa3309a64ccca14e96628800c69639f8}{SetGeoTransform()} and \hyperlink{classTRMM__Dataset_a4c7ca79e2b924ecc42977de339168c14}{SetGDALDataset()} will be called to initialize an TRMM dataset.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a45924895c6bf26c7f75d503b8f6e388a}{AbstractDataset}.
+
+\hypertarget{classTRMM__Dataset_a4c7ca79e2b924ecc42977de339168c14}{
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!SetGDALDataset@{SetGDALDataset}}
+\index{SetGDALDataset@{SetGDALDataset}!TRMM_Dataset@{TRMM\_\-Dataset}}
+\subsubsection[{SetGDALDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr TRMM\_\-Dataset::SetGDALDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classTRMM__Dataset_a4c7ca79e2b924ecc42977de339168c14}
+
+
+Set the GDALDataset object to TRMM dataset. 
+
+This method is used to set the TRMM dataset based on GDAL class VRTDataset.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}{AbstractDataset}.
+
+\hypertarget{classTRMM__Dataset_afa3309a64ccca14e96628800c69639f8}{
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!SetGeoTransform@{SetGeoTransform}}
+\index{SetGeoTransform@{SetGeoTransform}!TRMM_Dataset@{TRMM\_\-Dataset}}
+\subsubsection[{SetGeoTransform}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr TRMM\_\-Dataset::SetGeoTransform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classTRMM__Dataset_afa3309a64ccca14e96628800c69639f8}
+
+
+Set the affine GeoTransform matrix for a TRMM coverage. 
+
+The method will set a GeoTransform matrix for a TRMM coverage by the pre-\/knowledge of its extent and size.
+
+The CRS for the bounding box is EPSG:4326.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}{AbstractDataset}.
+
+\hypertarget{classTRMM__Dataset_aa08fe6a08a66ab7a115058a302e450a2}{
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!SetMetaDataList@{SetMetaDataList}}
+\index{SetMetaDataList@{SetMetaDataList}!TRMM_Dataset@{TRMM\_\-Dataset}}
+\subsubsection[{SetMetaDataList}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr TRMM\_\-Dataset::SetMetaDataList (
+\begin{DoxyParamCaption}
+\item[{GDALDataset $\ast$}]{hSrcDS}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classTRMM__Dataset_aa08fe6a08a66ab7a115058a302e450a2}
+
+
+Set the metadata list for this coverage. 
+
+The method will set the metadata list for the coverage based on its corresponding GDALDataset object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hSrc} & the GDALDataset object corresponding to coverage.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_af3f0b55b14f660b79751bf88489a2c10}{AbstractDataset}.
+
+\hypertarget{classTRMM__Dataset_ac51d16647f04092ee01945f6e627550f}{
+\index{TRMM\_\-Dataset@{TRMM\_\-Dataset}!SetNativeCRS@{SetNativeCRS}}
+\index{SetNativeCRS@{SetNativeCRS}!TRMM_Dataset@{TRMM\_\-Dataset}}
+\subsubsection[{SetNativeCRS}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr TRMM\_\-Dataset::SetNativeCRS (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classTRMM__Dataset_ac51d16647f04092ee01945f6e627550f}
+
+
+Set the Native CRS for a TRMM dataset. 
+
+The method will set the CRS for a TRMM dataset as an native CRS.
+
+The native CRS for TRMM is assigned to EPSG:4326.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}{AbstractDataset}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+TRMM\_\-Dataset.h\item 
+TRMM\_\-Dataset.cpp\end{DoxyCompactItemize}

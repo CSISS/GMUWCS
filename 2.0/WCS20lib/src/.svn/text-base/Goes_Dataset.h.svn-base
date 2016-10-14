@@ -1,0 +1,80 @@
+#ifndef GOES_DATASET_H_
+#define GOES_DATASET_H_
+#include <string>
+#include "AbstractDataset.h"
+using namespace std;
+class Goes_Dataset:public AbstractDataset
+{
+
+	string					m_ncLatDataSetName;
+	string					m_ncLonDataSetName;
+	string					m_ncCoverageIDName;
+	vector<GDAL_GCP>   		m_gdalGCPs;
+
+	int 					mi_RectifiedImageXSize;
+	int 					mi_RectifiedImageYSize;
+	int						mi_GoesSrcImageXSize;
+	int						mi_GoesSrcImageYSize;
+
+	int						mb_GoesAcrossCM;
+	int						mb_PassedBBox;
+
+	double					mb_LatLonBBox[4];
+
+	double 					mdSrcGeoMinX;
+	double 					mdSrcGeoMinY;
+	double 					mdSrcGeoMaxX;
+	double 					mdSrcGeoMaxY;
+
+	Goes_Dataset();
+
+	CPLErr setGCPGeoRef4VRTDataset(GDALDataset* );
+	CPLErr setGeoBBoxAndGCPs(GDALDataset* hSrcDS);
+	CPLErr RectifyGOESDataSet();
+	CPLErr setResampleStandard(GDALDataset* hSrcDS, int& xRSValue, int& yRSValue);
+	CPLErr RectifyGOESDataSetAcrossCM();//When GOES data across central meridian, then executing specail process.
+
+	int isValidLatitude(const double &lat)
+	{
+		if(lat>=-90&&lat<=90)return true;
+		return false;
+	}
+	int isValidLongitude(const double &lon)
+	{
+		if(lon>=-180&&lon<=180)return true;
+		return false;
+	}
+	int isThisPointInBoundingBox(float lon, float lat, double latlonbbox[])
+	{
+		double xmin = latlonbbox[0];
+		double xmax = latlonbbox[2];
+		double ymin = latlonbbox[1];
+		double ymax = latlonbbox[3];
+		if(xmin >= 0 && xmax < 0)//Cross +-180
+		{
+			if(lon >= 0)
+				xmax += 360;
+			else
+				xmin -= 360;
+		}
+
+		if(lon > xmin && lon < xmax && lat > ymin && lat < ymax )
+			return true;
+		return false;
+	}
+
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setMetaDataList(GDALDataset* );
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	virtual CPLErr setLatLonRequestBBox(double llbox[]);
+
+public:
+	Goes_Dataset(const string& id, vector<int>  &rBandList);
+	virtual ~Goes_Dataset();
+	virtual CPLErr initialDataset(const int isSimple=0);
+	virtual CPLErr getGeoMinMax(double geoMinMax[]);
+
+};
+
+#endif /*GOES_DATASET_H_*/

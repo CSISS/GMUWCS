@@ -1,0 +1,357 @@
+/*
+ * NARR_Dataset.cpp
+ *
+ *  Created on: Jun 15, 2009
+ *      Author: pli
+ */
+
+#include "NARR_Dataset.h"
+#include <vrtdataset.h>
+#include <gdalwarper.h>
+#include "netcdfcpp.h"
+#include "wcsUtil.h"
+
+NARR_Dataset::NARR_Dataset()
+{
+	// TODO Auto-generated constructor stub
+
+}
+NARR_Dataset::NARR_Dataset(const string& id,vector<int> &rBandlist):
+	AbstractDataset(id, rBandlist)
+{
+	mdMissingValue = -32767;
+	mbGeoTransformSet = FALSE;
+}
+
+NARR_Dataset::~NARR_Dataset()
+{
+	// TODO Auto-generated destructor stub
+}
+
+CPLErr NARR_Dataset::initialDataset(const int isSimple)
+{
+	mbIsVirtualDS = FALSE;
+
+	if (ms_CoverageID.empty() || ms_CoverageID == "")
+		return CE_Failure;
+	vector<string> strSet;
+	unsigned int n = csvburstCpp(ms_CoverageID, strSet, ':');
+	if (n != 4)
+	{
+		SetWCS_ErrorLocator("NARR_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Incorrect coverage ID.");
+
+		return CE_Failure;
+	}
+	msDataTypeName=strSet[0]+":"+strSet[1];
+	mSrcFilename=strSet[2];
+	msDatasetName=strSet[3];
+
+	mSrcFilename = myStrTrimsIn(mSrcFilename, " \'\"");
+
+
+	string sCovID=strSet[1]+":"+strSet[2]+":"+strSet[3];
+	GDALDataset* hSrcDS = (GDALDataset*)GDALOpenShared( sCovID.c_str(), GA_ReadOnly );
+	if( hSrcDS == NULL )
+	{
+		SetWCS_ErrorLocator("NARR_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to open file \"%s\".", mSrcFilename.c_str());
+		return CE_Failure;
+
+	}
+
+	msNativeFormat = GDALGetDriverShortName(hSrcDS->GetDriver());
+
+	if (!EQUAL(msNativeFormat.c_str(),"NETCDF"))
+	{
+		GDALClose(hSrcDS);
+		return CE_Failure;
+	}
+
+	//setmetalist
+	setMetaDataList(hSrcDS);
+
+	//set noValue
+	unsigned int nBandCount = hSrcDS->GetRasterCount();
+	if (nBandCount < 1)
+	{
+		GDALClose(hSrcDS);
+		SetWCS_ErrorLocator("Goes_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to get band data.");
+
+		return CE_Failure;
+	}
+	int iSuc = 0;
+	double noValue = hSrcDS->GetRasterBand(1)->GetNoDataValue(&iSuc);
+	if (iSuc)
+		mdMissingValue = noValue;
+
+	maptrDS.reset(hSrcDS);
+
+	//set moNativeCRS and mGeoTransform
+	if (CE_None != setNativeCRS() || CE_None != setGeoTransform() || CE_None
+			!= setGDALDataset(isSimple))
+	{
+		GDALClose(maptrDS.release());
+		return CE_Failure;
+	}
+
+	return CE_None;
+}
+CPLErr NARR_Dataset::setNativeCRS()
+{
+	if (CE_None == AbstractDataset::setNativeCRS())
+		return CE_None;
+
+	char **papszMetadata=maptrDS->GetMetadata();
+
+	const char* proj_name=CSLFetchNameValue( papszMetadata, "Lambert_Conformal#grid_mapping_name" );
+    const char* lon_central=CSLFetchNameValue( papszMetadata, "Lambert_Conformal#longitude_of_central_meridian" );
+    const char* lat_origin=CSLFetchNameValue( papszMetadata, "Lambert_Conformal#latitude_of_projection_origin" );
+    const char* false_easting=CSLFetchNameValue( papszMetadata, "Lambert_Conformal#false_easting" );
+    const char* false_northing=CSLFetchNameValue( papszMetadata, "Lambert_Conformal#false_northing" );
+
+    if(proj_name==NULL||
+    		lon_central==NULL||
+    		lat_origin==NULL||
+    		false_easting==NULL||
+    		false_northing==NULL)
+    {
+		SetWCS_ErrorLocator("NARR_Dataset::setNativeCRS()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to get Projection Parameters from source data set.");
+    	return CE_Failure;
+    }
+
+    if(OGRERR_NONE!=moNativeCRS.SetWellKnownGeogCS("WGS84")||
+    		OGRERR_NONE!=moNativeCRS.SetProjCS(proj_name)||
+    		OGRERR_NONE!=moNativeCRS.SetProjection(SRS_PT_LAMBERT_CONFORMAL_CONIC_1SP)||
+    		OGRERR_NONE!=moNativeCRS.SetProjParm( SRS_PP_LATITUDE_OF_ORIGIN, atof(lat_origin) )||
+    		OGRERR_NONE!=moNativeCRS.SetProjParm( SRS_PP_CENTRAL_MERIDIAN, atof(lon_central) )||
+    		OGRERR_NONE!=moNativeCRS.SetProjParm( SRS_PP_SCALE_FACTOR, 1.0 )||
+    		OGRERR_NONE!=moNativeCRS.SetProjParm( SRS_PP_FALSE_EASTING, atof(false_easting) )||
+    		OGRERR_NONE!=moNativeCRS.SetProjParm( SRS_PP_FALSE_NORTHING, atof(false_northing) )||
+    		OGRERR_NONE!=moNativeCRS.SetAuthority("PROJCS","CSISS",80000000))
+    {
+		SetWCS_ErrorLocator("NARR_Dataset::setNativeCRS()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to set Projection Parameters to CRS.");
+    	return CE_Failure;
+    }
+
+    return CE_None;
+
+}
+CPLErr NARR_Dataset::setGeoTransform()
+{
+	double xOrigin,yOrigin,xRes,yRes;
+	if(CE_None!=getOriginFrom_NetCDF(xOrigin,yOrigin,xRes,yRes))
+	{
+		SetWCS_ErrorLocator("NARR_Dataset::setNativeCRS()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to get origin coordination from file \"%s\".", mSrcFilename.c_str());
+		return CE_Failure;
+	}
+
+//	int nXsize = maptrDS->GetRasterXSize();
+	int nYsize = maptrDS->GetRasterYSize();
+
+	mdGeotransform[0]=xOrigin;
+	mdGeotransform[1]=xRes;
+	mdGeotransform[2]=0.;
+	mdGeotransform[3]=yOrigin+yRes*nYsize;
+	mdGeotransform[4]=0.;
+	mdGeotransform[5]=-yRes;
+
+	mbGeoTransformSet = TRUE;
+	return CE_None;
+}
+CPLErr NARR_Dataset::getOriginFrom_NetCDF(double& xOrigin, double& yOrigin,
+				double& xRes,double& yRes)
+{
+
+	NcFile ncFile(mSrcFilename.c_str(),NcFile::ReadOnly);
+	if(!ncFile.is_valid())
+		return CE_Failure;
+
+	NcVar *Var=ncFile.get_var(msDatasetName.c_str());
+
+	if(!Var->is_valid())return CE_Failure;
+
+	int ndim=Var->num_dims();
+
+	if( ndim<2 )return CE_Failure;
+
+//	NcVar *VarX=ncFile.get_var((Var->get_dim(ndim-2))->name());//x dimension
+	NcVar *VarX=ncFile.get_var("x");
+	if(!VarX->is_valid())return CE_Failure;
+//	NcVar *VarY=ncFile.get_var((Var->get_dim(ndim-1))->name());//y dimension
+	NcVar *VarY=ncFile.get_var("y");
+
+	if(!VarX->is_valid())return CE_Failure;
+
+
+	NcType nxVarType=VarX->type();
+    switch( nxVarType )
+    {
+	case NC_FLOAT:
+    {
+    	float x[2];
+       	if (!VarX->get(x,2))return CE_Failure;
+     	xOrigin=x[0];
+    	xRes=fabs(x[1]-x[0]);
+    }
+	break;
+    case NC_DOUBLE:
+    {
+    	double x[2];
+       	if (!VarX->get(x,2))return CE_Failure;
+    	xOrigin=x[0];
+    	xRes=fabs(x[1]-x[0]);
+    }
+	break;
+    default:
+    	return CE_Failure;
+//    	break;}
+    }
+
+    NcType nyVarType=VarY->type();
+    switch( nyVarType )
+    {
+	case NC_FLOAT:
+    {
+    	float y[2];
+    	if (!VarY->get(y,2))return CE_Failure;
+    	yOrigin=y[0];
+    	yRes=fabs(y[1]-y[0]);
+    }
+	break;
+    case NC_DOUBLE:
+    {
+    	double y[2];
+    	if (!VarY->get(y,2))return CE_Failure;
+    	yOrigin=y[0];
+    	yRes=fabs(y[1]-y[0]);
+    }
+	break;
+    default:
+    	return CE_Failure;
+//	break;
+    }
+	return CE_None;
+}
+CPLErr NARR_Dataset::setGDALDataset(const int isSimple)
+{
+	if(!mpBandList.empty())
+	{
+		//Yuanzheng Shao
+	    //VRTDataset *poVDS = new VRTDataset(maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize());
+		VRTDataset *poVDS = (VRTDataset *)VRTCreate(maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize()); 
+		if(poVDS==NULL)
+    	{
+    		SetWCS_ErrorLocator("NARR_Dataset::setGDALDataset()");
+			WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to create VRT DataSet.");
+
+        	return CE_Failure;
+    	}
+
+		VRTSourcedRasterBand   *poVRTBand = NULL;
+		GDALRasterBand  *poSrcBand = NULL;
+		GDALDataType    eBandType;
+		for( unsigned int i = 0; i < mpBandList.size(); i++ )
+	    {
+			poSrcBand = maptrDS->GetRasterBand(mpBandList[i]);
+			if(poSrcBand==NULL)
+			{
+				GDALClose(poVDS);
+		    	{
+		    		SetWCS_ErrorLocator("NARR_Dataset::setGDALDataset()");
+		    		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to get Band data.");
+
+		        	return CE_Failure;
+		    	}
+			}
+			eBandType = poSrcBand->GetRasterDataType();
+		/* -------------------------------------------------------------------- */
+		/*      Create this band.                                               */
+		/* -------------------------------------------------------------------- */
+		    poVDS->AddBand( eBandType, NULL );
+		    poVRTBand = (VRTSourcedRasterBand *) poVDS->GetRasterBand( i+1 );
+
+			poVRTBand->SetNoDataValue( mdMissingValue );
+
+		    if(CE_None!=poVRTBand->AddSimpleSource( poSrcBand,0, 0,
+		    		maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize(), 0, 0,
+		    		maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize(), NULL,mdMissingValue ))
+			{
+				GDALClose(poVDS);
+		    	SetWCS_ErrorLocator("NARR_Dataset::setGDALDataset()");
+				WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to Add Simple Source into VRT DataSet.");
+
+		        return CE_Failure;
+		    }
+		}
+
+		if(mbGeoTransformSet)
+		{
+			poVDS->SetGeoTransform(mdGeotransform);
+			char *psTargetSRS;
+			moNativeCRS.exportToWkt(&psTargetSRS);
+			poVDS->SetProjection(psTargetSRS);
+			OGRFree( psTargetSRS );
+		}
+
+	    GDALClose(maptrDS.release());
+	    maptrDS.reset(poVDS);
+
+	}
+	return CE_None;
+}
+CPLErr NARR_Dataset::setMetaDataList(GDALDataset* hSrc)
+{
+	char** papszMetadata = hSrc->GetMetadata("");
+
+	mvtrMeteDataList.push_back("Product_Description=The image data be created by WCS from North American Regional Reanalysis(NetCDF/Lambert Conformal Conic Projection) data.");
+
+	char *tmp=NULL;
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#long_name").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("long_name="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#valid_range").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("valid_range="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#unpacked_valid_range").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("unpacked_valid_range="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#actual_range").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("actual_range="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#units").c_str());
+	if(tmp)mvtrMeteDataList.push_back("units="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#add_offset").c_str());
+	if(tmp)mvtrMeteDataList.push_back("add_offset="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#scale_factor").c_str());
+	if(tmp)mvtrMeteDataList.push_back("scale_factor="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#missing_value").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("missing_value="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#_FillValue").c_str());
+	if(tmp)mvtrMeteDataList.push_back("_FillValue="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#GRIB_id").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("GRIB_id="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#GRIB_name").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("GRIB_name="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#var_desc").c_str());
+	if(tmp)mvtrMeteDataList.push_back("var_desc="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#dataset").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("dataset="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#level_desc").c_str());
+	if(tmp)mvtrMeteDataList.push_back("level_desc="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#statistic").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("statistic="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#parent_stat").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("parent_stat="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#standard_name").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("parent_stat="+(string)tmp);
+	tmp = (char*)CSLFetchNameValue( (char**)papszMetadata, (msDatasetName+"#cell_methods").c_str() );
+	if(tmp)mvtrMeteDataList.push_back("parent_stat="+(string)tmp);
+	return CE_None;
+}

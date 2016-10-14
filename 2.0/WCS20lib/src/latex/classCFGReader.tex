@@ -1,0 +1,112 @@
+\hypertarget{classCFGReader}{
+\section{CFGReader Class Reference}
+\label{classCFGReader}\index{CFGReader@{CFGReader}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classCFGReader_a391b53ee7d14196b004194b7baed13eb}{CFGReader} (const string \&configfilename)
+\begin{DoxyCompactList}\small\item\em Constructor for \hyperlink{classCFGReader}{CFGReader}. \end{DoxyCompactList}\item 
+\hypertarget{classCFGReader_a9388e2bdbb574088ede1e11c73d62315}{
+\hyperlink{classKVP}{KVP} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const int index)}
+\label{classCFGReader_a9388e2bdbb574088ede1e11c73d62315}
+
+\item 
+\hypertarget{classCFGReader_a34df69c015159cb2859ec2c9f29d41bd}{
+int {\bfseries size} ()}
+\label{classCFGReader_a34df69c015159cb2859ec2c9f29d41bd}
+
+\item 
+string \hyperlink{classCFGReader_a26e27583f19cdcb617adfe3daed18348}{getValue} (const string \&keyname)
+\begin{DoxyCompactList}\small\item\em Fetch a configured item's value. \end{DoxyCompactList}\item 
+string \hyperlink{classCFGReader_aba28b56de686e116581503a10e626b53}{getValue} (const string \&keyname, const string \&defaultvalue)
+\begin{DoxyCompactList}\small\item\em Fetch a configured item's value, with default value. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classCFGReader_a017e1dd2fe31bad925a1a2e00bd57503}{
+vector$<$ \hyperlink{classKVP}{KVP} $>$ {\bfseries kvps}}
+\label{classCFGReader_a017e1dd2fe31bad925a1a2e00bd57503}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classCFGReader_a391b53ee7d14196b004194b7baed13eb}{
+\index{CFGReader@{CFGReader}!CFGReader@{CFGReader}}
+\index{CFGReader@{CFGReader}!CFGReader@{CFGReader}}
+\subsubsection[{CFGReader}]{\setlength{\rightskip}{0pt plus 5cm}CFGReader::CFGReader (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{configfilename}
+\end{DoxyParamCaption}
+)}}
+\label{classCFGReader_a391b53ee7d14196b004194b7baed13eb}
+
+
+Constructor for \hyperlink{classCFGReader}{CFGReader}. 
+
+This method is used to load the configuration file for WCS. Each configuration item looks like a key-\/value pair, \hyperlink{classCFGReader_a391b53ee7d14196b004194b7baed13eb}{CFGReader()} will read the file to memory and store the parameters to a \hyperlink{classKVP}{KVP} array.
+
+
+\begin{DoxyParams}{Parameters}
+{\em configfilename} & The full path of the configuration file. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classCFGReader_a26e27583f19cdcb617adfe3daed18348}{
+\index{CFGReader@{CFGReader}!getValue@{getValue}}
+\index{getValue@{getValue}!CFGReader@{CFGReader}}
+\subsubsection[{getValue}]{\setlength{\rightskip}{0pt plus 5cm}string CFGReader::getValue (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{keyname}
+\end{DoxyParamCaption}
+)}}
+\label{classCFGReader_a26e27583f19cdcb617adfe3daed18348}
+
+
+Fetch a configured item's value. 
+
+This method is used to fetch a items value from a configuration file.
+
+
+\begin{DoxyParams}{Parameters}
+{\em keyname} & The item's name.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result string. 
+\end{DoxyReturn}
+\hypertarget{classCFGReader_aba28b56de686e116581503a10e626b53}{
+\index{CFGReader@{CFGReader}!getValue@{getValue}}
+\index{getValue@{getValue}!CFGReader@{CFGReader}}
+\subsubsection[{getValue}]{\setlength{\rightskip}{0pt plus 5cm}string CFGReader::getValue (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{keyname, }
+\item[{const string \&}]{defaultvalue}
+\end{DoxyParamCaption}
+)}}
+\label{classCFGReader_aba28b56de686e116581503a10e626b53}
+
+
+Fetch a configured item's value, with default value. 
+
+This method is used to fetch a items value from a configuration file, if not found, use the default value.
+
+
+\begin{DoxyParams}{Parameters}
+{\em keyname} & The item's name.\\
+\hline
+{\em defaultvalue} & The item's default value.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The result string. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+wcsUtil.h\item 
+wcsUtil.cpp\end{DoxyCompactItemize}

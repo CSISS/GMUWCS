@@ -1,0 +1,411 @@
+\hypertarget{classNC__GOES__Dataset}{
+\section{NC\_\-GOES\_\-Dataset Class Reference}
+\label{classNC__GOES__Dataset}\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}}
+}
+
+
+\hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process NOAA GOES data.  
+
+
+
+
+{\ttfamily \#include \char`\"{}NC\_\-GOES\_\-Dataset.h\char`\"{}}
+
+Inheritance diagram for NC\_\-GOES\_\-Dataset:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classNC__GOES__Dataset}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+CPLErr \hyperlink{classNC__GOES__Dataset_afc729a63579f05daca3ebda085762026}{SetGCPGeoRef4VRTDataset} (GDALDataset $\ast$)
+\begin{DoxyCompactList}\small\item\em Set the GCP array for the VRT dataset. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classNC__GOES__Dataset_a2834229e8688e7ba0a8a135d8620d9a4}{SetGeoBBoxAndGCPs} (GDALDataset $\ast$hSrcDS)
+\begin{DoxyCompactList}\small\item\em Set the native geographical bounding box and GCP array for a GOES data. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classNC__GOES__Dataset_ae413433045908f2bd7d75a1c3c31fb03}{RectifyGOESDataSet} ()
+\begin{DoxyCompactList}\small\item\em Convert the GOES dataset from satellite CRS project to grid CRS. \end{DoxyCompactList}\item 
+\hypertarget{classNC__GOES__Dataset_ae16362490482905d96a92f6f09763601}{
+CPLErr {\bfseries setResampleStandard} (GDALDataset $\ast$hSrcDS, int \&xRSValue, int \&yRSValue)}
+\label{classNC__GOES__Dataset_ae16362490482905d96a92f6f09763601}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_ae3546f1308a32fa402214b71d386a875}{
+int {\bfseries isValidLatitude} (const double \&lat)}
+\label{classNC__GOES__Dataset_ae3546f1308a32fa402214b71d386a875}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a5a32111ae54572d57812acb65cbce762}{
+int {\bfseries isValidLongitude} (const double \&lon)}
+\label{classNC__GOES__Dataset_a5a32111ae54572d57812acb65cbce762}
+
+\item 
+virtual CPLErr \hyperlink{classNC__GOES__Dataset_ada85679c832ad2ff971d6291ccf9b8f8}{SetGeoTransform} ()
+\begin{DoxyCompactList}\small\item\em Set the affine GeoTransform matrix for a GOES data. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classNC__GOES__Dataset_ae5e798ca0bb105513a80fcdb0b5cf9d8}{SetMetaDataList} (GDALDataset $\ast$hSrcDS)
+\begin{DoxyCompactList}\small\item\em Set the metadata list for this coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classNC__GOES__Dataset_abc062e894fdf1731f5b258091ffcc5ea}{SetNativeCRS} ()
+\begin{DoxyCompactList}\small\item\em Set the Native CRS for a GOES dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classNC__GOES__Dataset_a2ec90aa02b68185edbdd1fa00727ed10}{SetGDALDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Set the GDALDataset object to GOES Imager and Sounder dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classNC__GOES__Dataset_a128b874278c0ad4dd093baf22bf8d23f}{InitialDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Initialize the GOES dataset with NetCDF format. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classNC__GOES__Dataset_a5d2fa4d635bae04a1b488b1917dd7ab3}{GetGeoMinMax} (double geoMinMax\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Get the min/max coordinates of laitutude and longitude. \end{DoxyCompactList}\item 
+\hyperlink{classNC__GOES__Dataset_a481c60e90f61c2ff2fa82dfe78eed0ba}{NC\_\-GOES\_\-Dataset} (const string \&id, vector$<$ int $>$ \&rBandList)
+\begin{DoxyCompactList}\small\item\em Create an \hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} object. \end{DoxyCompactList}\item 
+virtual \hyperlink{classNC__GOES__Dataset_a89368fa51f93a6eb45529d4c484cee64}{$\sim$NC\_\-GOES\_\-Dataset} ()
+\begin{DoxyCompactList}\small\item\em Destroy an open \hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classNC__GOES__Dataset_af4bb45c48b0138a9e78c9649219232ec}{
+string {\bfseries m\_\-ncLatDataSetName}}
+\label{classNC__GOES__Dataset_af4bb45c48b0138a9e78c9649219232ec}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a422d930b4d65dead03d2c3bdf214042c}{
+string {\bfseries m\_\-ncLonDataSetName}}
+\label{classNC__GOES__Dataset_a422d930b4d65dead03d2c3bdf214042c}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_aa59afbdd42da66b22ce325860ac09b8f}{
+string {\bfseries m\_\-ncCoverageIDName}}
+\label{classNC__GOES__Dataset_aa59afbdd42da66b22ce325860ac09b8f}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a5dd4cda3caa1dc0f311a4d3abe2430bd}{
+int {\bfseries mi\_\-RectifiedImageXSize}}
+\label{classNC__GOES__Dataset_a5dd4cda3caa1dc0f311a4d3abe2430bd}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a8182e9221e03787515fc6dc7a4a0a3b8}{
+int {\bfseries mi\_\-RectifiedImageYSize}}
+\label{classNC__GOES__Dataset_a8182e9221e03787515fc6dc7a4a0a3b8}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a0b59f3c7174c3459b95bf182563f822a}{
+int {\bfseries mi\_\-GoesSrcImageXSize}}
+\label{classNC__GOES__Dataset_a0b59f3c7174c3459b95bf182563f822a}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a488313f9fd495daeafea1db6924174b5}{
+int {\bfseries mi\_\-GoesSrcImageYSize}}
+\label{classNC__GOES__Dataset_a488313f9fd495daeafea1db6924174b5}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a15b98e620c10526415c7bf1a3deb0b89}{
+double {\bfseries mb\_\-LatLonBBox} \mbox{[}4\mbox{]}}
+\label{classNC__GOES__Dataset_a15b98e620c10526415c7bf1a3deb0b89}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a26e7b6a6c1e71e7d07a36e48b802593d}{
+double {\bfseries mdSrcGeoMinX}}
+\label{classNC__GOES__Dataset_a26e7b6a6c1e71e7d07a36e48b802593d}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a706dc5472f1f32bd949a00d7e6d0ff53}{
+double {\bfseries mdSrcGeoMinY}}
+\label{classNC__GOES__Dataset_a706dc5472f1f32bd949a00d7e6d0ff53}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a4d953ce0c73a23c4e7de48db31f1c486}{
+double {\bfseries mdSrcGeoMaxX}}
+\label{classNC__GOES__Dataset_a4d953ce0c73a23c4e7de48db31f1c486}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_aea7c01d4ca66cad665f0f3b209b5b430}{
+double {\bfseries mdSrcGeoMaxY}}
+\label{classNC__GOES__Dataset_aea7c01d4ca66cad665f0f3b209b5b430}
+
+\item 
+\hypertarget{classNC__GOES__Dataset_a79fbf36f7e91c498b6d232c63a662be7}{
+vector$<$ GDAL\_\-GCP $>$ {\bfseries m\_\-gdalGCPs}}
+\label{classNC__GOES__Dataset_a79fbf36f7e91c498b6d232c63a662be7}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process NOAA GOES data. 
+
+GOES satellites provide the kind of continuous monitoring necessary for intensive data analysis. They circle the Earth in a geosynchronous orbit, which means they orbit the equatorial plane of the Earth at a speed matching the Earth's rotation. This allows them to hover continuously over one position on the surface. The geosynchronous plane is about 35,800 km (22,300 miles) above the Earth, high enough to allow the satellites a full-\/disc view of the Earth. Because they stay above a fixed spot on the surface, they provide a constant vigil for the atmospheric \char`\"{}triggers\char`\"{} for severe weather conditions such as tornadoes, flash floods, hail storms, and hurricanes. When these conditions develop the GOES satellites are able to monitor storm development and track their movements.
+
+GOES satellite imagery is also used to estimate rainfall during the thunderstorms and hurricanes for flash flood warnings, as well as estimates snowfall accumulations and overall extent of snow cover. Such data help meteorologists issue winter storm warnings and spring snow melt advisories. Satellite sensors also detect ice fields and map the movements of sea and lake ice.
+
+For more inforamtion about NOAA GOES data, please access \href{http://www.oso.noaa.gov/GOES/}{\tt http://www.oso.noaa.gov/GOES/}
+
+\hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, which is used to process GOES Imager and Sounder products. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classNC__GOES__Dataset_a481c60e90f61c2ff2fa82dfe78eed0ba}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}}
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{NC\_\-GOES\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}NC\_\-GOES\_\-Dataset::NC\_\-GOES\_\-Dataset (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{id, }
+\item[{vector$<$ int $>$ \&}]{rBandList}
+\end{DoxyParamCaption}
+)}}
+\label{classNC__GOES__Dataset_a481c60e90f61c2ff2fa82dfe78eed0ba}
+
+
+Create an \hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} object. 
+
+This is the accepted method of creating a \hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} object and allocating all resources associated with it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The coverage identifier.\\
+\hline
+{\em rBandList} & The field list selected for this coverage. For TRMM daily data, the user could specify multiple days range in request. Each day is seemed as one field.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} object. 
+\end{DoxyReturn}
+\hypertarget{classNC__GOES__Dataset_a89368fa51f93a6eb45529d4c484cee64}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!$\sim$NC\_\-GOES\_\-Dataset@{$\sim$NC\_\-GOES\_\-Dataset}}
+\index{$\sim$NC\_\-GOES\_\-Dataset@{$\sim$NC\_\-GOES\_\-Dataset}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{$\sim$NC\_\-GOES\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}NC\_\-GOES\_\-Dataset::$\sim$NC\_\-GOES\_\-Dataset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classNC__GOES__Dataset_a89368fa51f93a6eb45529d4c484cee64}
+
+
+Destroy an open \hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} object. 
+
+This is the accepted method of closing a \hyperlink{classNC__GOES__Dataset}{NC\_\-GOES\_\-Dataset} dataset and deallocating all resources associated with it. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classNC__GOES__Dataset_a5d2fa4d635bae04a1b488b1917dd7ab3}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!GetGeoMinMax@{GetGeoMinMax}}
+\index{GetGeoMinMax@{GetGeoMinMax}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{GetGeoMinMax}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::GetGeoMinMax (
+\begin{DoxyParamCaption}
+\item[{double}]{geoMinMax\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classNC__GOES__Dataset_a5d2fa4d635bae04a1b488b1917dd7ab3}
+
+
+Get the min/max coordinates of laitutude and longitude. 
+
+The method will fetch the min/max coordinates of laitutude and longitude.
+
+
+\begin{DoxyParams}{Parameters}
+{\em geoMinMax} & an existing four double buffer into which the native geographical bounding box values will be placed.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a66a65ce60f813d0ef683919a098b8a98}{AbstractDataset}.
+
+\hypertarget{classNC__GOES__Dataset_a128b874278c0ad4dd093baf22bf8d23f}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!InitialDataset@{InitialDataset}}
+\index{InitialDataset@{InitialDataset}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{InitialDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::InitialDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classNC__GOES__Dataset_a128b874278c0ad4dd093baf22bf8d23f}
+
+
+Initialize the GOES dataset with NetCDF format. 
+
+This method is the implementation for initializing a GOES dataset with NetCDF format. Within this method, \hyperlink{classNC__GOES__Dataset_abc062e894fdf1731f5b258091ffcc5ea}{SetNativeCRS()}, \hyperlink{classNC__GOES__Dataset_ada85679c832ad2ff971d6291ccf9b8f8}{SetGeoTransform()} and \hyperlink{classNC__GOES__Dataset_a2ec90aa02b68185edbdd1fa00727ed10}{SetGDALDataset()} will be called to initialize an GOES dataset.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a45924895c6bf26c7f75d503b8f6e388a}{AbstractDataset}.
+
+\hypertarget{classNC__GOES__Dataset_ae413433045908f2bd7d75a1c3c31fb03}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!RectifyGOESDataSet@{RectifyGOESDataSet}}
+\index{RectifyGOESDataSet@{RectifyGOESDataSet}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{RectifyGOESDataSet}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::RectifyGOESDataSet (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classNC__GOES__Dataset_ae413433045908f2bd7d75a1c3c31fb03}
+
+
+Convert the GOES dataset from satellite CRS project to grid CRS. 
+
+The method will convert the GOES dataset from satellite CRS project to grid CRS based on GDAL API GDALReprojectImage;
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classNC__GOES__Dataset_afc729a63579f05daca3ebda085762026}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!SetGCPGeoRef4VRTDataset@{SetGCPGeoRef4VRTDataset}}
+\index{SetGCPGeoRef4VRTDataset@{SetGCPGeoRef4VRTDataset}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{SetGCPGeoRef4VRTDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::SetGCPGeoRef4VRTDataset (
+\begin{DoxyParamCaption}
+\item[{GDALDataset $\ast$}]{poVDS}
+\end{DoxyParamCaption}
+)}}
+\label{classNC__GOES__Dataset_afc729a63579f05daca3ebda085762026}
+
+
+Set the GCP array for the VRT dataset. 
+
+This method is used to set the GCP array to created VRT dataset based on GDAL method SetGCPs().
+
+
+\begin{DoxyParams}{Parameters}
+{\em poVDS} & The VRT dataset.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classNC__GOES__Dataset_a2ec90aa02b68185edbdd1fa00727ed10}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!SetGDALDataset@{SetGDALDataset}}
+\index{SetGDALDataset@{SetGDALDataset}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{SetGDALDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::SetGDALDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classNC__GOES__Dataset_a2ec90aa02b68185edbdd1fa00727ed10}
+
+
+Set the GDALDataset object to GOES Imager and Sounder dataset. 
+
+This method is used to set the GOES Imager and Sounder dataset based on GDAL class VRTDataset.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}{AbstractDataset}.
+
+\hypertarget{classNC__GOES__Dataset_a2834229e8688e7ba0a8a135d8620d9a4}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!SetGeoBBoxAndGCPs@{SetGeoBBoxAndGCPs}}
+\index{SetGeoBBoxAndGCPs@{SetGeoBBoxAndGCPs}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{SetGeoBBoxAndGCPs}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::SetGeoBBoxAndGCPs (
+\begin{DoxyParamCaption}
+\item[{GDALDataset $\ast$}]{poVDS}
+\end{DoxyParamCaption}
+)}}
+\label{classNC__GOES__Dataset_a2834229e8688e7ba0a8a135d8620d9a4}
+
+
+Set the native geographical bounding box and GCP array for a GOES data. 
+
+The method will set the native geographical bounding box by comparing the coordinates values existed in longitude and latitude field.
+
+
+\begin{DoxyParams}{Parameters}
+{\em poVDS} & The GDAL dataset returned by calling GDALOpen() method.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classNC__GOES__Dataset_ada85679c832ad2ff971d6291ccf9b8f8}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!SetGeoTransform@{SetGeoTransform}}
+\index{SetGeoTransform@{SetGeoTransform}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{SetGeoTransform}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::SetGeoTransform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classNC__GOES__Dataset_ada85679c832ad2ff971d6291ccf9b8f8}
+
+
+Set the affine GeoTransform matrix for a GOES data. 
+
+The method will set a GeoTransform matrix for a GOES data by parsing the coordinates values existed in longitude and latitude field.
+
+The CRS for the bounding box is EPSG:4326.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}{AbstractDataset}.
+
+\hypertarget{classNC__GOES__Dataset_ae5e798ca0bb105513a80fcdb0b5cf9d8}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!SetMetaDataList@{SetMetaDataList}}
+\index{SetMetaDataList@{SetMetaDataList}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{SetMetaDataList}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::SetMetaDataList (
+\begin{DoxyParamCaption}
+\item[{GDALDataset $\ast$}]{hSrcDS}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classNC__GOES__Dataset_ae5e798ca0bb105513a80fcdb0b5cf9d8}
+
+
+Set the metadata list for this coverage. 
+
+The method will set the metadata list for the coverage based on its corresponding GDALDataset object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hSrc} & the GDALDataset object corresponding to coverage.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_af3f0b55b14f660b79751bf88489a2c10}{AbstractDataset}.
+
+\hypertarget{classNC__GOES__Dataset_abc062e894fdf1731f5b258091ffcc5ea}{
+\index{NC\_\-GOES\_\-Dataset@{NC\_\-GOES\_\-Dataset}!SetNativeCRS@{SetNativeCRS}}
+\index{SetNativeCRS@{SetNativeCRS}!NC_GOES_Dataset@{NC\_\-GOES\_\-Dataset}}
+\subsubsection[{SetNativeCRS}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr NC\_\-GOES\_\-Dataset::SetNativeCRS (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classNC__GOES__Dataset_abc062e894fdf1731f5b258091ffcc5ea}
+
+
+Set the Native CRS for a GOES dataset. 
+
+The method will set the CRS for a GOES dataset as an native CRS.
+
+Since the original GOES data adopt satellite CRS to recored its value, like MODIS swath data, each data point has its corresponding latitude and longitude value, those coordinates could be fetched in another two fields.
+
+The native CRS for GOES Imager and Sounder data is assigned to EPSG:4326 if both the latitude and longitude are existed.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}{AbstractDataset}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+NC\_\-GOES\_\-Dataset.h\item 
+NC\_\-GOES\_\-Dataset.cpp\end{DoxyCompactItemize}

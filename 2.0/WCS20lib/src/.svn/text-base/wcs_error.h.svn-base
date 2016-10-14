@@ -1,0 +1,36 @@
+/*
+ * wcs_error.h
+ *
+ *  Created on: Apr 22, 2009
+ *      Author: pli
+ */
+
+#ifndef WCS_ERROR_H_
+#define WCS_ERROR_H_
+
+#include <cpl_error.h>
+#include <string>
+
+using namespace std;
+
+#define OGC_WCS_OperationNotSupported  		300
+#define OGC_WCS_MissingParameterValue  		301
+#define OGC_WCS_InvalidParameterValue  		302
+#define OGC_WCS_VersionNegotiationFailed	303
+#define OGC_WCS_InvalidUpdateSequence		304
+#define OGC_WCS_OptionNotSupported			305
+#define OGC_WCS_NoApplicableCode			306
+
+
+
+
+void CPL_DLL CPL_STDCALL  WCS_Error(CPLErr,int,const char*,...);
+void CPL_DLL CPL_STDCALL SetWCS_ErrorLocator(const char* loc);
+void CPL_DLL CPL_STDCALL  WCS_ErrorHandler(CPLErr,int,const char*);
+string CPL_DLL CPL_STDCALL  GetWCS_ErrorMsg();
+
+int	WCST_GetSoapMsgTrns();
+void WCST_SetSoapMsgTrns(int);
+
+#define WCS_Error  CPLError
+#endif /* WCS_ERROR_H_ */

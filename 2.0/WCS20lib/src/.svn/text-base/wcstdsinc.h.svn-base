@@ -1,0 +1,23 @@
+/*
+ * wcstdsinc.h
+ *
+ *  Created on: Apr 23, 2009
+ *      Author: pli
+ */
+
+#ifndef WCSTDSINC_H_
+#define WCSTDSINC_H_
+
+#include "Goes_Dataset.h"
+#include "NARR_Dataset.h"
+#include "HE4_SWATH_Dataset.h"
+#include "HE4_GRID_Dataset.h"
+#include "GeoTiff_Dataset.h"
+#include "GeoJP2.h"
+#include "HDF4Image_Dataset.h"
+#include "Windsat_Dataset.h"
+#include "Aura_Dataset.h"
+#include "AsdtaSmoke_Dataset.h"
+#include "GaspAOD_Dataset.h"
+
+#endif /* WCSTDSINC_H_ */

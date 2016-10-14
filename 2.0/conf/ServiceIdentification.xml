@@ -1,0 +1,26 @@
+  <ows:ServiceIdentification>
+    <ows:Title>GMU CSISS GMLJP2 WCS 2.0 for LIDAR data (NITF formats)</ows:Title>
+    <ows:Abstract>WCS 2.0 provided by the Center for Spatial Information Science and Systems of George Mason University. During OGC OWS 9 phase, CSISS is going to provide a GMLJP2-enabled WCS 2.0 instance which supports NITF Lidar data.</ows:Abstract>
+    <ows:Keywords>
+      <ows:Keyword>GMLJP2 WCS</ows:Keyword>
+      <ows:Keyword>WCS 2.0</ows:Keyword>
+      <ows:Keyword>OGC</ows:Keyword>
+      <ows:Keyword>GMU</ows:Keyword>
+      <ows:Keyword>CSISS</ows:Keyword>
+      <ows:Keyword>OWS-9</ows:Keyword>
+    </ows:Keywords>
+    <ows:ServiceType codeSpace="OGC">OGC WCS</ows:ServiceType>
+    <ows:ServiceTypeVersion>2.0.0</ows:ServiceTypeVersion>
+    <ows:Profile>http://www.opengis.net/spec/WCS_profile_earth-observation/1.0/conf/ap-eo</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/WCS/2.0/conf/core</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/WCS_protocol-binding_get-kvp/1.0</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/WCS_protocol-binding_post-xml/1.0</ows:Profile>
+    <ows:Profile>http://www.placeholder.com/EPSG</ows:Profile>
+    <ows:Profile>http://www.placeholder.com/IMAGECRS</ows:Profile>
+    <ows:Profile>http://www.opengis.net/spec/WCS_coverage-encoding_geotiff/1.0/</ows:Profile>
+    <ows:Profile>http://www.placeholder.com/GML_and_GeoTIFF</ows:Profile>
+    <ows:Profile>http://www.placeholder.com/SCALING</ows:Profile>
+    <ows:Profile>http://www.placeholder.com/INTERPOLATION</ows:Profile>
+    <ows:Fees>None</ows:Fees>
+    <ows:AccessConstraints>None</ows:AccessConstraints>
+  </ows:ServiceIdentification>

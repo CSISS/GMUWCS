@@ -1,0 +1,140 @@
+#include "Windsat_Dataset.h"
+
+string Windset_Datasat::WindSet_CRS_WKT="PROJCS[\"NSIDC_ EASE-Grid_ Global\",\
+		GEOGCS[\"Unspecified_datum_based_upon_the_International_1924_Authalic_Sphere\",\
+		DATUM[\"based_on_International_1924_Authalic_Sphere\",\
+		SPHEROID[\"International_1924_Authalic_Sphere\", 6371228.0,0.0,\
+		AUTHORITY[\"EPSG\",\"7057\"]],AUTHORITY[\"EPSG\",\"6053\"]],\
+		PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"Decimal_Degree\",0.0174532925199433,\
+		AUTHORITY[\"EPSG\",\"9108\"]],AXIS[\"Lat\",NORTH],\
+		AXIS[\"Long\",EAST],AUTHORITY[\"OGP\",\"4053\"]],\
+		PROJECTION[\"Cylindrical_Equal_Area\"],\
+		PARAMETER[\"central_meridian\",0],PARAMETER[\"standard_parallel_1\",30],\
+		PARAMETER[\"false_easting\",0],\
+		PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,\
+		AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"E\",EAST],AXIS[\"N\",NORTH],\
+		AUTHORITY[\"OGP\",\"3410\"]]";
+
+static const  int nWidthImage = 1383;
+static const  int nHeightImage = 586;
+
+static const  double dOriginalX = -17334193.5375;
+static const  double dOriginalY = 7344784.8250;
+static const  double dResolution = 25067.525;
+
+Windset_Datasat::Windset_Datasat(void)
+{
+}
+
+Windset_Datasat::~Windset_Datasat(void)
+{
+}
+
+
+Windset_Datasat::Windset_Datasat(const string& id, vector<int> &rBandList):
+	AbstractDataset(id, rBandList)
+{
+	mdMissingValue = -999;
+	mbGeoTransformSet = FALSE;
+}
+
+/*
+ *	Coverage ID tag with : sm1||CLS1||tm1||ts1
+ *	e.g. WINDSET:"xxxxx.sml":sml
+ *  	sm is soil moisture;
+ *  	ts is the land surface temperature;
+ *  	cls is the land type;
+ * 	tm is the observation time
+*/
+CPLErr Windset_Datasat::initialDataset(const int isSimple)
+{
+	vector<string> strSet;
+	unsigned int n=csvburstCpp(ms_CoverageID, strSet,':');
+	if(n!=3) {
+		SetWCS_ErrorLocator("Windset_Datasat::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Incorrect coverage ID.");
+		return CE_Failure;
+	}
+
+	if(EQUAL( strSet[0].c_str(), "WINDSAT" ) ) {
+		mSrcFilename = strSet[1];
+		msDatasetName = strSet[2];
+		msDataTypeName = strSet[0];
+
+		mSrcFilename = myStrTrimsIn(mSrcFilename," \'\"");
+		if(EQUAL(msDatasetName.c_str(), "sm1") || EQUAL(msDatasetName.c_str(),"ts1") ||
+			EQUAL(msDatasetName.c_str(), "sm0") || EQUAL(msDatasetName.c_str(), "sm0") ||
+			EQUAL(msDatasetName.c_str(),"wc0") || EQUAL(msDatasetName.c_str(),"wc1"))
+			meDataType = GDT_Float32;
+	    else if(EQUAL(msDatasetName.c_str(), "cls1") || EQUAL(msDatasetName.c_str(), "cls0"))
+	    	meDataType = GDT_Int16;
+	    else if (EQUAL(msDatasetName.c_str(), "tm1") || EQUAL(msDatasetName.c_str(), "tm0"))
+	    	meDataType = GDT_Float64;
+	    else {
+	    	SetWCS_ErrorLocator("Windset_Datasat::initialDataset()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Invalid windsat data type.");
+			return CE_Failure;
+	    }
+	}
+	else {
+		SetWCS_ErrorLocator("Windset_Datasat::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "This dataset is not Windsat data.");
+		return CE_Failure;
+	}
+
+	if(CE_None != setGDALDataset(isSimple)) {
+		GDALClose(maptrDS.release());
+    		return CE_Failure;
+	}
+
+	return CE_None;
+}
+
+CPLErr Windset_Datasat::setGDALDataset(const int isSimple)
+{
+	FILE *fp;
+	fp = fopen( mSrcFilename.c_str(), "rb" );
+	if(fp == NULL) {
+	return CE_Failure;
+	}
+
+	fseek(fp,0,SEEK_END);
+	size_t lSize = ftell(fp);
+	rewind(fp);
+	char* buffer = (char*) malloc(sizeof(char)*lSize);
+	if(buffer == NULL)
+	return CE_Failure;
+
+	size_t result = fread(buffer,1,lSize,fp);
+	if(result != lSize)
+	return CE_Failure;
+
+	mpBandList.push_back(1);
+	char outPrint[256];
+	sprintf(outPrint,"MEM:::DATAPOINTER=%d,PIXELS=%d,LINES=%d,DATATYPE=%d",(int)buffer,nWidthImage,nHeightImage,meDataType);
+	GDALDataset* memSet = (GDALDataset*)GDALOpenShared(outPrint,GA_ReadOnly);
+	if(NULL == memSet) {
+		return CE_Failure;
+	}
+
+	memSet->SetProjection(WindSet_CRS_WKT.c_str());
+	mdGeotransform[0] = dOriginalX;
+	mdGeotransform[1] = dResolution;
+	mdGeotransform[2] = 0;
+	mdGeotransform[3] = dOriginalY;
+	mdGeotransform[4] = 0;
+	mdGeotransform[5] = -dResolution;
+	memSet->SetGeoTransform(mdGeotransform);
+	memSet->GetRasterBand(1)->SetNoDataValue(mdMissingValue);
+
+	mbGeoTransformSet = TRUE;
+
+	char* tmp = (char*)WindSet_CRS_WKT.c_str();
+	moNativeCRS.importFromWkt(&tmp);
+
+	fclose(fp);
+	//GDALClose(maptrDS.release());
+	maptrDS.reset(memSet);
+	return CE_None;
+}
+

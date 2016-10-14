@@ -1,0 +1,305 @@
+#include "GeoTiff_Dataset.h"
+
+using namespace std;
+GeoTiff_Dataset::GeoTiff_Dataset()
+{
+
+}
+
+GeoTiff_Dataset::GeoTiff_Dataset(const string& id, vector<int> &rBandList):
+	AbstractDataset(id,rBandList){
+	mdMissingValue = 0;
+	mbGeoTransformSet=FALSE;
+}
+
+GeoTiff_Dataset::~GeoTiff_Dataset()
+{
+
+}
+
+CPLErr GeoTiff_Dataset::initialDataset(const int isSimple)
+{
+	mbIsVirtualDS=FALSE;
+
+	if(ms_CoverageID.empty()||ms_CoverageID=="")
+	{
+		SetWCS_ErrorLocator("GeoTiff_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to transform coordinates.");
+
+    	return CE_Failure;
+	}
+
+	vector<string> strSet;
+	//GEOTIFF:"C:/data/data.tif":Band
+	unsigned int n=csvburstCpp(ms_CoverageID, strSet,':');
+
+	if( n == 1  )
+	{
+		msDatasetName="BAND";
+		msDataTypeName="GEOTIFF";
+		mSrcFilename=ms_CoverageID;
+	}
+	else if( n ==3 && EQUAL( strSet[0].c_str(), "GEOTIFF" ))
+	{
+		mSrcFilename = strSet[1] ;
+		msDatasetName= strSet[2] ;
+		msDataTypeName= "GEOTIFF";
+	}
+    else
+	{
+		SetWCS_ErrorLocator("GeoTiff_Dataset::initialDataset()");
+    	WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Incorrect Coverage ID.");
+
+    	return CE_Failure;
+	}
+
+	mSrcFilename = myStrTrimsIn(mSrcFilename," \'\"");
+
+	GDALDataset* pSrc = (GDALDataset*)GDALOpen( mSrcFilename.c_str(), GA_ReadOnly );
+	if( pSrc == NULL )
+	{
+		SetWCS_ErrorLocator("GeoTiff_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to open file \"%s\".",mSrcFilename.c_str());
+
+    	return CE_Failure;
+	}
+
+	msNativeFormat=GDALGetDriverShortName(pSrc->GetDriver());
+
+	if(!EQUAL(msNativeFormat.c_str(),"GTIFF"))
+	{
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("GeoTiff_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to get Driver scription from GDAL DataSet.");
+
+    	return CE_Failure;
+	}
+
+	//set metalist
+	setMetaDataList(pSrc);
+
+	//set noValue
+	unsigned int nBandCount = pSrc->GetRasterCount();
+	if(nBandCount<1)
+	{
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("GeoTiff_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"No Band in source DataSet.");
+
+    	return CE_Failure;
+	}
+	int iSuc = 0;
+	double noValue = pSrc->GetRasterBand(1)->GetNoDataValue(&iSuc);
+	if(iSuc) mdMissingValue = noValue;
+
+	maptrDS.reset(pSrc);
+
+	//set MissingValue
+	if(Find_Compare_SubStr(mSrcFilename,"SRTM_u01_"))
+	{
+		mdMissingValue = -32768;
+	}
+	else if(Find_Compare_SubStr(mSrcFilename,"SRTM_f03_"))
+	{
+		mdMissingValue = -32767;
+	}
+	else
+	{
+		mdMissingValue = 0;
+	}
+
+	//set moNativeCRS and mGeoTransform
+	if(CE_None!=setNativeCRS()||
+		CE_None!=setGeoTransform()||
+		CE_None!=setGDALDataset(isSimple))
+	{
+		GDALClose(maptrDS.release());
+    	return CE_Failure;
+	}
+
+	if(Find_Compare_SubStr(mSrcFilename,"AST_L1B") && Find_Compare_SubStr(mSrcFilename,"B03B"))
+	{
+		GDALDriverH hDriver = GDALGetDriverByName("MEM");
+		GDALDataType eDT = GDALGetRasterDataType(pSrc->GetRasterBand(1));
+		GDALDataset* hTempDS = (GDALDataset*)GDALCreate( hDriver, "", maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize(), nBandCount, eDT, NULL );
+
+		hTempDS->SetGeoTransform(mdGeotransform);
+		char *nativeCRS_WKT;
+		moNativeCRS.exportToWkt(&nativeCRS_WKT);
+		hTempDS->SetProjection(nativeCRS_WKT);
+
+		if (CE_None != GDALReprojectImage(pSrc, NULL, hTempDS, nativeCRS_WKT, GRA_NearestNeighbour, 0, 0.125, NULL, NULL, NULL))
+		{
+			SetWCS_ErrorLocator("GeoTiff_Dataset::setGDALDataset()");
+    		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to re-project AST_L1B B03B data.");
+
+        	return CE_Failure;
+		}
+
+		GDALClose(maptrDS.release());
+		maptrDS.reset(hTempDS);
+	}
+
+	return CE_None;
+}
+
+CPLErr GeoTiff_Dataset::setNativeCRS()
+{
+	if(CE_None==AbstractDataset::setNativeCRS())
+		return CE_None;
+	else if(Find_Compare_SubStr(mSrcFilename,"AST_L1B") && Find_Compare_SubStr(mSrcFilename,"B03B"))
+	{
+		int nGCPs = maptrDS->GetGCPCount();
+		char *pGCPSRS = (char*) maptrDS->GetGCPProjection();
+		const GDAL_GCP* pGCPList = maptrDS->GetGCPs();
+		int utmzone = 0;
+		double averageLatitude = 0;
+		if (nGCPs > 1 && pGCPSRS && *pGCPSRS != '\0' && NULL != pGCPList)
+		{
+			double xmin = 360, xmax=-360, ymin=180, ymax=-180;
+			for(int i = 0; i < nGCPs; i++)
+			{
+				double curX = pGCPList[i].dfGCPX;
+				double curY = pGCPList[i].dfGCPY;
+				xmin = MIN(curX, xmin);
+				xmax = MAX(curX, xmax);
+				ymin = MIN(curY, ymin);
+				ymax = MAX(curY, ymax);
+			}
+			utmzone = int(((xmin + xmax)/2 + 180)/6) + 1;
+			averageLatitude = (ymin + ymax)/2;
+		}
+		int epsgcodeNum = utmzone+32600;
+		moNativeCRS.importFromEPSG(epsgcodeNum);
+		return CE_None;
+	}
+	else
+	{
+		string desCovFile = CPLGetDirname(mSrcFilename.c_str());
+		desCovFile += "/" + (string) CPLGetBasename(mSrcFilename.c_str()) + ".xml";
+		if (CE_None == setGeoRefFromXML(desCovFile))
+		{
+			mbGeoTransformSet = TRUE;
+			return CE_None;
+		}
+		moNativeCRS.SetLocalCS("OGC:ImageCRS");
+		return CE_None;
+	}
+}
+
+CPLErr GeoTiff_Dataset::setGeoTransform()
+{
+	if (mbGeoTransformSet)
+		return CE_None;
+
+	if (CE_None == AbstractDataset::setGeoTransform())
+		return CE_None;
+
+
+	int nGCPs = maptrDS->GetGCPCount();
+	char *pGCPSRS = (char*) maptrDS->GetGCPProjection();
+	const GDAL_GCP* pGCPList = maptrDS->GetGCPs();
+	if (nGCPs > 1 && pGCPSRS && *pGCPSRS != '\0' && NULL != pGCPList)
+	{
+		OGRSpatialReference oGCPsSRS;
+		oGCPsSRS.importFromWkt(&pGCPSRS);
+
+		My2DPoint lowLeft;
+		My2DPoint upRight;
+
+		GetCornerPoints(pGCPList, nGCPs, lowLeft, upRight);
+
+		if (CE_None != bBox_transFormmate(oGCPsSRS, moNativeCRS, lowLeft, upRight))
+			return CE_Failure;
+
+		double resX = (upRight.mi_X - lowLeft.mi_X) / (maptrDS->GetRasterXSize() - 1);
+		double resY = (upRight.mi_Y - lowLeft.mi_Y) / (maptrDS->GetRasterYSize() - 1);
+		mdGeotransform[0] = lowLeft.mi_X;
+		mdGeotransform[1] = resX;
+		mdGeotransform[2] = 0;
+		mdGeotransform[3] = upRight.mi_Y;
+		mdGeotransform[4] = 0;
+		mdGeotransform[5] = -resY;
+		mbGeoTransformSet = TRUE;
+	}
+	return CE_None;
+}
+
+CPLErr GeoTiff_Dataset::setGDALDataset(const int isSimple)
+{
+	if(!mpBandList.empty())
+	{
+		VRTDataset *poVDS = (VRTDataset *)VRTCreate(maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize());
+		if(poVDS==NULL)
+    	{
+    		SetWCS_ErrorLocator("GeoTiff_Dataset::setGDALDataset()");
+			WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to create VRT DataSet.");
+
+        	return CE_Failure;
+    	}
+
+		VRTSourcedRasterBand   *poVRTBand = NULL;
+		GDALRasterBand  *poSrcBand = NULL;
+		GDALDataType    eBandType;
+		for( unsigned int i = 0; i < mpBandList.size(); i++ )
+	    {
+			poSrcBand = maptrDS->GetRasterBand(mpBandList[i]);
+			if(poSrcBand==NULL)
+			{
+				GDALClose(poVDS);
+		    	{
+		    		SetWCS_ErrorLocator("GeoTiff_Dataset::setGDALDataset()");
+		    		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to get Band data.");
+
+		        	return CE_Failure;
+		    	}
+			}
+			eBandType = poSrcBand->GetRasterDataType();
+		/* -------------------------------------------------------------------- */
+		/*      Create this band.                                               */
+		/* -------------------------------------------------------------------- */
+		    poVDS->AddBand( eBandType, NULL );
+		    poVRTBand = (VRTSourcedRasterBand *) poVDS->GetRasterBand( i+1 );
+
+			poVRTBand->SetNoDataValue( mdMissingValue );
+
+		    if(CE_None!=poVRTBand->AddSimpleSource( poSrcBand,0, 0,
+		    		maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize(), 0, 0,
+		    		maptrDS->GetRasterXSize(), maptrDS->GetRasterYSize(), NULL,mdMissingValue ))
+			{
+				GDALClose(poVDS);
+		    	SetWCS_ErrorLocator("GeoTiff_Dataset::setGDALDataset()");
+				WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to Add Simple Source into VRT DataSet.");
+
+		        return CE_Failure;
+		    }
+		}
+
+		if(mbGeoTransformSet)
+		{
+			poVDS->SetGeoTransform(mdGeotransform);
+			char *psTargetSRS;
+			moNativeCRS.exportToWkt(&psTargetSRS);
+			poVDS->SetProjection(psTargetSRS);
+			OGRFree( psTargetSRS );
+		}
+	    GDALClose(maptrDS.release());
+	    maptrDS.reset(poVDS);
+	}
+
+	return CE_None;
+}
+
+CPLErr GeoTiff_Dataset::setMetaDataList(GDALDataset* hSrc)
+{
+	char** papszMetadata = hSrc->GetMetadata("");
+
+	mvtrMeteDataList.push_back("TIFFTAG_IMAGEDESCRIPTION=The image was converted from GeoTIFF data through GMU-CSISS WCS");
+	mvtrMeteDataList.push_back("TIFFTAG_SOFTWARE=GMU-CSISS Web Coverage Service");
+	mvtrMeteDataList.push_back("TIFFTAG_DATETIME=" + getTimeString());
+	for (int i = 0; i < CSLCount((char**) papszMetadata); ++i) {
+		mvtrMeteDataList.push_back(papszMetadata[i]);
+	}
+
+	return CE_None;
+}

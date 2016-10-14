@@ -1,0 +1,26 @@
+/*
+ * Aura_Dataset.h
+ *
+ *  Created on: Jun 16, 2010
+ *      Author: yshao
+ */
+
+#ifndef AURA_DATASET_H_
+#define AURA_DATASET_H_
+
+#include "AbstractDataset.h"
+
+class Aura_Dataset: public AbstractDataset {
+public:
+	Aura_Dataset();
+	Aura_Dataset(const string& id, vector<int> &rBandList);
+	virtual ~Aura_Dataset();
+
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setMetaDataList(GDALDataset*);
+	virtual CPLErr initialDataset(const int isSimple=0);
+};
+
+#endif /* AURA_DATASET_H_ */

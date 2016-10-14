@@ -1,0 +1,250 @@
+\hypertarget{classWCS__T}{
+\section{WCS\_\-T Class Reference}
+\label{classWCS__T}\index{WCS\_\-T@{WCS\_\-T}}
+}
+
+
+\hyperlink{classWCS__T}{WCS\_\-T} is a upper class for handling WCS request.  
+
+
+
+
+{\ttfamily \#include $<$WCS\_\-T.h$>$}
+
+Inheritance diagram for WCS\_\-T:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classWCS__T}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classWCS__T_a1bd0d238dffd912d223aa31709338f38}{WCS\_\-T} (const string \&conf)
+\begin{DoxyCompactList}\small\item\em Constructor of a \hyperlink{classWCS__T}{WCS\_\-T} object. \end{DoxyCompactList}\item 
+CPLErr \hyperlink{classWCS__T_a2edb33250f0cd0708e156197145d85ad}{InitializeConfigurationFiles} ()
+\begin{DoxyCompactList}\small\item\em Initialize the configuration files and load the contents to memory. \end{DoxyCompactList}\item 
+\hyperlink{classDatasetSeriesObject}{DatasetSeriesObject} \hyperlink{classWCS__T_ad100a5da6a0c7e7a95875ab19c2343a8}{InitializeDatasetSeriesByID} (string \&sCovID)
+\begin{DoxyCompactList}\small\item\em Initialize the dataset series by specify the coverage identifier. \end{DoxyCompactList}\item 
+\hyperlink{classDatasetObject}{DatasetObject} \hyperlink{classWCS__T_af4fe8b9d94363b4c9e3b6ce9f3097e1e}{InitializeDatasetByID} (string \&sCovID)
+\begin{DoxyCompactList}\small\item\em Initialize the dataset by specify the coverage identifier. \end{DoxyCompactList}\item 
+\hypertarget{classWCS__T_ab81521d2a98b5b0e9f438d26873655d5}{
+void {\bfseries SetSoapMessage} (const int \&soapMsg)}
+\label{classWCS__T_ab81521d2a98b5b0e9f438d26873655d5}
+
+\item 
+\hypertarget{classWCS__T_a558a55cd04ce9366d5412cf62731dd65}{
+int {\bfseries IsSoapRequested} ()}
+\label{classWCS__T_a558a55cd04ce9366d5412cf62731dd65}
+
+\item 
+void \hyperlink{classWCS__T_a9f29625a62a2a75cb9a258b8949e9496}{SendHttpHead} ()
+\begin{DoxyCompactList}\small\item\em Sent the HTTP head type according to request type. \end{DoxyCompactList}\item 
+\hypertarget{classWCS__T_a1476aba462b825963ac9330ba711038c}{
+virtual CPLErr {\bfseries GetReqMessageFromXMLTree} (CPLXMLNode $\ast$xmlRoot)}
+\label{classWCS__T_a1476aba462b825963ac9330ba711038c}
+
+\item 
+\hypertarget{classWCS__T_a1f65ae0e62b09d43416bedea82bc9ef1}{
+virtual CPLErr {\bfseries GetReqMessageFromURLString} (const string \&)}
+\label{classWCS__T_a1f65ae0e62b09d43416bedea82bc9ef1}
+
+\item 
+\hypertarget{classWCS__T_a7f7078f64c43d74cfa9c51eb4563f159}{
+virtual void {\bfseries WCST\_\-Respond} (string \&sOutFileName)}
+\label{classWCS__T_a7f7078f64c43d74cfa9c51eb4563f159}
+
+\item 
+\hypertarget{classWCS__T_a834314259a1babfcaf15f74c68ef1ab6}{
+virtual void {\bfseries WCST\_\-Respond} ()}
+\label{classWCS__T_a834314259a1babfcaf15f74c68ef1ab6}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classWCS__T_afffa45e7cce0bed7a0d99cab8d385531}{
+int {\bfseries mb\_\-SoapRequest}}
+\label{classWCS__T_afffa45e7cce0bed7a0d99cab8d385531}
+
+\item 
+\hypertarget{classWCS__T_a2090c46c1f538cdbf60c83f3bf5f7498}{
+string {\bfseries ms\_\-Service\_\-op\_\-URL}}
+\label{classWCS__T_a2090c46c1f538cdbf60c83f3bf5f7498}
+
+\item 
+\hypertarget{classWCS__T_a9b491a75bb8b8779ba83a16f2abda4e3}{
+vector$<$ string $>$ {\bfseries mvs\_\-SupportFormats}}
+\label{classWCS__T_a9b491a75bb8b8779ba83a16f2abda4e3}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classWCS__T_a25a1dddf92f30d4ce4a0e7c3055c3efd}{
+\hyperlink{classWCS__Configure}{WCS\_\-Configure} $\ast$ {\bfseries mp\_\-Conf}}
+\label{classWCS__T_a25a1dddf92f30d4ce4a0e7c3055c3efd}
+
+\item 
+\hypertarget{classWCS__T_a83b82947270b9e75fa776ebff06cb5fd}{
+vector$<$ \hyperlink{classDatasetObject}{DatasetObject} $>$ {\bfseries mv\_\-datasetCoverage}}
+\label{classWCS__T_a83b82947270b9e75fa776ebff06cb5fd}
+
+\item 
+\hypertarget{classWCS__T_a268f2bb09efa55ab7cd328f8f79dd414}{
+vector$<$ \hyperlink{classStitchedMosaicObject}{StitchedMosaicObject} $>$ {\bfseries mv\_\-stitchedMosaicCoverage}}
+\label{classWCS__T_a268f2bb09efa55ab7cd328f8f79dd414}
+
+\item 
+\hypertarget{classWCS__T_a288a4d72e91b32e125e47407153ead98}{
+vector$<$ \hyperlink{classDatasetSeriesObject}{DatasetSeriesObject} $>$ {\bfseries mv\_\-datasetSeriesCoverage}}
+\label{classWCS__T_a288a4d72e91b32e125e47407153ead98}
+
+\item 
+\hypertarget{classWCS__T_abe41bcce822e58cd39bcbbeaebc865cf}{
+string {\bfseries ms\_\-datasetConfPath}}
+\label{classWCS__T_abe41bcce822e58cd39bcbbeaebc865cf}
+
+\item 
+\hypertarget{classWCS__T_a8f0b657e019f3ab00e7abb614b410bb8}{
+string {\bfseries ms\_\-stitchedMosaicConfPath}}
+\label{classWCS__T_a8f0b657e019f3ab00e7abb614b410bb8}
+
+\item 
+\hypertarget{classWCS__T_a7213d7699e60f0d54835c8a21bd80dc7}{
+string {\bfseries ms\_\-datasetSeriesConfPath}}
+\label{classWCS__T_a7213d7699e60f0d54835c8a21bd80dc7}
+
+\item 
+\hypertarget{classWCS__T_abcf3dec906024653cae1b00a2e2545a6}{
+string {\bfseries ms\_\-iso19115Contents}}
+\label{classWCS__T_abcf3dec906024653cae1b00a2e2545a6}
+
+\item 
+\hypertarget{classWCS__T_af971eb396be85676d54b62df318ad9a8}{
+string {\bfseries ms\_\-eoMetadataContents}}
+\label{classWCS__T_af971eb396be85676d54b62df318ad9a8}
+
+\item 
+\hypertarget{classWCS__T_a11312460f10652b429b21a1bb58fe442}{
+string {\bfseries ms\_\-requestFullURL}}
+\label{classWCS__T_a11312460f10652b429b21a1bb58fe442}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classWCS__T}{WCS\_\-T} is a upper class for handling WCS request. 
+
+This class is the upper class for handling WCS request. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classWCS__T_a1bd0d238dffd912d223aa31709338f38}{
+\index{WCS\_\-T@{WCS\_\-T}!WCS\_\-T@{WCS\_\-T}}
+\index{WCS\_\-T@{WCS\_\-T}!WCS_T@{WCS\_\-T}}
+\subsubsection[{WCS\_\-T}]{\setlength{\rightskip}{0pt plus 5cm}WCS\_\-T::WCS\_\-T (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{conf}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__T_a1bd0d238dffd912d223aa31709338f38}
+
+
+Constructor of a \hyperlink{classWCS__T}{WCS\_\-T} object. 
+
+This is the accepted method of creating an \hyperlink{classWCS__T}{WCS\_\-T} object. The path for served dataset, stitched mosaic and datasetSeries will be assigned to member variables through parsing configuration file. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classWCS__T_a2edb33250f0cd0708e156197145d85ad}{
+\index{WCS\_\-T@{WCS\_\-T}!InitializeConfigurationFiles@{InitializeConfigurationFiles}}
+\index{InitializeConfigurationFiles@{InitializeConfigurationFiles}!WCS_T@{WCS\_\-T}}
+\subsubsection[{InitializeConfigurationFiles}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr WCS\_\-T::InitializeConfigurationFiles (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__T_a2edb33250f0cd0708e156197145d85ad}
+
+
+Initialize the configuration files and load the contents to memory. 
+
+This method is used to parse configuration files for dataset/mosaci/datasetSeries coverage, and assign those information to corresponding array.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+\hypertarget{classWCS__T_af4fe8b9d94363b4c9e3b6ce9f3097e1e}{
+\index{WCS\_\-T@{WCS\_\-T}!InitializeDatasetByID@{InitializeDatasetByID}}
+\index{InitializeDatasetByID@{InitializeDatasetByID}!WCS_T@{WCS\_\-T}}
+\subsubsection[{InitializeDatasetByID}]{\setlength{\rightskip}{0pt plus 5cm}{\bf DatasetObject} WCS\_\-T::InitializeDatasetByID (
+\begin{DoxyParamCaption}
+\item[{string \&}]{sCovID}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__T_af4fe8b9d94363b4c9e3b6ce9f3097e1e}
+
+
+Initialize the dataset by specify the coverage identifier. 
+
+This method is used to initialize the dataset by specify the coverage identifier.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sCovID} & Coverage indeifier.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The corresponding Dataset object. 
+\end{DoxyReturn}
+\hypertarget{classWCS__T_ad100a5da6a0c7e7a95875ab19c2343a8}{
+\index{WCS\_\-T@{WCS\_\-T}!InitializeDatasetSeriesByID@{InitializeDatasetSeriesByID}}
+\index{InitializeDatasetSeriesByID@{InitializeDatasetSeriesByID}!WCS_T@{WCS\_\-T}}
+\subsubsection[{InitializeDatasetSeriesByID}]{\setlength{\rightskip}{0pt plus 5cm}{\bf DatasetSeriesObject} WCS\_\-T::InitializeDatasetSeriesByID (
+\begin{DoxyParamCaption}
+\item[{string \&}]{sCovID}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__T_ad100a5da6a0c7e7a95875ab19c2343a8}
+
+
+Initialize the dataset series by specify the coverage identifier. 
+
+This method is used to initialize the dataset series by specify the coverage identifier.
+
+
+\begin{DoxyParams}{Parameters}
+{\em sCovID} & Coverage indeifier.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The corresponding DatasetSeries object. 
+\end{DoxyReturn}
+\hypertarget{classWCS__T_a9f29625a62a2a75cb9a258b8949e9496}{
+\index{WCS\_\-T@{WCS\_\-T}!SendHttpHead@{SendHttpHead}}
+\index{SendHttpHead@{SendHttpHead}!WCS_T@{WCS\_\-T}}
+\subsubsection[{SendHttpHead}]{\setlength{\rightskip}{0pt plus 5cm}void WCS\_\-T::SendHttpHead (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__T_a9f29625a62a2a75cb9a258b8949e9496}
+
+
+Sent the HTTP head type according to request type. 
+
+This method is used to send the HTTP head type according to request type. As to SOAP request: 
+\begin{DoxyCode}
+ Content-Type: application/xml+soap
+\end{DoxyCode}
+
+
+As to POST request: 
+\begin{DoxyCode}
+ Content-Type: text/xml
+\end{DoxyCode}
+ 
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+WCS\_\-T.h\item 
+WCS\_\-T.cpp\end{DoxyCompactItemize}

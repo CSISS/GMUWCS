@@ -1,0 +1,34 @@
+/*
+ * NARR_Dataset.h
+ *
+ *  Created on: Jun 15, 2009
+ *      Author: pli
+ */
+
+#ifndef NARR_DATASET_H_
+#define NARR_DATASET_H_
+
+#include "AbstractDataset.h"
+using namespace std;
+
+class NARR_Dataset: public AbstractDataset
+{
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setMetaDataList(GDALDataset* );
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+
+	CPLErr getOriginFrom_NetCDF(double& xOrigin, double& yOrigin,
+					double& xRes,double& yRes);
+
+	NARR_Dataset();
+public:
+	NARR_Dataset(const string& id, vector<int> &rBandList);
+	virtual ~NARR_Dataset();
+
+	virtual CPLErr initialDataset(const int isSimple=0);
+
+
+};
+
+#endif /* NARR_DATASET_H_ */

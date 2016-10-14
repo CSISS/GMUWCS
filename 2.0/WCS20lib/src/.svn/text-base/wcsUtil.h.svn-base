@@ -1,0 +1,278 @@
+#ifndef WCSUTIL_H_
+#define WCSUTIL_H_
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <stdlib.h>
+#include <cpl_string.h>
+#include "wcs_error.h"
+#include "BoundingBox.h"
+#include <sstream>
+
+using namespace std;
+
+
+#ifndef EQUAL
+#if defined(WIN32) || defined(WIN32CE)
+#  define EQUALN(a,b,n)           (strnicmp(a,b,n)==0)
+#  define EQUAL(a,b)              (stricmp(a,b)==0)
+#else
+#  define EQUALN(a,b,n)           (strncasecmp(a,b,n)==0)
+#  define EQUAL(a,b)              (strcasecmp(a,b)==0)
+#endif
+#endif
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#ifndef NULL
+#define NULL 0
+#endif
+
+#ifdef WINDOWS
+#define DELIMITER "\\"
+#else
+#define DELIMITER "/"
+#endif
+
+const int SHORT_NAME_LEN = 128;
+const int MAX_NAME_LEN = 512;
+const int MAX_LIST_LEN = 1024;
+const int MAX_LINE_LEN = 65536;
+
+enum CGI_METHOD_FLAG
+{
+	UN_KNOWN, HTTP_GET, HTTP_XML_POST
+};
+
+/**
+ * CGI Package
+ */
+class MyCGI
+{
+private:
+	string ms_CGIContent;
+	CGI_METHOD_FLAG me_CGIMethod;
+public:
+	MyCGI()
+	{
+		me_CGIMethod = UN_KNOWN;
+	}
+
+	CPLErr Run();
+	string GetRqstContent()
+	{
+		return ms_CGIContent;
+	}
+	CGI_METHOD_FLAG GetCGImethod()
+	{
+		return me_CGIMethod;
+	}
+
+};
+
+class StringList
+{
+private:
+	vector<string> strings;
+public:
+	StringList(const string& sstrings, const char delimiter);
+	StringList(const string& sstrings, const string& delimiters);
+	StringList()
+	{
+	}
+	void add(string newstr)
+	{
+		strings.push_back(newstr);
+	}
+	void clear()
+	{
+		strings.clear();
+	}
+	int size()
+	{
+		return strings.size();
+	}
+	int indexof(string qstr);
+	string& operator [](int index)
+	{
+		return strings[index];
+	}
+	void append(StringList & s);
+	void append(const string sstrings, const char delimiter);
+	void append(const string sstrings, const string& delimiters);
+	string toString()
+	{
+		string s = "";
+		for (int i = 0; i < size(); i++)
+			s += strings[i];
+		return s;
+	}
+	string toString(const char delimiter)
+	{
+		string s = "";
+		for (int i = 0; i < size(); i++)
+			s += strings[i] + delimiter;
+		return s;
+	}
+	string toString(const string& delimiters)
+	{
+		string s = "";
+		for (int i = 0; i < size(); i++)
+			s += strings[i] + delimiters;
+		return s;
+	}
+};
+
+class S2C
+{
+private:
+	char buf[MAX_LINE_LEN];
+public:
+	S2C(string s)
+	{
+		s.copy(buf, string::npos);
+		buf[s.size()] = 0;
+	}
+	char * c_str()
+	{
+		return buf;
+	}
+};
+
+class KVP
+{ // Key-Value-Pair
+public:
+	string name, value;
+	KVP& operator =(const KVP &id)
+	{
+		name = id.name;
+		value = id.value;
+		return *this;
+	}
+	KVP& operator =(const KVP *pid)
+	{
+		name = pid->name;
+		value = pid->value;
+		return *this;
+	}
+	KVP(string n, string v) :
+		name(n), value(v)
+	{
+	}
+	KVP(string namevaluepair);
+};
+
+class CFGReader
+{
+	vector<KVP> kvps;
+public:
+	CFGReader(const string &configfilename);
+	KVP& operator [](const int index)
+	{
+		return kvps[index];
+	}
+
+	int size()
+	{
+		return kvps.size();
+	}
+	string getValue(const string &keyname);
+	//	string getValue(const string &keyname, const bool noquotation);
+	string getValue(const string &keyname, const string &defaultvalue);
+};
+
+class KVPsReader
+{
+	vector<KVP> m_kvps;
+public:
+	KVPsReader()
+	{
+	}
+	~KVPsReader()
+	{
+	}
+	KVPsReader(const string& urlStr, const char &tok);
+	KVP& operator [](const int index)
+	{
+		return m_kvps[index];
+	}
+	int size()
+	{
+		return m_kvps.size();
+	}
+	string getValue(const string &keyname);
+	string getValue(const string &keyname, const string &defaultvalue);
+};
+
+template<class T>
+static void Exchange(T & a, T & b)
+{
+	T t;
+	t = a;
+	a = b;
+	b = t;
+}
+
+template <class T>
+static string convertToString(T &value)
+{
+	stringstream ss;
+	ss<<value;
+	string rtnstr = ss.str();
+	return rtnstr;
+}
+
+template <class T>
+static void convertFromString(T &value, const string& s)
+{
+	stringstream ss(s);
+	ss>>value;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+string SPrintArrayIn(GDALDataType eDataType,
+		const void *paDataArray, int nValues, const char *pszDelimiter);
+string myStrTrimsIn(const std::string&, const char*);
+///////////////////////////////////////////////////////////////////////////////////////
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif /* __cplusplus */
+string CPL_DLL CPL_STDCALL getUUID();
+string CPL_DLL CPL_STDCALL SPrintArray(GDALDataType eDataType,
+		const void *paDataArray, int nValues, const char *pszDelimiter);
+
+unsigned int CPL_DLL CPL_STDCALL csvburst(const char*, const char* arr[],
+		int narr, const char tok);
+unsigned int CPL_DLL CPL_STDCALL csvburstCpp(const std::string& line,
+		std::vector<std::string> &strSet, const char tok);
+unsigned int CPL_DLL CPL_STDCALL csvburstComplexCpp(const string& line,
+		vector<string> &strSet, const char* tok);
+int CPL_DLL CPL_STDCALL Find_Compare_SubStr(string line, string sub);
+void CPL_DLL CPL_STDCALL strslip(const char* str, const char* arrStr[],
+		const char leftdlm, const char rightdlm);
+void CPL_DLL CPL_STDCALL strslipCpp(const std::string& str, std::vector<string> &strSet,
+		const char leftdlm, const char rightdlm);
+void CPL_DLL CPL_STDCALL GetCornerPoints(const GDAL_GCP* &pGCPList,
+		const int &nGCPs, My2DPoint& lowLeft, My2DPoint& upRight);
+void CPL_DLL CPL_STDCALL string_replace(string & strBig, const string & strsrc, const string &strdst);
+string CPL_DLL CPL_STDCALL replace_all(string& str , const string oldword, const string newword );
+CPLErr CPL_DLL CPL_STDCALL getFileNameList(char* dir, std::vector<string> &strList);
+string makeTempFile(string dir, string covID, string subfix);
+string CPL_DLL CPL_STDCALL StrTrimHead(const string &str);
+string CPL_DLL CPL_STDCALL StrTrimTail(const string &str);
+string StrTrim(const string &str);
+string CPL_DLL CPL_STDCALL myStrTrims(const std::string&, const char*);
+string getTimeString();
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /*WCSUTIL_H_*/

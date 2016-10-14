@@ -1,0 +1,26 @@
+#ifndef HE4_GRID_DATASET_H_
+#define HE4_GRID_DATASET_H_
+#include <string>
+#include "AbstractDataset.h"
+#include "wcsUtil.h"
+
+using namespace std;
+
+class HE4_GRID_Dataset : public AbstractDataset
+{
+	HE4_GRID_Dataset();
+
+	virtual CPLErr setMetaDataList(GDALDataset* );
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+
+public:
+	HE4_GRID_Dataset(const string& id, vector<int> &rBandList);
+
+	virtual ~HE4_GRID_Dataset();
+	virtual CPLErr initialDataset(const int isSimple=0);
+
+};
+
+#endif /*HE4_GRID_Dataset_H_*/

@@ -1,0 +1,42 @@
+<WCSEODatasetSeries>
+  <DatasetSeries>
+  <DatasetSeriesId>MYD13A2-Single-test</DatasetSeriesId>
+  <CollectionName>MYD13A2</CollectionName>
+  <CoverageName>1 km 16 days NDVI</CoverageName>
+  <Datasets>
+    <Dataset>
+      <name>MYD13A2.A2007217.h11v08.005.2007239211606.hdf</name>
+      <path>/home/yshao/data/MYD13A2.A2007217.h11v08.005.2007239211606.hdf</path>
+      <coverageID>HDF4_EOS:EOS_GRID:"/home/yshao/data/MYD13A2.A2007217.h11v08.005.2007239211606.hdf":MODIS_Grid_16DAY_1km_VI:1 km 16 days NDVI</coverageID>
+      <west>-71.0799</west>
+      <east>-59.9917</east>
+      <south>-2.12661e-15</south>
+      <north>10</north>
+      <beginTime>2007-08-05T00:00:00Z</beginTime>
+      <endTime>2007-08-20T23:59:59Z</endTime>
+    </Dataset>
+    <Dataset>
+      <name>MYD13A2.A2007217.h13v10.005.2007238144456.hdf</name>
+      <path>/home/yshao/data/MYD13A2.A2007217.h13v10.005.2007238144456.hdf</path>
+      <coverageID>HDF4_EOS:EOS_GRID:"/home/yshao/data/MYD13A2.A2007217.h13v10.005.2007238144456.hdf":MODIS_Grid_16DAY_1km_VI:1 km 16 days NDVI</coverageID>
+      <west>-53.2089</west>
+      <east>-40.6086</east>
+      <south>-20</south>
+      <north>-10</north>
+      <beginTime>2007-08-05T00:00:00Z</beginTime>
+      <endTime>2007-08-20T23:59:59Z</endTime>
+    </Dataset>
+    <Dataset>
+      <name>MYD13A2.A2007121.h13v10.005.2007146040724.hdf</name>
+      <path>/home/yshao/data/MYD13A2.A2007121.h13v10.005.2007146040724.hdf</path>
+      <coverageID>HDF4_EOS:EOS_GRID:"/home/yshao/data/MYD13A2.A2007121.h13v10.005.2007146040724.hdf":MODIS_Grid_16DAY_1km_VI:1 km 16 days NDVI</coverageID>
+      <west>-53.2089</west>
+      <east>-40.6086</east>
+      <south>-20</south>
+      <north>-10</north>
+      <beginTime>2007-05-01T00:00:00Z</beginTime>
+      <endTime>2007-05-16T23:59:59Z</endTime>
+    </Dataset>
+    </Datasets>
+  </DatasetSeries>
+</WCSEODatasetSeries>

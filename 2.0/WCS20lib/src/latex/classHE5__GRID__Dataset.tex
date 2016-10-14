@@ -1,0 +1,294 @@
+\hypertarget{classHE5__GRID__Dataset}{
+\section{HE5\_\-GRID\_\-Dataset Class Reference}
+\label{classHE5__GRID__Dataset}\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}}
+}
+
+
+\hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process HDF-\/EOS5 Grid coverage.  
+
+
+
+
+{\ttfamily \#include \char`\"{}HE5\_\-GRID\_\-Dataset.h\char`\"{}}
+
+Inheritance diagram for HE5\_\-GRID\_\-Dataset:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classHE5__GRID__Dataset}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classHE5__GRID__Dataset_ac0112c68e36c333ecd5674ed09949eee}{HE5\_\-GRID\_\-Dataset} (const string \&id, vector$<$ int $>$ \&rBandList)
+\begin{DoxyCompactList}\small\item\em Create an HDF-\/EOS5 Grid dataset object. \end{DoxyCompactList}\item 
+virtual \hyperlink{classHE5__GRID__Dataset_a53a2be006884df9ba95a58d9db1aa0fc}{$\sim$HE5\_\-GRID\_\-Dataset} ()
+\begin{DoxyCompactList}\small\item\em Destroy an open \hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} object. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE5__GRID__Dataset_aab2d7ffe28f4b1fda41f5ec10a33e8a3}{SetMetaDataList} (GDALDataset $\ast$)
+\begin{DoxyCompactList}\small\item\em Set the metadata list for this coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE5__GRID__Dataset_a2bdcf5b88ef679f6fcfd7cd909e56bb7}{SetNativeCRS} ()
+\begin{DoxyCompactList}\small\item\em Set the Native CRS for a HDF-\/EOS5 Grid dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE5__GRID__Dataset_ab20ae6fe7456bb91c0cd8b4fdb6db1f1}{SetGeoTransform} ()
+\begin{DoxyCompactList}\small\item\em Set the affine GeoTransform matrix for a HDF-\/EOS5 Grid coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE5__GRID__Dataset_afc38747b72c0862de45f897867903e57}{SetGDALDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Set the GDALDataset object to HDF-\/EOS5 Grid dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE5__GRID__Dataset_ac6cc1fb1d47bd7fa387fa7e5673d0c6a}{InitialDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Initialize the HDF-\/EOS5 Grid dataset . \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static string {\bfseries MODIS\_\-Sinusoidal\_\-WKT}
+\item 
+static string {\bfseries CEA\_\-CRS\_\-WKT}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process HDF-\/EOS5 Grid coverage. 
+
+HDF-\/EOS is a software library designed to support NASA Earth Observing System (EOS) science data. HDF is the Hierarchical Data Format developed by the National Center for Supercomputing Applications. Specific data structures which are containers for science data are: Grid, Point, Zonal Average and Swath. These data structures are constructed from standard HDF data objects, using EOS conventions, through the use of a software library. A key feature of HDF-\/EOS is a standard prescription for associating geolocation data with science data through internal structural metadata. The relationship between geolocation and science data is transparent to the end-\/user. Instrument and data type-\/independent services, such as subsetting by geolocation, can be applied to files across a wide variety of data products through the same library interface.
+
+Aura data products are mostly in the new HDF-\/EOS5 file format (level 2 and 3), however there are some products which are not (level 1 OMI is in the old HDF-\/EOS2.x, and level 1 MLS is in plain HDF5).
+
+\hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, which is used to process Aura Grid products collection, such as OMI OMSO2G data.
+
+Sample data could be downloaded from the following link: \href{ftp://acdisc.gsfc.nasa.gov/data/s4pa///Aura_OMI_Level2G/OMSO2G.003//2011/OMI-Aura_L2G-OMSO2G_2011m0728_v003-2011m0729t081026.he5}{\tt OMI-\/Aura\_\-L2G-\/OMSO2G\_\-2011m0728\_\-v003-\/2011m0729t081026.he5} 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classHE5__GRID__Dataset_ac0112c68e36c333ecd5674ed09949eee}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}}
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{HE5\_\-GRID\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}HE5\_\-GRID\_\-Dataset::HE5\_\-GRID\_\-Dataset (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{id, }
+\item[{vector$<$ int $>$ \&}]{rBandList}
+\end{DoxyParamCaption}
+)}}
+\label{classHE5__GRID__Dataset_ac0112c68e36c333ecd5674ed09949eee}
+
+
+Create an HDF-\/EOS5 Grid dataset object. 
+
+This is the accepted method of creating a \hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} dataset and allocating all resources associated with it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The coverage identifier.\\
+\hline
+{\em rBandList} & The field list selected for this coverage. For HDF-\/EOS Grid data, only one field in each coverage.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} object. 
+\end{DoxyReturn}
+\hypertarget{classHE5__GRID__Dataset_a53a2be006884df9ba95a58d9db1aa0fc}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!$\sim$HE5\_\-GRID\_\-Dataset@{$\sim$HE5\_\-GRID\_\-Dataset}}
+\index{$\sim$HE5\_\-GRID\_\-Dataset@{$\sim$HE5\_\-GRID\_\-Dataset}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{$\sim$HE5\_\-GRID\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}HE5\_\-GRID\_\-Dataset::$\sim$HE5\_\-GRID\_\-Dataset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE5__GRID__Dataset_a53a2be006884df9ba95a58d9db1aa0fc}
+
+
+Destroy an open \hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} object. 
+
+This is the accepted method of closing a \hyperlink{classHE5__GRID__Dataset}{HE5\_\-GRID\_\-Dataset} dataset and deallocating all resources associated with it. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classHE5__GRID__Dataset_ac6cc1fb1d47bd7fa387fa7e5673d0c6a}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!InitialDataset@{InitialDataset}}
+\index{InitialDataset@{InitialDataset}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{InitialDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE5\_\-GRID\_\-Dataset::InitialDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE5__GRID__Dataset_ac6cc1fb1d47bd7fa387fa7e5673d0c6a}
+
+
+Initialize the HDF-\/EOS5 Grid dataset . 
+
+This method is the implementation for initializing a HDF-\/EOS5 Grid dataset. Within this method, \hyperlink{classHE5__GRID__Dataset_a2bdcf5b88ef679f6fcfd7cd909e56bb7}{SetNativeCRS()}, \hyperlink{classHE5__GRID__Dataset_ab20ae6fe7456bb91c0cd8b4fdb6db1f1}{SetGeoTransform()} and \hyperlink{classHE5__GRID__Dataset_afc38747b72c0862de45f897867903e57}{SetGDALDataset()} will be called to initialize an HDF-\/EOS Grid dataset. $\ast$ The coverage type of HDF-\/EOS Swath data is set to \char`\"{}RectifiedDataset\char`\"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & The WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a45924895c6bf26c7f75d503b8f6e388a}{AbstractDataset}.
+
+\hypertarget{classHE5__GRID__Dataset_afc38747b72c0862de45f897867903e57}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!SetGDALDataset@{SetGDALDataset}}
+\index{SetGDALDataset@{SetGDALDataset}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{SetGDALDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE5\_\-GRID\_\-Dataset::SetGDALDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE5__GRID__Dataset_afc38747b72c0862de45f897867903e57}
+
+
+Set the GDALDataset object to HDF-\/EOS5 Grid dataset. 
+
+This method is used to set the HDF-\/EOS5 Grid dataset based on GDAL RasterIO related functions.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}{AbstractDataset}.
+
+\hypertarget{classHE5__GRID__Dataset_ab20ae6fe7456bb91c0cd8b4fdb6db1f1}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!SetGeoTransform@{SetGeoTransform}}
+\index{SetGeoTransform@{SetGeoTransform}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{SetGeoTransform}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE5\_\-GRID\_\-Dataset::SetGeoTransform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE5__GRID__Dataset_ab20ae6fe7456bb91c0cd8b4fdb6db1f1}
+
+
+Set the affine GeoTransform matrix for a HDF-\/EOS5 Grid coverage. 
+
+The method will set a GeoTransform matrix for a HDF-\/EOS5 Grid coverage by parsing and analyzing the metadata of HDF-\/EOS5 Grid data granule.
+
+The CRS for the bounding box is EPSG:4326.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}{AbstractDataset}.
+
+\hypertarget{classHE5__GRID__Dataset_aab2d7ffe28f4b1fda41f5ec10a33e8a3}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!SetMetaDataList@{SetMetaDataList}}
+\index{SetMetaDataList@{SetMetaDataList}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{SetMetaDataList}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE5\_\-GRID\_\-Dataset::SetMetaDataList (
+\begin{DoxyParamCaption}
+\item[{GDALDataset $\ast$}]{hSrcDS}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE5__GRID__Dataset_aab2d7ffe28f4b1fda41f5ec10a33e8a3}
+
+
+Set the metadata list for this coverage. 
+
+The method will set the metadata list for the coverage based on its corresponding GDALDataset object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hSrc} & the GDALDataset object corresponding to coverage.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_af3f0b55b14f660b79751bf88489a2c10}{AbstractDataset}.
+
+\hypertarget{classHE5__GRID__Dataset_a2bdcf5b88ef679f6fcfd7cd909e56bb7}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!SetNativeCRS@{SetNativeCRS}}
+\index{SetNativeCRS@{SetNativeCRS}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{SetNativeCRS}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE5\_\-GRID\_\-Dataset::SetNativeCRS (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE5__GRID__Dataset_a2bdcf5b88ef679f6fcfd7cd909e56bb7}
+
+
+Set the Native CRS for a HDF-\/EOS5 Grid dataset. 
+
+The method will set the CRS for a HDF-\/EOS5 Grid dataset as an native CRS.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}{AbstractDataset}.
+
+
+
+\subsection{Member Data Documentation}
+\hypertarget{classHE5__GRID__Dataset_a85e32fcace9647574087635cee1a0cfd}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!CEA\_\-CRS\_\-WKT@{CEA\_\-CRS\_\-WKT}}
+\index{CEA\_\-CRS\_\-WKT@{CEA\_\-CRS\_\-WKT}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{CEA\_\-CRS\_\-WKT}]{\setlength{\rightskip}{0pt plus 5cm}string HE5\_\-GRID\_\-Dataset::CEA\_\-CRS\_\-WKT\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}
+\label{classHE5__GRID__Dataset_a85e32fcace9647574087635cee1a0cfd}
+{\bfseries Initial value:}
+\begin{DoxyCode}
+"PROJCS[\"NSIDC EASE-Grid Global\", \
+                GEOGCS[\"Unspecified datum based upon the International 1924 Auth
+      alic Sphere\", \
+                        DATUM[\"Not_specified_based_on_International_1924_Authali
+      c_Sphere\", \
+                                SPHEROID[\"International 1924 Authalic Sphere\",6
+      371228,0, \
+                                        AUTHORITY[\"EPSG\",\"7057\"]], \
+                                AUTHORITY[\"EPSG\",\"6053\"]], \
+                        PRIMEM[\"Greenwich\",0, \
+                                AUTHORITY[\"EPSG\",\"8901\"]], \
+                        UNIT[\"degree\",0.01745329251994328, \
+                                AUTHORITY[\"EPSG\",\"9122\"]], \
+                        AUTHORITY[\"EPSG\",\"4053\"]], \
+                UNIT[\"metre\",1, \
+                        AUTHORITY[\"EPSG\",\"9001\"]], \
+                PROJECTION[\"Cylindrical_Equal_Area\"], \
+                PARAMETER[\"standard_parallel_1\",30], \
+                PARAMETER[\"central_meridian\",0], \
+                PARAMETER[\"false_easting\",0], \
+                PARAMETER[\"false_northing\",0], \
+                AUTHORITY[\"EPSG\",\"3410\"], \
+                AXIS[\"X\",EAST], \
+                AXIS[\"Y\",NORTH]]"
+\end{DoxyCode}
+\hypertarget{classHE5__GRID__Dataset_abdceb9a93b0892d8f64d0e8d97cd0d98}{
+\index{HE5\_\-GRID\_\-Dataset@{HE5\_\-GRID\_\-Dataset}!MODIS\_\-Sinusoidal\_\-WKT@{MODIS\_\-Sinusoidal\_\-WKT}}
+\index{MODIS\_\-Sinusoidal\_\-WKT@{MODIS\_\-Sinusoidal\_\-WKT}!HE5_GRID_Dataset@{HE5\_\-GRID\_\-Dataset}}
+\subsubsection[{MODIS\_\-Sinusoidal\_\-WKT}]{\setlength{\rightskip}{0pt plus 5cm}string HE5\_\-GRID\_\-Dataset::MODIS\_\-Sinusoidal\_\-WKT\hspace{0.3cm}{\ttfamily  \mbox{[}static\mbox{]}}}}
+\label{classHE5__GRID__Dataset_abdceb9a93b0892d8f64d0e8d97cd0d98}
+{\bfseries Initial value:}
+\begin{DoxyCode}
+"PROJCS[\"MODIS Sinusoidal\", \
+    GEOGCS[\"WGS 84\", \
+        DATUM[\"WGS_1984\", \
+            SPHEROID[\"WGS 84\",6378137,298.257223563, \
+                AUTHORITY[\"EPSG\",\"7030\"]], \
+            AUTHORITY[\"EPSG\",\"6326\"]], \
+        PRIMEM[\"Greenwich\",0, \
+            AUTHORITY[\"EPSG\",\"8901\"]], \
+        UNIT[\"degree\",0.01745329251994328, \
+            AUTHORITY[\"EPSG\",\"9122\"]], \
+        AUTHORITY[\"EPSG\",\"4326\"]], \
+    PROJECTION[\"Sinusoidal\"], \
+    PARAMETER[\"false_easting\",0.0], \
+    PARAMETER[\"false_northing\",0.0], \
+    PARAMETER[\"central_meridian\",0.0], \
+    PARAMETER[\"semi_major\",6371007.181], \
+    PARAMETER[\"semi_minor\",6371007.181], \
+    UNIT[\"m\",1.0], \
+    AUTHORITY[\"SR-ORG\",\"6974\"]]"
+\end{DoxyCode}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+HE5\_\-GRID\_\-Dataset.h\item 
+HE5\_\-GRID\_\-Dataset.cpp\end{DoxyCompactItemize}

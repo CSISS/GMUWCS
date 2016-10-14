@@ -1,0 +1,32 @@
+/*
+ * GeoJP2.h
+ *
+ *  Created on: Nov 3, 2008
+ *      Author: pli
+ */
+
+#ifndef GEOJP2_H_
+#define GEOJP2_H_
+#include <string>
+#include "AbstractDataset.h"
+using namespace std;
+
+class GeoJP2 : public AbstractDataset
+{
+	GeoJP2();
+
+
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setMetaDataList(GDALDataset*);
+public:
+	GeoJP2(const string& id, vector<int> &rBandList);
+
+	virtual ~GeoJP2();
+
+	virtual CPLErr initialDataset(const int isSimple=0);
+
+};
+
+#endif /* GEOJP2_H_ */

@@ -1,0 +1,28 @@
+  <wcs:Contents>
+    <wcs:CoverageSummary>
+      <wcs:CoverageId>MOD13C1.A2007145.005.2007184062524.hdf</wcs:CoverageId>
+      <wcs:CoverageSubtype>RectifiedDataset</wcs:CoverageSubtype>
+    </wcs:CoverageSummary>
+    <wcseo:DatasetSeriesSummary>
+      <wcseo:DatasetSeriesId>Global_MODIS_vegetation_indices_2010_16_Days_NDVI</wcseo:DatasetSeriesId>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-180 -90</ows:LowerCorner>
+        <ows:UpperCorner>180 90</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <gml:TimePeriod>
+        <gml:beginPosition>2010-09-14T00:00:00Z</gml:beginPosition>
+        <gml:endPosition>2010-10-31T23:59:59Z</gml:endPosition>
+      </gml:TimePeriod>
+    </wcseo:DatasetSeriesSummary>
+    <wcseo:DatasetSeriesSummary>
+      <wcseo:DatasetSeriesId>Global_MODIS_vegetation_indices_2009_16_Days_NDVI</wcseo:DatasetSeriesId>
+      <ows:WGS84BoundingBox>
+        <ows:LowerCorner>-180 -90</ows:LowerCorner>
+        <ows:UpperCorner>180 90</ows:UpperCorner>
+      </ows:WGS84BoundingBox>
+      <gml:TimePeriod>
+        <gml:beginPosition>2009-09-14T00:00:00Z</gml:beginPosition>
+        <gml:endPosition>2009-10-31T23:59:59Z</gml:endPosition>
+      </gml:TimePeriod>
+    </wcseo:DatasetSeriesSummary>
+  </wcs:Contents>

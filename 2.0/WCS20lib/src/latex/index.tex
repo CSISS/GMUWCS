@@ -1,0 +1,41 @@
+\hypertarget{index_intro}{}\section{Introduction}\label{index_intro}
+This manual documents the C++ APIs for GMU EO-\/WCS.\par
+ EO-\/WCS is an open source reference implementation for the Open Geospatial Consortium (OGC) Web Coverage Service (WCS) -\/ 8.\par
+ ( For more information about EO-\/WCS, check the website: \href{http://geobrain.laits.gmu.edu/wcseodemo.html}{\tt http://geobrain.laits.gmu.edu/wcseodemo.html})\par
+\hypertarget{index_license}{}\section{License}\label{index_license}
+This software is released under the MIT license, anybody can use or modify the package, even for commercial applications.\par
+ The only restriction is to retain the copyright in the sources or the binaries documentation.\par
+ Neither the author, nor the university accept any responsibility for any kind of error or data loss which may occur during usage.\hypertarget{index_standards}{}\section{Followed Standards}\label{index_standards}
+
+\begin{DoxyItemize}
+\item OGC WCS 2.0 Interface Standard -\/ Core (OGC 09-\/110r3)
+\item OGC WCS 2.0 Interface Standard -\/ \hyperlink{classKVP}{KVP} Protocol binding Extension (OGC 09-\/147r1)
+\item OGC WCS 2.0 Interface Standard -\/ XML POST Protocol binding Extension (OGC 09-\/148r1)
+\item OGC WCS 2.0 Application Profile -\/ Earth Observation (OGC 10-\/140)
+\end{DoxyItemize}\hypertarget{index_reqlibs}{}\section{Required libraries}\label{index_reqlibs}
+
+\begin{DoxyItemize}
+\item GDAL library at server (\href{http://www.gdal.org}{\tt http://www.gdal.org})
+\item HDF4 library at server (\href{http://www.hdfgroup.org}{\tt http://www.hdfgroup.org})
+\item HDF5 library at server (\href{http://www.hdfgroup.org}{\tt http://www.hdfgroup.org})
+\item HDF-\/EOS library at server (\href{http://www.hdfeos.org/}{\tt http://www.hdfeos.org/})
+\end{DoxyItemize}
+
+We tested this package with a Linux Fedora 12 and Mac OS 15 as the servers and clients.\hypertarget{index_supportformats}{}\section{Supported Data Type}\label{index_supportformats}
+
+\begin{DoxyItemize}
+\item HDF-\/EOS2 Grid, including MOD13C1, MOD09GQ, MYD15A2
+\item HDF-\/EOS2 Swath, including MOD05\_\-L2
+\item HDF-\/EOS5 Grid, including Aura OMSO2G
+\item HDF-\/EOS5 Swath, including Aura OMDOAO3
+\item HDF4, Tropical Rainfall Measuring Mission (TRMM)
+\item NetCDF, NOAA GOES Imager data
+\end{DoxyItemize}\hypertarget{index_compilenotes}{}\section{Compiling Notes}\label{index_compilenotes}
+GDAL library is needed before compiling WCS package.\par
+ Be sure that the support to HDF4 library should be enabled in GDAL library when compiling GDAL from source code.\par
+ HDF-\/EOS library is also required to enable the HDF-\/EOS export format.\hypertarget{index_sourceCode}{}\section{Source Code}\label{index_sourceCode}
+GMU WCS source code can be downloaded from \href{http://geobrain.laits.gmu.edu/ows8/code/gmu_eowcs_v0.1.tar.gz}{\tt http://geobrain.laits.gmu.edu/ows8/code/gmu\_\-eowcs\_\-v0.1.tar.gz}
+
+\begin{DoxyAuthor}{Author}
+Yuanzheng Shao $<$\href{mailto:yshao3@gmu.edu}{\tt yshao3@gmu.edu}$>$, Liping Di $<$\href{mailto:ldi@gmu.edu}{\tt ldi@gmu.edu}$>$ 
+\end{DoxyAuthor}

@@ -1,0 +1,19 @@
+#pragma once
+#include "AbstractDataset.h"
+
+class Windset_Datasat :	public AbstractDataset
+{
+public:
+	Windset_Datasat(void);
+
+public:
+	
+	~Windset_Datasat(void);
+	Windset_Datasat(const string& id, vector<int> &rBandList);
+
+	static string	WindSet_CRS_WKT;
+	GDALDataType 	meDataType;
+
+	virtual CPLErr initialDataset(const int isSimple=0);
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+};

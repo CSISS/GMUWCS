@@ -1,0 +1,30 @@
+  <ows:OperationsMetadata>
+    <ows:Operation name="GetCapabilities">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/ows8/wcseo?" xlink:type="simple"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeCoverage">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/ows8/wcseo?" xlink:type="simple"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="GetCoverage">
+      <ows:DCP>
+        <ows:HTTP>
+          <ows:Get xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/ows8/wcseo?" xlink:type="simple"/>
+        </ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+    <ows:Operation name="DescribeEOCoverageSet">
+      <ows:DCP>
+        <ows:HTTP>
+	  <ows:Get xlink:href="http://geobrain.laits.gmu.edu/cgi-bin/ows8/wcseo?" xlink:type="simple"/>
+	</ows:HTTP>
+      </ows:DCP>
+    </ows:Operation>
+  </ows:OperationsMetadata>

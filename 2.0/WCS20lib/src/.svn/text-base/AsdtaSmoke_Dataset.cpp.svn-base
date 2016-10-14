@@ -1,0 +1,109 @@
+/*
+ * ASDTASmoke_Dataset.cpp
+ *
+ *  Created on: Sep 2, 2010
+ *      Author: yshao
+ */
+
+#include "ASDTASmoke_Dataset.h"
+
+ASDTASmoke_Dataset::ASDTASmoke_Dataset() {
+	// TODO Auto-generated constructor stub
+
+}
+
+ASDTASmoke_Dataset::~ASDTASmoke_Dataset() {
+	// TODO Auto-generated destructor stub
+}
+
+ASDTASmoke_Dataset::ASDTASmoke_Dataset(const string& id, vector<int> &rBandList):
+	AbstractDataset(id,rBandList){
+	mdMissingValue=-9999;
+	mbGeoTransformSet=FALSE;
+}
+
+CPLErr ASDTASmoke_Dataset::initialDataset(const int isSimple)
+{
+	mbIsVirtualDS = FALSE;
+	if(ms_CoverageID.empty() || EQUAL(ms_CoverageID.c_str(), "") || !EQUALN(ms_CoverageID.c_str(),"ASDTAS:", 7))
+	{
+		SetWCS_ErrorLocator("ASDTASmoke_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Incorrect coverage ID.");
+		return CE_Failure;
+	}
+
+	vector<string> strSet;
+	unsigned int n=csvburstCpp(ms_CoverageID, strSet,':');
+	if(n == 3) {
+    	msDataTypeName=strSet[0] ;
+    	mSrcFilename = strSet[1] ;
+    	msDatasetName = strSet[2] ;
+    } else {
+		SetWCS_ErrorLocator("ASDTASmoke_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Incorrect coverage ID.");
+    	return CE_Failure;
+	}
+	mSrcFilename = myStrTrimsIn(mSrcFilename," \'\"");
+
+	GDALDataset* pSrc = (GDALDataset*) GDALOpenShared(ms_CoverageID.c_str(), GA_ReadOnly);
+	if( pSrc == NULL ) {
+		SetWCS_ErrorLocator("ASDTASmoke_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to open file \"%s\".",mSrcFilename.c_str());
+    	return CE_Failure;
+	}
+
+	msNativeFormat = GDALGetDriverShortName(pSrc->GetDriver());
+
+	setMetaDataList(pSrc);
+	unsigned int nBandCount = pSrc->GetRasterCount();
+	if(nBandCount<1) {
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("ASDTASmoke_Dataset::initialDataset()");
+		WCS_Error(CE_Failure,OGC_WCS_NoApplicableCode,"Failed to get raster band.");
+    	return CE_Failure;
+	}
+
+	int iSuc = 0;
+	double noValue = pSrc->GetRasterBand(1)->GetNoDataValue(&iSuc);
+	if(iSuc) mdMissingValue = noValue;
+	maptrDS.reset(pSrc);
+
+	if(CE_None!=setNativeCRS()|| CE_None!=setGeoTransform()|| CE_None!=setGDALDataset(isSimple))
+	{
+		GDALClose(maptrDS.release());
+	   	return CE_Failure;
+	}
+
+	return CE_None;
+}
+
+CPLErr ASDTASmoke_Dataset::setGDALDataset(const int isSimple)
+{
+	return CE_None;
+}
+
+CPLErr ASDTASmoke_Dataset::setNativeCRS()
+{
+
+	moNativeCRS.SetWellKnownGeogCS( "WGS84" );
+	return CE_None;
+}
+
+CPLErr ASDTASmoke_Dataset::setGeoTransform()
+{
+	maptrDS.get()->GetGeoTransform(mdGeotransform);
+	return CE_None;
+}
+
+CPLErr ASDTASmoke_Dataset::setMetaDataList(GDALDataset* hSrc)
+{
+	char** papszMetadata = hSrc->GetMetadata("");
+	mvtrMeteDataList.push_back("Product_Description=The data was created by GMU-WCS.");
+	for (int i = 0; i < CSLCount((char**) papszMetadata); ++i) {
+		mvtrMeteDataList.push_back(papszMetadata[i]);
+	}
+
+	return CE_None;
+}
+
+

@@ -1,0 +1,30 @@
+/*
+ * HDF4Image_Dataset.h
+ *
+ *  Created on: Dec 19, 2008
+ *      Author: pli
+ */
+
+#ifndef HDF4IMAGE_DATASET_H_
+#define HDF4IMAGE_DATASET_H_
+#include <string>
+#include "AbstractDataset.h"
+class HDF4Image_Dataset : public AbstractDataset
+{
+
+	HDF4Image_Dataset();
+
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setMetaDataList(GDALDataset*);
+public:
+	HDF4Image_Dataset(const string& id, vector<int> &rBandList);
+
+	virtual ~HDF4Image_Dataset();
+
+	virtual CPLErr initialDataset(const int isSimple=0);
+
+
+};
+
+#endif /* HDF4IMAGE_DATASET_H_ */

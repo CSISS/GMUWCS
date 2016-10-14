@@ -1,0 +1,89 @@
+#ifndef ABSTRACTDATASET_H_
+#define ABSTRACTDATASET_H_
+#include <vector>
+#include <memory>
+#include <gdal.h>
+#include <gdal_priv.h>
+#include <cpl_conv.h>
+#include <ogr_spatialref.h>
+#include <cpl_minixml.h>
+#include <vrtdataset.h>
+#include <gdalwarper.h>
+#include "wcsUtil.h"
+using namespace std;
+
+class AbstractDataset
+{
+protected:
+	auto_ptr<GDALDataset>	maptrDS;
+
+	string					ms_CoverageID;
+	string					mSrcFilename;
+	vector<int>				mpBandList;
+	string					msDatasetName;
+	string					msDataTypeName;
+
+	double					mdGeotransform[6];
+	OGRSpatialReference 	moNativeCRS;
+
+	double					mdGeoMinMax[4];//xmin,xmax,ymin,ymax
+
+	int						mbGeoTransformSet;
+	double					mdMissingValue;
+
+	vector<string>			mvtrMeteDataList;
+	string					msNativeFormat;
+	int						mbIsVirtualDS;
+
+	CPLErr setGeoRefFromXML(string& desFile);
+	CPLErr ExtractGridInfo100AndSet(CPLXMLNode *DscCovRoot);
+	CPLErr ExtractGridInfo110AndSet(CPLXMLNode *DscCovRoot);
+
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setMetaDataList(GDALDataset*);
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+
+	AbstractDataset();
+
+public:
+	AbstractDataset(const string&, vector<int> &);
+	virtual ~AbstractDataset();
+
+	virtual CPLErr setLatLonRequestBBox(double latlonbbx[]);//Mainly for GOES data
+	virtual CPLErr setExtraParameters(vector<string> &);//Mainly for ADO lat/lon files location
+	virtual CPLErr initialDataset(const int isSimple=0);
+	virtual CPLErr getGeoMinMax(double geoMinMax[]);
+	virtual GDALDataset* getGDALDataset();
+	virtual int getGeoTransform(double geoTrans[]);
+	virtual int GetImageXSize();
+	virtual int GetImageYSize();
+
+	void getNativeBBox(double bBox[]);
+	const OGRSpatialReference& getNativeCRS();
+	const double& getMissingValue();
+	vector<string> getMetaDataList();
+	const string& getResourceFileName();
+	const string getDatasetDescription();
+	const string& getDatasetName();
+	const string& getDataTypeName();
+	const string& getNativeFormat();
+	const string& getCoverageID();
+
+	const string getNativeCRS_URN();
+	const string getGeoCRS_URN();
+
+	int isbGeoTransformSet();
+	int isVirtualDS();
+	int isCrossingIDL();//Cover International Date Line.
+	int	GetImageBandCount();
+
+	string GetProjectionRef();
+
+	CPLErr GetSuggestedWarpResolution(OGRSpatialReference& dstCRS, double adfDstGeoTransform[], int &nPixels, int &nLines);
+	CPLErr GetSuggestedWarpResolution2(OGRSpatialReference& dstCRS, double adfDstGeoTransform[], int &nPixels, int &nLines);
+	GDALDataset* DatasetWarper(int& IsRefDS, OGRSpatialReference& dstCRS, int& iDstRasterXsize,
+			int& iDstRasterYsize, double pDstGeoTransform[], GDALResampleAlg eResampleAlg=GRA_NearestNeighbour);
+};
+
+#endif /*ABSTRACTDATASET_H_*/

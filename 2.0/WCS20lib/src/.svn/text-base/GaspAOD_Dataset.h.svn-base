@@ -1,0 +1,82 @@
+/*
+ * GaspAOD_Dataset.h
+ *
+ *  Created on: Oct 28, 2010
+ *      Author: yshao
+ */
+
+#ifndef GASPAOD_DATASET_H_
+#define GASPAOD_DATASET_H_
+
+#include "AbstractDataset.h"
+
+/*
+ * 20007268201514_i16_US.all.aod.gz' indicates that the year (2007), the day of year (268),
+ * the hour (20:00UTC), the minute (15) and second (14).
+ * The 'i16'  is for satellite ID( at our data, i16 is for GOES-12, i18 is for GOES-13).
+ * US is for US continental covergae.
+ * Data array is 2128 X 880 for GOES-13, 2000 X 850 for GOES-12, and 2000X750 is for GOES-08.
+ * In each file, since 2009, 10 variables are recorded ( only first 9 variables are archived before 2009).
+ * */
+static const int AOD_WEST_X_SIZE = 2500;
+static const int AOD_WEST_Y_SIZE = 912;
+static const int AOD_EAST_X_SIZE = 2128;
+static const int AOD_EAST_Y_SIZE = 880;
+
+static const int AOD_WEST_ALL_FILE_SIZE = 22800000;
+static const int AOD_WEST_US_FILE_SIZE = 20520000;
+static const int AOD_EAST_ALL_FILE_SIZE = 18726400;
+static const int AOD_EAST_US_FILE_SIZE = 16853760;
+
+static const float 	AOD_WEST_GEO_X_MIN = -179.999969;
+static const float 	AOD_WEST_GEO_X_MAX = -80.3139038;
+static const float 	AOD_WEST_GEO_Y_MIN = 14.9211941;
+static const float 	AOD_WEST_GEO_Y_MAX = 73.8644257;
+
+static const float 	AOD_EAST_GEO_X_MIN = -151.069687;
+static const float 	AOD_EAST_GEO_X_MAX = -52.1286316;
+static const float 	AOD_EAST_GEO_Y_MIN = 14.8802137;
+static const float 	AOD_EAST_GEO_Y_MAX = 60.8659782;
+
+class GaspAOD_Dataset: public AbstractDataset {
+public:
+	GaspAOD_Dataset();
+	GaspAOD_Dataset(const string& id, vector<int> &rBandList);
+	virtual ~GaspAOD_Dataset();
+
+	string 	msEastWest;
+	string	msWestLatFilePath;
+	string	msWestLonFilePath;
+	string	msEastLatFilePath;
+	string	msEastLonFilePath;
+
+	int 	miXSize;
+	int 	miYSize;
+	long 	miStartPos;
+
+	int 	miRectifiedImageXSize;
+	int 	miRectifiedImageYSize;
+
+	int 	miPixelOffset;
+	GDALDataType meDataType;
+
+	vector<GDAL_GCP> m_gdalGCPs;
+
+	float 	mfGeoXMin;
+	float 	mfGeoXMax;
+	float 	mfGeoYMin;
+	float 	mfGeoYMax;
+
+public:
+	CPLErr setGCPGeoRef4VRTDataset(GDALDataset* poVDS);
+	CPLErr rectifyAODDataSet();
+
+	virtual CPLErr setExtraParameters(vector<string> &);
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setMetaDataList(GDALDataset*);
+	virtual CPLErr initialDataset(const int isSimple=0);
+};
+
+#endif /* GASPAOD_DATASET_H_ */

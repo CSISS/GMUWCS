@@ -1,0 +1,16 @@
+<Datasets>
+
+    <Dataset>
+        <name>LandSat_Vendor1_1.ntf</name>
+        <path>/home/yshao/data/NITF_Sample_Data/Files/</path>
+        <coverageID></coverageID>
+        <west>277904.600</west>
+        <east>292496.600</east>
+        <south>4906894.300</south>
+        <north>4906894.300</north>
+        <beginTime>2012-05-11T13:00:07Z</beginTime>
+        <endTime>2012-05-11T13:00:07Z</endTime>
+    </Dataset>
+
+</Datasets>
+

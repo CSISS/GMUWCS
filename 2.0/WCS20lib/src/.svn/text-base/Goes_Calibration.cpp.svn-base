@@ -1,0 +1,1841 @@
+/*
+ * Goes_Utility.cpp
+ *
+ *  Created on: Apr 8, 2010
+ *      Author: yshao
+ */
+
+#include "Goes_Calibration.h"
+#include <iostream>
+
+using namespace std;
+
+/**
+ * Because the detector information were not included in GOES NetCDF data from CLASS,
+ * so the average coefficients were adopted.
+ *
+ * Coefficient Name Standard
+ * There are about 1000 coefficients concerning GOES GVAR calibration. In order to fetch the
+ * coefficient corresponding to different platform/sensor/band/detector, STL map containers
+ * were adopted. The key of the MAP is like this:
+ * 	Radiance related coefficient name:
+ * 		m_goes_[platformNumber]_[sensorType]_chan_[bandNumber]_coef_[coefficientType]
+ * Temperature related coefficient name:
+ * 		m_goes_[platformNumber]_[sensorType]_chan_[bandNumber]_dete_[detectorNumber]_coef_[coefficientType]
+ *
+ * */
+
+void Goes_Calibration::initImagerNABGMap()
+{
+	/*GOES-8 Imager Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_1.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_2_dete_a_coef_n", 2557.66));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_2_dete_a_coef_a", -0.643328));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_2_dete_a_coef_b", 1.00202));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_2_dete_a_coef_g", -9.62951e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_3_dete_a_coef_n", 1481.91));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_3_dete_a_coef_a", -0.656443));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_3_dete_a_coef_b", 1.00191));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_3_dete_a_coef_g", -9.53522e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_4_dete_a_coef_n", 934.84));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_4_dete_a_coef_a", -0.536382));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_4_dete_a_coef_b", 1.00286));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_4_dete_a_coef_g", -3.04152e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_5_dete_a_coef_n", 837.03));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_5_dete_a_coef_a", -0.367293));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_5_dete_a_coef_b", 1.0006));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_8_img_chan_5_dete_a_coef_g", 1.18205e-06));
+
+	/*GOES-9 Imager Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_2.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_2_dete_a_coef_n", 2555.18));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_2_dete_a_coef_a", -0.592268));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_2_dete_a_coef_b", 1.00104));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_2_dete_a_coef_g", -1.88297e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_3_dete_a_coef_n", 1481.82));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_3_dete_a_coef_a", -0.559306));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_3_dete_a_coef_b", 1.0016));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_3_dete_a_coef_g", -1.01081e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_4_dete_a_coef_n", 934.435));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_4_dete_a_coef_a", -0.529222));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_4_dete_a_coef_b", 1.00251));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_4_dete_a_coef_g", -2.36622e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_5_dete_a_coef_n", 834.055));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_5_dete_a_coef_a", -0.332024));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_5_dete_a_coef_b", 1.00116));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_9_img_chan_5_dete_a_coef_g", -4.13859e-07));
+
+	/*GOES-10 Imager Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_3.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_2_dete_a_coef_n", 2552.98));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_2_dete_a_coef_a", -0.633437));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_2_dete_a_coef_b", 1.00132));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_2_dete_a_coef_g", -4.20385e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_3_dete_a_coef_n", 1486.22));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_3_dete_a_coef_a", -0.665008));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_3_dete_a_coef_b", 1.00179));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_3_dete_a_coef_g", -7.38853e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_4_dete_a_coef_n", 936.046));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_4_dete_a_coef_a", -0.389764));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_4_dete_a_coef_b", 1.00191));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_4_dete_a_coef_g", -1.81427e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_5_dete_a_coef_n", 830.891));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_5_dete_a_coef_a", -0.324739));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_5_dete_a_coef_b", 1.00139));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_10_img_chan_5_dete_a_coef_g", -9.45722e-07));
+
+	/*GOES-11 Imager Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_4.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_2_dete_a_coef_n", 2562.07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_2_dete_a_coef_a", -0.651377));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_2_dete_a_coef_b", 1.00083));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_2_dete_a_coef_g", -1.00267e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_3_dete_a_coef_n", 1481.53));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_3_dete_a_coef_a", -0.620175));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_3_dete_a_coef_b", 1.0021));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_3_dete_a_coef_g", -1.17116e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_4_dete_a_coef_n", 931.76));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_4_dete_a_coef_a", -0.546157));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_4_dete_a_coef_b", 1.00317));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_4_dete_a_coef_g", -3.65632e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_5_dete_a_coef_n", 833.355));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_5_dete_a_coef_a", -0.318486));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_5_dete_a_coef_b", 1.00094));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_11_img_chan_5_dete_a_coef_g", 8.66675e-08));
+
+	/*GOES-12 Imager Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_5.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_2_dete_a_coef_n", 2562.45));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_2_dete_a_coef_a", -0.727744));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_2_dete_a_coef_b", 1.00213));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_2_dete_a_coef_g", -1.1739e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_3_dete_a_coef_n", 1536.69));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_3_dete_a_coef_a", -5.27954));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_3_dete_a_coef_b", 1.01643));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_3_dete_a_coef_g", -7.68112e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_4_dete_a_coef_n", 933.21));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_4_dete_a_coef_a", -0.534982));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_4_dete_a_coef_b", 1.00269));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_4_dete_a_coef_g", -2.66709e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_6_dete_a_coef_n", 751.91));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_6_dete_a_coef_a", -0.177244));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_6_dete_a_coef_b", 1.00014));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_12_img_chan_6_dete_a_coef_g", 1.1635e-06));
+
+	/*GOES-13 Imager Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_6.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_2_dete_a_coef_n", 2561.74));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_2_dete_a_coef_a", -1.47555));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_2_dete_a_coef_b", 1.00287));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_2_dete_a_coef_g", -5.82039e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_3_dete_a_coef_n", 1522.09));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_3_dete_a_coef_a", -4.1484));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_3_dete_a_coef_b", 1.01422));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_3_dete_a_coef_g", -8.05055e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_4_dete_a_coef_n", 937.255));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_4_dete_a_coef_a", -0.520053));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_4_dete_a_coef_b", 1.00238));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_4_dete_a_coef_g", -2.09132e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_6_dete_a_coef_n", 751.926));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_6_dete_a_coef_a", -0.160484));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_6_dete_a_coef_b", 1.00069));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_13_img_chan_6_dete_a_coef_g", -3.93992e-07));
+
+	/*GOES-14 Imager (Side 1) Coefficients (Release Rev E, 2008)); Operational Nov. 23, 2009)*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_7.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_2_dete_a_coef_n", 2577.98));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_2_dete_a_coef_a", -1.62479));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_2_dete_a_coef_b", 1.00285));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_2_dete_a_coef_g", -4.22016e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_3_dete_a_coef_n", 1529.74));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_3_dete_a_coef_a", -4.07017));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_3_dete_a_coef_b", 1.01333));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_3_dete_a_coef_g", -7.29501e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_4_dete_a_coef_n", 936.17));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_4_dete_a_coef_a", -0.541554));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_4_dete_a_coef_b", 1.00327));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_4_dete_a_coef_g", -3.87053e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_6_dete_a_coef_n", 753.57));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_6_dete_a_coef_a", -0.168256));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_6_dete_a_coef_b", 1.0003));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_14_img_chan_6_dete_a_coef_g", 6.63932e-07));
+
+	/*GOES-P (GOES-15) Imager (Side 1) Coefficients (Release Rev E, 2008)); Operational Nov. 23, 2009)*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table3_8.htm*/
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_2_dete_a_coef_n", 2560.75));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_2_dete_a_coef_a", -1.66173));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_2_dete_a_coef_b", 1.00286));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_2_dete_a_coef_g", -4.32229e-07));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_3_dete_a_coef_n", 1538.64));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_3_dete_a_coef_a", -3.63929));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_3_dete_a_coef_b", 1.01205));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_3_dete_a_coef_g", -6.77004e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_4_dete_a_coef_n", 934.99));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_4_dete_a_coef_a", -0.516978));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_4_dete_a_coef_b", 1.0027));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_4_dete_a_coef_g", -2.79431e-06));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_6_dete_a_coef_n", 752.835));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_6_dete_a_coef_a", -0.163301));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_6_dete_a_coef_b", 1.00026));
+	m_mapImagerNABG.insert(map<string, float>::value_type("m_goes_15_img_chan_6_dete_a_coef_g", 7.1495e-07));
+}
+
+void Goes_Calibration::initSounderNABGMap()
+{
+	/*GOES-8 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_1b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_1_dete_a_coef_n", 680.663));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_1_dete_a_coef_a", -0.0178422));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_1_dete_a_coef_b", 1.00017));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_1_dete_a_coef_g", -2.99033e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_2_dete_a_coef_n", 695.952));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_2_dete_a_coef_a", -0.0300465));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_2_dete_a_coef_b", 0.999906));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_2_dete_a_coef_g", 5.57586e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_3_dete_a_coef_n", 711.857));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_3_dete_a_coef_a", -0.0298742));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_3_dete_a_coef_b", 1.00021));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_3_dete_a_coef_g", -2.73389e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_4_dete_a_coef_n", 732.453));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_4_dete_a_coef_a", -0.0261303));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_4_dete_a_coef_b", 1.00021));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_4_dete_a_coef_g", -3.28526e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_5_dete_a_coef_n", 747.587));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_5_dete_a_coef_a", -0.031701));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_5_dete_a_coef_b", 1.00011));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_5_dete_a_coef_g", -1.39042e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_6_dete_a_coef_n", 790.68));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_6_dete_a_coef_a", -0.0837995));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_6_dete_a_coef_b", 1.00014));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_6_dete_a_coef_g", 3.00191e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_7_dete_a_coef_n", 828.743));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_7_dete_a_coef_a", -0.196215));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_7_dete_a_coef_b", 1.00132));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_7_dete_a_coef_g", -1.70113e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_8_dete_a_coef_n", 906.872));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_8_dete_a_coef_a", -0.181144));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_8_dete_a_coef_b", 1.00054));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_8_dete_a_coef_g", -7.66019e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_9_dete_a_coef_n", 1029.52));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_9_dete_a_coef_a", -0.065849));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_9_dete_a_coef_b", 1.00034));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_9_dete_a_coef_g", -4.00244e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_10_dete_a_coef_n", 1339.52));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_10_dete_a_coef_a", -0.173997));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_10_dete_a_coef_b", 1.00059));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_10_dete_a_coef_g", -3.9095e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_11_dete_a_coef_n", 1421.52));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_11_dete_a_coef_a", -0.294359));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_11_dete_a_coef_b", 1.00117));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_11_dete_a_coef_g", -8.34302e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_12_dete_a_coef_n", 1536.04));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_12_dete_a_coef_a", -0.16552));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_12_dete_a_coef_b", 1.00011));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_12_dete_a_coef_g", 1.9532e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_13_dete_a_coef_n", 2184.8));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_13_dete_a_coef_a", -0.011382));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_13_dete_a_coef_b", 1.00001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_13_dete_a_coef_g", 1.08682e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_14_dete_a_coef_n", 2207.56));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_14_dete_a_coef_a", -0.006482));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_14_dete_a_coef_b", 0.999881));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_14_dete_a_coef_g", 2.66484e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_15_dete_a_coef_n", 2247.57));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_15_dete_a_coef_a", -0.030482));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_15_dete_a_coef_b", 0.999902));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_15_dete_a_coef_g", 5.51411e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_16_dete_a_coef_n", 2422.08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_16_dete_a_coef_a", -0.066199));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_16_dete_a_coef_b", 1.00001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_16_dete_a_coef_g", 1.64663e-09));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_17_dete_a_coef_n", 2509.4));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_17_dete_a_coef_a", -0.082218));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_17_dete_a_coef_b", 1.00029));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_17_dete_a_coef_g", -3.27395e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_18_dete_a_coef_n", 2664.7));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_18_dete_a_coef_a", -0.400247));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_18_dete_a_coef_b", 1.00139));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_8_snd_chan_18_dete_a_coef_g", -8.96851e-07));
+
+	/*GOES-9 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_2b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_1_dete_a_coef_n", 681.425));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_1_dete_a_coef_a", -0.0194905));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_1_dete_a_coef_b", 0.999837));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_1_dete_a_coef_g", 6.77676e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_2_dete_a_coef_n", 694.102));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_2_dete_a_coef_a", -0.0303433));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_2_dete_a_coef_b", 1.00013));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_2_dete_a_coef_g", -7.27654e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_3_dete_a_coef_n", 711.185));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_3_dete_a_coef_a", -0.0301703));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_3_dete_a_coef_b", 1.00008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_3_dete_a_coef_g", 4.0689e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_4_dete_a_coef_n", 732.475));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_4_dete_a_coef_a", -0.0434418));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_4_dete_a_coef_b", 1.0002));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_4_dete_a_coef_g", -2.10055e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_5_dete_a_coef_n", 747.03));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_5_dete_a_coef_a", -0.016323));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_5_dete_a_coef_b", 0.999961));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_5_dete_a_coef_g", 2.73979e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_6_dete_a_coef_n", 789.622));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_6_dete_a_coef_a", -0.0855803));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_6_dete_a_coef_b", 1.00036));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_6_dete_a_coef_g", -2.5807e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_7_dete_a_coef_n", 827.765));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_7_dete_a_coef_a", -0.210221));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_7_dete_a_coef_b", 1.00183));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_7_dete_a_coef_g", -2.87714e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_8_dete_a_coef_n", 910.362));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_8_dete_a_coef_a", -0.180148));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_8_dete_a_coef_b", 0.999939));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_8_dete_a_coef_g", 1.25099e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_9_dete_a_coef_n", 1028.86));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_9_dete_a_coef_a", -0.0509287));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_9_dete_a_coef_b", 1.0001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_9_dete_a_coef_g", 7.31213e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_10_dete_a_coef_n", 1335.75));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_10_dete_a_coef_a", -0.174796));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_10_dete_a_coef_b", 1.00078));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_10_dete_a_coef_g", -7.30145e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_11_dete_a_coef_n", 1420.83));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_11_dete_a_coef_a", -0.321492));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_11_dete_a_coef_b", 1.00143));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_11_dete_a_coef_g", -1.30636e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_12_dete_a_coef_n", 1529.38));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_12_dete_a_coef_a", -0.143447));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_12_dete_a_coef_b", 0.999756));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_12_dete_a_coef_g", 7.15412e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_13_dete_a_coef_n", 2183.92));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_13_dete_a_coef_a", -0.000714));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_13_dete_a_coef_b", 0.999874));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_13_dete_a_coef_g", 2.89045e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_14_dete_a_coef_n", 2207.01));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_14_dete_a_coef_a", -0.024723));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_14_dete_a_coef_b", 1));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_14_dete_a_coef_g", -8.33977e-09));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_15_dete_a_coef_n", 2245.84));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_15_dete_a_coef_a", -0.023208));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_15_dete_a_coef_b", 0.9999));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_15_dete_a_coef_g", 8.98376e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_16_dete_a_coef_n", 2415.16));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_16_dete_a_coef_a", -0.04595));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_16_dete_a_coef_b", 1.00005));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_16_dete_a_coef_g", 9.04808e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_17_dete_a_coef_n", 2512.09));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_17_dete_a_coef_a", -0.068985));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_17_dete_a_coef_b", 1.00012));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_17_dete_a_coef_g", -8.68896e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_18_dete_a_coef_n", 2665.35));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_18_dete_a_coef_a", -0.291448));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_18_dete_a_coef_b", 1.00079));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_9_snd_chan_18_dete_a_coef_g", -1.51633e-07));
+
+	/*GOES-10 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_3b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_1_dete_a_coef_n", 679.405));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_1_dete_a_coef_a", -0.0249449));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_1_dete_a_coef_b", 0.999782));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_1_dete_a_coef_g", 8.8419e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_2_dete_a_coef_n", 695.453));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_2_dete_a_coef_a", -0.0261448));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_2_dete_a_coef_b", 0.999994));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_2_dete_a_coef_g", 2.70725e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_3_dete_a_coef_n", 712.784));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_3_dete_a_coef_a", -0.0175995));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_3_dete_a_coef_b", 1.00003));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_3_dete_a_coef_g", 9.29691e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_4_dete_a_coef_n", 731.592));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_4_dete_a_coef_a", -0.024189));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_4_dete_a_coef_b", 0.999997));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_4_dete_a_coef_g", 2.27264e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_5_dete_a_coef_n", 747.557));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_5_dete_a_coef_a", -0.0155584));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_5_dete_a_coef_b", 0.999915));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_5_dete_a_coef_g", 3.92414e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_6_dete_a_coef_n", 790.087));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_6_dete_a_coef_a", -0.0672826));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_6_dete_a_coef_b", 1.00011));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_6_dete_a_coef_g", 2.764e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_7_dete_a_coef_n", 829.677));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_7_dete_a_coef_a", -0.215183));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_7_dete_a_coef_b", 1.00174));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_7_dete_a_coef_g", -2.60758e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_8_dete_a_coef_n", 909.598));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_8_dete_a_coef_a", -0.181507));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_8_dete_a_coef_b", 1.00005));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_8_dete_a_coef_g", 9.9441e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_9_dete_a_coef_n", 1028.88));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_9_dete_a_coef_a", -0.0619941));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_9_dete_a_coef_b", 1.00031));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_9_dete_a_coef_g", -3.52487e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_10_dete_a_coef_n", 1340.83));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_10_dete_a_coef_a", -0.17434));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_10_dete_a_coef_b", 1.00053));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_10_dete_a_coef_g", -3.05439e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_11_dete_a_coef_n", 1423.59));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_11_dete_a_coef_a", -0.313198));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_11_dete_a_coef_b", 1.00133));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_11_dete_a_coef_g", -1.13164e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_12_dete_a_coef_n", 1535.05));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_12_dete_a_coef_a", -0.133048));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_12_dete_a_coef_b", 1.00035));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_12_dete_a_coef_g", -9.6614e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_13_dete_a_coef_n", 2187.81));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_13_dete_a_coef_a", -0.0273999));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_13_dete_a_coef_b", 0.999957));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_13_dete_a_coef_g", 1.78373e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_14_dete_a_coef_n", 2211.49));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_14_dete_a_coef_a", -0.020181));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_14_dete_a_coef_b", 1.00003));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_14_dete_a_coef_g", -1.78783e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_15_dete_a_coef_n", 2248.36));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_15_dete_a_coef_a", -0.0124823));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_15_dete_a_coef_b", 0.99985));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_15_dete_a_coef_g", 2.3028e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_16_dete_a_coef_n", 2418.78));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_16_dete_a_coef_a", -0.0685068));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_16_dete_a_coef_b", 1.00016));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_16_dete_a_coef_g", -1.97486e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_17_dete_a_coef_n", 2511.16));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_17_dete_a_coef_a", -0.0582987));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_17_dete_a_coef_b", 1.00013));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_17_dete_a_coef_g", -8.36809e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_18_dete_a_coef_n", 2660.74));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_18_dete_a_coef_a", -0.280665));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_18_dete_a_coef_b", 1.00109));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_10_snd_chan_18_dete_a_coef_g", -4.77271e-07));
+
+	/*GOES-11 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_4b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_1_dete_a_coef_n", 681.974));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_1_dete_a_coef_a", -0.030546));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_1_dete_a_coef_b", 1.00002));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_1_dete_a_coef_g", 2.34544e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_2_dete_a_coef_n", 695.429));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_2_dete_a_coef_a", -0.0236848));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_2_dete_a_coef_b", 1.00008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_2_dete_a_coef_g", -3.10595e-09));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_3_dete_a_coef_n", 713.014));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_3_dete_a_coef_a", -0.0289354));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_3_dete_a_coef_b", 1.00011));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_3_dete_a_coef_g", -5.8461e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_4_dete_a_coef_n", 733.118));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_4_dete_a_coef_a", -0.017244));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_4_dete_a_coef_b", 1.00004));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_4_dete_a_coef_g", 7.4322e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_5_dete_a_coef_n", 747.446));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_5_dete_a_coef_a", -0.0196871));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_5_dete_a_coef_b", 1.00002));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_5_dete_a_coef_g", 1.35646e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_6_dete_a_coef_n", 790.384));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_6_dete_a_coef_a", -0.0842391));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_6_dete_a_coef_b", 1.00037));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_6_dete_a_coef_g", -2.95357e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_7_dete_a_coef_n", 832.831));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_7_dete_a_coef_a", -0.185717));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_7_dete_a_coef_b", 1.00138));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_7_dete_a_coef_g", -1.90262e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_8_dete_a_coef_n", 910.439));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_8_dete_a_coef_a", -0.181262));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_8_dete_a_coef_b", 1.00002));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_8_dete_a_coef_g", 1.07227e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_9_dete_a_coef_n", 1031.48));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_9_dete_a_coef_a", -0.0501307));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_9_dete_a_coef_b", 1.00023));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_9_dete_a_coef_g", -2.15368e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_10_dete_a_coef_n", 1340.75));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_10_dete_a_coef_a", -0.173742));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_10_dete_a_coef_b", 1.00053));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_10_dete_a_coef_g", -2.94092e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_11_dete_a_coef_n", 1427.82));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_11_dete_a_coef_a", -0.309124));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_11_dete_a_coef_b", 1.00149));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_11_dete_a_coef_g", -1.36754e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_12_dete_a_coef_n", 1538.22));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_12_dete_a_coef_a", -0.146427));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_12_dete_a_coef_b", 1.00053));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_12_dete_a_coef_g", -3.75318e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_13_dete_a_coef_n", 2191.35));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_13_dete_a_coef_a", -0.0268394));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_13_dete_a_coef_b", 1.00008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_13_dete_a_coef_g", -1.09635e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_14_dete_a_coef_n", 2213.76));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_14_dete_a_coef_a", -0.0428337));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_14_dete_a_coef_b", 1.00029));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_14_dete_a_coef_g", -4.18063e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_15_dete_a_coef_n", 2244.98));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_15_dete_a_coef_a", -0.00658624));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_15_dete_a_coef_b", 0.999818));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_15_dete_a_coef_g", 3.03935e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_16_dete_a_coef_n", 2425.88));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_16_dete_a_coef_a", -0.0689764));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_16_dete_a_coef_b", 1.00029));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_16_dete_a_coef_g", -3.47673e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_17_dete_a_coef_n", 2514.25));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_17_dete_a_coef_a", -0.0655024));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_17_dete_a_coef_b", 1.00016));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_17_dete_a_coef_g", -1.60637e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_18_dete_a_coef_n", 2666.52));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_18_dete_a_coef_a", -0.316775));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_18_dete_a_coef_b", 1.00144));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_11_snd_chan_18_dete_a_coef_g", -1.01305e-06));
+
+	/*GOES-12 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_5b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_1_dete_a_coef_n", 682.087));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_1_dete_a_coef_a", -0.0115053));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_1_dete_a_coef_b", 0.999926));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_1_dete_a_coef_g", 3.56804e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_2_dete_a_coef_n", 695.669));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_2_dete_a_coef_a", -0.0422395));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_2_dete_a_coef_b", 1.0002));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_2_dete_a_coef_g", -2.02137e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_3_dete_a_coef_n", 712.537));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_3_dete_a_coef_a", -0.0155098));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_3_dete_a_coef_b", 1.00007));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_3_dete_a_coef_g", -2.73676e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_4_dete_a_coef_n", 733.773));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_4_dete_a_coef_a", -0.0085762));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_4_dete_a_coef_b", 0.999926));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_4_dete_a_coef_g", 3.16669e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_5_dete_a_coef_n", 749.476));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_5_dete_a_coef_a", -0.0135752));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_5_dete_a_coef_b", 1.00001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_5_dete_a_coef_g", 1.22254e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_6_dete_a_coef_n", 789.244));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_6_dete_a_coef_a", -0.0538682));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_6_dete_a_coef_b", 1.00075));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_6_dete_a_coef_g", -1.42771e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_7_dete_a_coef_n", 833.819));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_7_dete_a_coef_a", -0.217463));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_7_dete_a_coef_b", 1.00126));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_7_dete_a_coef_g", -1.45547e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_8_dete_a_coef_n", 912.857));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_8_dete_a_coef_a", -0.185333));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_8_dete_a_coef_b", 1.00013));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_8_dete_a_coef_g", 8.64425e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_9_dete_a_coef_n", 1028.82));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_9_dete_a_coef_a", -0.0573548));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_9_dete_a_coef_b", 1.0003));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_9_dete_a_coef_g", -3.47368e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_10_dete_a_coef_n", 1344.85));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_10_dete_a_coef_a", -0.17941));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_10_dete_a_coef_b", 1.00011));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_10_dete_a_coef_g", 3.70297e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_11_dete_a_coef_n", 1425.3));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_11_dete_a_coef_a", -0.308403));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_11_dete_a_coef_b", 1.00137));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_11_dete_a_coef_g", -1.18122e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_12_dete_a_coef_n", 1538.21));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_12_dete_a_coef_a", -0.155907));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_12_dete_a_coef_b", 1.0004));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_12_dete_a_coef_g", -2.19574e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_13_dete_a_coef_n", 2189.06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_13_dete_a_coef_a", -0.034243));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_13_dete_a_coef_b", 1.00009));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_13_dete_a_coef_g", -1.45616e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_14_dete_a_coef_n", 2207.96));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_14_dete_a_coef_a", -0.0261653));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_14_dete_a_coef_b", 1.00014));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_14_dete_a_coef_g", -1.68762e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_15_dete_a_coef_n", 2248.39));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_15_dete_a_coef_a", -0.00408193));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_15_dete_a_coef_b", 0.999846));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_15_dete_a_coef_g", 2.99282e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_16_dete_a_coef_n", 2424.79));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_16_dete_a_coef_a", -0.0590816));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_16_dete_a_coef_b", 1.00017));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_16_dete_a_coef_g", -1.5909e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_17_dete_a_coef_n", 2515.31));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_17_dete_a_coef_a", -0.0508598));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_17_dete_a_coef_b", 1.00005));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_17_dete_a_coef_g", 5.61165e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_18_dete_a_coef_n", 2662.61));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_18_dete_a_coef_a", -0.305144));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_18_dete_a_coef_b", 1.00134));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_12_snd_chan_18_dete_a_coef_g", -8.66808e-07));
+
+	/*GOES-13 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_6b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_1_dete_a_coef_n", 679.29));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_1_dete_a_coef_a", -0.0161543));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_1_dete_a_coef_b", 1.00008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_1_dete_a_coef_g", -6.53268e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_2_dete_a_coef_n", 697.063));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_2_dete_a_coef_a", -0.0138493));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_2_dete_a_coef_b", 1.00016));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_2_dete_a_coef_g", -3.08982e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_3_dete_a_coef_n", 710.131));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_3_dete_a_coef_a", -0.014464));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_3_dete_a_coef_b", 1.00015));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_3_dete_a_coef_g", -2.66883e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_4_dete_a_coef_n", 733.081));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_4_dete_a_coef_a", -0.0219888));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_4_dete_a_coef_b", 1.00011));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_4_dete_a_coef_g", -9.64034e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_5_dete_a_coef_n", 748.554));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_5_dete_a_coef_a", -0.0233402));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_5_dete_a_coef_b", 1.00011));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_5_dete_a_coef_g", -8.68253e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_6_dete_a_coef_n", 786.422));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_6_dete_a_coef_a", -0.0590425));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_6_dete_a_coef_b", 1.0008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_6_dete_a_coef_g", -1.52728e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_7_dete_a_coef_n", 831.071));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_7_dete_a_coef_a", -0.201671));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_7_dete_a_coef_b", 1.00089));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_7_dete_a_coef_g", -6.79531e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_8_dete_a_coef_n", 909.334));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_8_dete_a_coef_a", -0.184145));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_8_dete_a_coef_b", 1.00041));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_8_dete_a_coef_g", 2.16611e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_9_dete_a_coef_n", 1030.78));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_9_dete_a_coef_a", -0.0509758));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_9_dete_a_coef_b", 1.00015));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_9_dete_a_coef_g", -4.86055e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_10_dete_a_coef_n", 1342.35));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_10_dete_a_coef_a", -0.179604));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_10_dete_a_coef_b", 1.00015));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_10_dete_a_coef_g", 3.06303e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_11_dete_a_coef_n", 1423.63));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_11_dete_a_coef_a", -0.311295));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_11_dete_a_coef_b", 1.00096));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_11_dete_a_coef_g", -5.51677e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_12_dete_a_coef_n", 1533.89));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_12_dete_a_coef_a", -0.198259));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_12_dete_a_coef_b", 0.99991));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_12_dete_a_coef_g", 5.84571e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_13_dete_a_coef_n", 2190.23));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_13_dete_a_coef_a", -0.0188378));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_13_dete_a_coef_b", 1.00002));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_13_dete_a_coef_g", 5.72415e-09));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_14_dete_a_coef_n", 2207.47));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_14_dete_a_coef_a", -0.018895));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_14_dete_a_coef_b", 1.00004));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_14_dete_a_coef_g", -1.78039e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_15_dete_a_coef_n", 2245.17));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_15_dete_a_coef_a", -0.0209472));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_15_dete_a_coef_b", 1.0001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_15_dete_a_coef_g", -6.8147e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_16_dete_a_coef_n", 2420.84));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_16_dete_a_coef_a", -0.0533131));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_16_dete_a_coef_b", 0.999978));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_16_dete_a_coef_g", 7.04036e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_17_dete_a_coef_n", 2514.51));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_17_dete_a_coef_a", -0.0598135));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_17_dete_a_coef_b", 1.00013));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_17_dete_a_coef_g", -5.74152e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_18_dete_a_coef_n", 2666.61));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_18_dete_a_coef_a", -0.30773));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_18_dete_a_coef_b", 1.00081));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_13_snd_chan_18_dete_a_coef_g", -3.74422e-07));
+
+	/*GOES-14 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_7b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_1_dete_a_coef_n", 680.335));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_1_dete_a_coef_a", -0.0154188));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_1_dete_a_coef_b", 1.0001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_1_dete_a_coef_g", -1.33466e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_2_dete_a_coef_n", 695.718));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_2_dete_a_coef_a", -0.0161989));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_2_dete_a_coef_b", 1.00012));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_2_dete_a_coef_g", -1.5993e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_3_dete_a_coef_n", 710.411));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_3_dete_a_coef_a", -0.0148419));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_3_dete_a_coef_b", 1.00014));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_3_dete_a_coef_g", -2.48039e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_4_dete_a_coef_n", 733.309));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_4_dete_a_coef_a", -0.0217041));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_4_dete_a_coef_b", 1.00012));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_4_dete_a_coef_g", -1.32209e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_5_dete_a_coef_n", 747.778));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_5_dete_a_coef_a", -0.0241515));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_5_dete_a_coef_b", 1.00009));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_5_dete_a_coef_g", -2.34682e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_6_dete_a_coef_n", 786.924));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_6_dete_a_coef_a", -0.0618203));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_6_dete_a_coef_b", 1.00077));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_6_dete_a_coef_g", -1.41359e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_7_dete_a_coef_n", 831.213));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_7_dete_a_coef_a", -0.193047));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_7_dete_a_coef_b", 1.00103));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_7_dete_a_coef_g", -1.06178e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_8_dete_a_coef_n", 911.203));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_8_dete_a_coef_a", -0.178377));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_8_dete_a_coef_b", 1.00013));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_8_dete_a_coef_g", 7.94645e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_9_dete_a_coef_n", 1031.88));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_9_dete_a_coef_a", -0.0507158));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_9_dete_a_coef_b", 1.00019));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_9_dete_a_coef_g", -1.24054e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_10_dete_a_coef_n", 1344.16));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_10_dete_a_coef_a", -0.163711));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_10_dete_a_coef_b", 1.00043));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_10_dete_a_coef_g", -1.64162e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_11_dete_a_coef_n", 1423.34));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_11_dete_a_coef_a", -0.304911));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_11_dete_a_coef_b", 1.00102));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_11_dete_a_coef_g", -6.54926e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_12_dete_a_coef_n", 1534.52));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_12_dete_a_coef_a", -0.199574));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_12_dete_a_coef_b", 0.999617));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_12_dete_a_coef_g", 9.8404e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_13_dete_a_coef_n", 2189.63));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_13_dete_a_coef_a", -0.0187081));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_13_dete_a_coef_b", 1.00005));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_13_dete_a_coef_g", -2.31308e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_14_dete_a_coef_n", 2208.6));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_14_dete_a_coef_a", -0.0189297));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_14_dete_a_coef_b", 0.999994));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_14_dete_a_coef_g", 2.81625e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_15_dete_a_coef_n", 2247.33));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_15_dete_a_coef_a", -0.0197889));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_15_dete_a_coef_b", 1.00009));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_15_dete_a_coef_g", -6.43393e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_16_dete_a_coef_n", 2420.88));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_16_dete_a_coef_a", -0.0545281));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_16_dete_a_coef_b", 0.999925));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_16_dete_a_coef_g", 1.16831e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_17_dete_a_coef_n", 2512.88));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_17_dete_a_coef_a", -0.0554733));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_17_dete_a_coef_b", 1.0001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_17_dete_a_coef_g", -3.49952e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_18_dete_a_coef_n", 2671.13));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_18_dete_a_coef_a", -0.306654));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_18_dete_a_coef_b", 1.00085));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_14_snd_chan_18_dete_a_coef_g", -3.95577e-07));
+
+	/*GOES-15 Soubder Average Coefficients*/
+	/*http://www.oso.noaa.gov/goes/goes-calibration/docs/table4_8b.htm*/
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_1_dete_a_coef_n", 679.322));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_1_dete_a_coef_a", -0.015));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_1_dete_a_coef_b", 1.0001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_1_dete_a_coef_g", -1.12546e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_2_dete_a_coef_n", 695.304));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_2_dete_a_coef_a", -0.0145717));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_2_dete_a_coef_b", 1.00014));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_2_dete_a_coef_g", -2.30078e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_3_dete_a_coef_n", 710.217));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_3_dete_a_coef_a", -0.0125985));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_3_dete_a_coef_b", 1.0002));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_3_dete_a_coef_g", -4.32363e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_4_dete_a_coef_n", 732.833));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_4_dete_a_coef_a", -0.0233849));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_4_dete_a_coef_b", 1.00008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_4_dete_a_coef_g", 1.20156e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_5_dete_a_coef_n", 747.983));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_5_dete_a_coef_a", -0.0241565));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_5_dete_a_coef_b", 1.00006));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_5_dete_a_coef_g", 4.91934e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_6_dete_a_coef_n", 787.904));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_6_dete_a_coef_a", -0.0585287));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_6_dete_a_coef_b", 1.00077));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_6_dete_a_coef_g", -1.44943e-06));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_7_dete_a_coef_n", 830.442));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_7_dete_a_coef_a", -0.18927));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_7_dete_a_coef_b", 1.00086));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_7_dete_a_coef_g", -6.88787e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_8_dete_a_coef_n", 911.529));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_8_dete_a_coef_a", -0.167189));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_8_dete_a_coef_b", 1.00035));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_8_dete_a_coef_g", 2.51252e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_9_dete_a_coef_n", 1031.67));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_9_dete_a_coef_a", -0.0514611));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_9_dete_a_coef_b", 1.00016));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_9_dete_a_coef_g", -7.29294e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_10_dete_a_coef_n", 1343.65));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_10_dete_a_coef_a", -0.15751));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_10_dete_a_coef_b", 1.00039));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_10_dete_a_coef_g", -1.30986e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_11_dete_a_coef_n", 1423.37));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_11_dete_a_coef_a", -0.308263));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_11_dete_a_coef_b", 1.00101));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_11_dete_a_coef_g", -6.35195e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_12_dete_a_coef_n", 1530.87));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_12_dete_a_coef_a", -0.186795));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_12_dete_a_coef_b", 1.00081));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_12_dete_a_coef_g", -6.59398e-07));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_13_dete_a_coef_n", 2188.79));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_13_dete_a_coef_a", -0.0189664));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_13_dete_a_coef_b", 1.00001));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_13_dete_a_coef_g", 1.61359e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_14_dete_a_coef_n", 2208.69));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_14_dete_a_coef_a", -0.0191275));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_14_dete_a_coef_b", 0.999992));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_14_dete_a_coef_g", 2.97436e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_15_dete_a_coef_n", 2247.26));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_15_dete_a_coef_a", -0.0205467));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_15_dete_a_coef_b", 1.00008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_15_dete_a_coef_g", -5.257e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_16_dete_a_coef_n", 2424.24));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_16_dete_a_coef_a", -0.0542403));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_16_dete_a_coef_b", 0.999955));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_16_dete_a_coef_g", 9.05205e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_17_dete_a_coef_n", 2511.74));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_17_dete_a_coef_a", -0.0550054));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_17_dete_a_coef_b", 1.00008));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_17_dete_a_coef_g", -1.45972e-08));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_18_dete_a_coef_n", 2674.59));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_18_dete_a_coef_a", -0.310976));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_18_dete_a_coef_b", 1.00065));
+	m_mapSounderNABG.insert(map<string, float>::value_type("m_goes_15_snd_chan_18_dete_a_coef_g", -2.41656e-07));
+
+}
+
+/*Conversion of Imager GVAR Count to Scene Radiance*/
+void Goes_Calibration::initImagerMBMap()
+{
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_2_coef_m", 227.3889));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_3_coef_m", 38.8383));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_4_coef_m", 5.2285));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_5_coef_m", 5.0273));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_2_coef_b", 68.2167));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_3_coef_b", 29.1287));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_4_coef_b", 15.6854));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_8_11_img_chan_5_coef_b", 15.3332));
+
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_2_coef_m", 227.3889));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_3_coef_m", 38.8383));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_4_coef_m", 5.2285));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_6_coef_m", 5.5297));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_2_coef_b", 68.2167));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_3_coef_b", 29.1287));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_4_coef_b", 15.6854));
+	m_mapImagerMB.insert(map<string, float>::value_type("m_goes_12_14_img_chan_6_coef_b", 16.5892));
+}
+
+/*Conversion of Sounder GVAR Count to Scene Radiance*/
+void Goes_Calibration::initSounderMBMap()
+{
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_1_coef_m", 528.9773));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_2_coef_m", 540.0049));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_3_coef_m", 485.6243));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_4_coef_m", 394.5752));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_5_coef_m", 357.8019));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_6_coef_m", 334.1747));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_7_coef_m", 311.5226));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_8_coef_m", 314.6032));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_9_coef_m", 434.3518));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_10_coef_m", 1126.224));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_11_coef_m", 1899.565));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_12_coef_m", 2874.342));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_13_coef_m", 9642.747));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_14_coef_m", 14105.38));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_15_coef_m", 26221.34));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_16_coef_m", 10720.60));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_17_coef_m", 12136.11));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_18_coef_m", 19358.13));
+
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_1_coef_b", 1745.625));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_2_coef_b", 1566.014));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_3_coef_b", 1311.186));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_4_coef_b", 887.7943));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_5_coef_b", 787.1643));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_6_coef_b", 417.7184));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_7_coef_b", 249.2180));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_8_coef_b", 251.6826));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_9_coef_b", 716.6805));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_10_coef_b", 900.9795));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_11_coef_b", 1139.739));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_12_coef_b", 2155.757));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_13_coef_b", 626.7785));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_14_coef_b", 916.8496));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_15_coef_b", 1704.387));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_16_coef_b", 428.8239));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_17_coef_b", 497.5806));
+	m_mapSounderMB.insert(map<string, float>::value_type("m_goes_8_14_snd_chan_18_coef_b", 348.4463));
+}
+
+/*http://www.oso.noaa.gov/goes/goes-calibration/goes-vis-ch-calibration.htm*/
+void Goes_Calibration::initImagerMXBKMap()
+{
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_8_img_chan_1_dete_a_coef_m", 0.5501873));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_8_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_8_img_chan_1_dete_a_coef_b", -15.955));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_8_img_chan_1_dete_a_coef_k", 1.92979e-3));
+
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_9_img_chan_1_dete_a_coef_m", 0.5492361));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_9_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_9_img_chan_1_dete_a_coef_b", -15.928));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_9_img_chan_1_dete_a_coef_k", 1.94180e-3));
+
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_10_img_chan_1_dete_a_coef_m", 0.55812034));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_10_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_10_img_chan_1_dete_a_coef_b", -16.1854));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_10_img_chan_1_dete_a_coef_k", 1.98808e-3));
+
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_11_img_chan_1_dete_a_coef_m", 0.5563984));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_11_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_11_img_chan_1_dete_a_coef_b", -16.13563));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_11_img_chan_1_dete_a_coef_k", 2.01524e-3));
+
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_12_img_chan_1_dete_a_coef_m", 0.5768551));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_12_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_12_img_chan_1_dete_a_coef_b", -16.72875));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_12_img_chan_1_dete_a_coef_k", 1.97658e-3));
+
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_13_img_chan_1_dete_a_coef_m", 0.6107807));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_13_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_13_img_chan_1_dete_a_coef_b", -17.724));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_13_img_chan_1_dete_a_coef_k", 1.89544e-3));
+
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_14_img_chan_1_dete_a_coef_m", 0.5859827));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_14_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_14_img_chan_1_dete_a_coef_b", -16.993625));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_14_img_chan_1_dete_a_coef_k", 1.88772e-3));
+
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_15_img_chan_1_dete_a_coef_m", 0.585454025));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_15_img_chan_1_dete_a_coef_x", 29));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_15_img_chan_1_dete_a_coef_b", -16.9781625));
+	m_mapImagerMXBK.insert(map<string, float>::value_type("m_goes_15_img_chan_1_dete_a_coef_k", 1.88852e-3));
+}
+
+/*http://www.oso.noaa.gov/goes/goes-calibration/goes-vis-ch-calibration.htm*/
+void Goes_Calibration::initSounderMXBKMap()
+{
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_8_snd_chan_19_dete_a_coef_m", 6.551751e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_8_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_8_snd_chan_19_dete_a_coef_b", -60.275));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_8_snd_chan_19_dete_a_coef_k", 2.2008e-3));
+
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_9_snd_chan_19_dete_a_coef_m", 6.46415e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_9_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_9_snd_chan_19_dete_a_coef_b", -59.47));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_9_snd_chan_19_dete_a_coef_k", 2.2919e-3));
+
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_10_snd_chan_19_dete_a_coef_m", 7.0722245e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_10_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_10_snd_chan_19_dete_a_coef_b", -65.065));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_10_snd_chan_19_dete_a_coef_k", 2.16966e-3));
+
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_11_snd_chan_19_dete_a_coef_m", 7.09085125e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_11_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_11_snd_chan_19_dete_a_coef_b", -65.235));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_11_snd_chan_19_dete_a_coef_k", 2.15268e-3));
+
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_12_snd_chan_19_dete_a_coef_m", 7.2710625e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_12_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_12_snd_chan_19_dete_a_coef_b", -66.895));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_12_snd_chan_19_dete_a_coef_k", 2.1530e-3));
+
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_13_snd_chan_19_dete_a_coef_m", 7.17953725e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_13_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_13_snd_chan_19_dete_a_coef_b", -66.05175));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_13_snd_chan_19_dete_a_coef_k", 2.18293e-3));
+
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_14_snd_chan_19_dete_a_coef_m", 7.228451e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_14_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_14_snd_chan_19_dete_a_coef_b", -66.5015));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_14_snd_chan_19_dete_a_coef_k", 2.18573e-3));
+
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_15_snd_chan_19_dete_a_coef_m", 6.675841e-2));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_15_snd_chan_19_dete_a_coef_x", 920));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_15_snd_chan_19_dete_a_coef_b", -54.6775));
+	m_mapSounderMXBK.insert(map<string, float>::value_type("m_goes_15_snd_chan_19_dete_a_coef_k", 2.20768e-3));
+}
+
+
+Goes_Calibration::Goes_Calibration()
+{
+	initImagerNABGMap();
+	initSounderNABGMap();
+	initImagerMBMap();
+	initSounderMBMap();
+	initImagerMXBKMap();
+	initSounderMXBKMap();
+
+	m_radiance_coef_m = 0.0;
+	m_radiance_coef_b = 0.0;
+	m_temperature_coef_n = 0.0;
+	m_temperature_coef_a = 0.0;
+	m_temperature_coef_b = 0.0;
+	m_temperature_coef_g = 0.0;
+	m_albedo_coef_m = 0.0;
+	m_albedo_coef_x = 0.0;
+	m_albedo_coef_b = 0.0;
+	m_albedo_coef_k = 0.0;
+
+	m_bImager = true;
+	m_bVisible = true;
+	m_bValidFileName = true;
+}
+
+Goes_Calibration::~Goes_Calibration()
+{
+	m_mapSounderNABG.clear();
+	m_mapImagerNABG.clear();
+	m_mapImagerMB.clear();
+	m_mapSounderMB.clear();
+	m_mapImagerMXBK.clear();
+	m_mapSounderMXBK.clear();
+}
+
+/*
+ * Goes_Calibration::setDataProperity(string sensorName, int goesNum, int bandNum, int deteNum)
+ * Calculate the coefficients for calibration of GOES data
+ * All these coefficients were fetched from: http://www.oso.noaa.gov/goes/goes-calibration/gvar-conversion.htm
+ * Parameter:
+ * 		sensorShortname: 	the sensor type of GOES data, accepted value: imager/img; sounder/snd
+ * 		goesNum:			the GOES satellite platform number, from 8-15 (I-P)
+ * 		bandNum:			the band of GOES data, for Imager data, 1-5/6, for Sounder data, 1-19
+ * 		deteNum:			detector numver of the sensor, for Imager, 1-2(a/b), for Sounder, 1-4
+ * Return:
+ * 		void
+ * */
+void Goes_Calibration::setDataProperity(string sensorName, int goesNum, int bandNum)
+{
+	/* The average value of whole detectors was selected for Imager-Visible_Channel.
+	 * Once the detector information was added into the GOES-NetCDF data from NOAA/CLASS,
+	 * we have to first made a whole coefficient ini file, and then modify this function,
+	 */
+	string deteNumStr = "a";//Currently, the average value was adopted.
+
+	string rad_coef_m_str, rad_coef_b_str;
+	string tem_coef_n_str, tem_coef_a_str, tem_coef_b_str, tem_coef_g_str;
+	string albedo_coef_m_str, albedo_coef_x_str, albedo_coef_b_str, albedo_coef_k_str;
+
+	string goesNumStr = convertToString(goesNum);
+	string bandNumStr = convertToString(bandNum);
+
+	if(sensorName == "imager" || sensorName == "img") {
+		m_bImager = true;
+		m_bVisible = (bandNum == 1)? true : false;
+
+		/*Find the parameters for the conversion from GVAR-Count to radiance, Imager sensor, infrared band*/
+		if(!m_bVisible)
+		{
+			if(goesNum >= 8 && goesNum <= 11) {
+				rad_coef_m_str = "m_goes_8_11_img_chan_" + bandNumStr + "_coef_m";
+				rad_coef_b_str = "m_goes_8_11_img_chan_" + bandNumStr + "_coef_b";
+			}else if(goesNum >=12 && goesNum <= 14) {
+				rad_coef_m_str = "m_goes_12_14_img_chan_" + bandNumStr + "_coef_m";
+				rad_coef_b_str = "m_goes_12_14_img_chan_" + bandNumStr + "_coef_b";
+			}
+			map<string,float>::iterator tmItrR = m_mapImagerMB.find(rad_coef_m_str);
+			map<string,float>::iterator tbItrR = m_mapImagerMB.find(rad_coef_b_str);
+			m_radiance_coef_m = (tmItrR != m_mapImagerMB.end()) ? tmItrR->second : 0.0;
+			m_radiance_coef_b = (tbItrR != m_mapImagerMB.end()) ? tbItrR->second : 0.0;
+		}
+		else
+		{
+			rad_coef_m_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_m";
+			rad_coef_b_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_b";
+			map<string,float>::iterator tmItrR = m_mapImagerMXBK.find(rad_coef_m_str);
+			map<string,float>::iterator tbItrR = m_mapImagerMXBK.find(rad_coef_b_str);
+			m_radiance_coef_m = (tmItrR != m_mapImagerMXBK.end()) ? tmItrR->second : 0.0;
+			m_radiance_coef_b = (tbItrR != m_mapImagerMXBK.end()) ? tbItrR->second : 0.0;
+		}
+
+		/*Find the parameters for the conversion from GVAR-Count to temperature, Imager sensor, infrared band*/
+		tem_coef_n_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_n";
+		tem_coef_a_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_a";
+		tem_coef_b_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_b";
+		tem_coef_g_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_g";
+		map<string,float>::iterator tnItrT = m_mapImagerNABG.find(tem_coef_n_str);
+		map<string,float>::iterator taItrT = m_mapImagerNABG.find(tem_coef_a_str);
+		map<string,float>::iterator tbItrT = m_mapImagerNABG.find(tem_coef_b_str);
+		map<string,float>::iterator tgItrT = m_mapImagerNABG.find(tem_coef_g_str);
+		m_temperature_coef_n = (tnItrT != m_mapImagerNABG.end()) ? tnItrT->second : 0.0;
+		m_temperature_coef_a = (taItrT != m_mapImagerNABG.end()) ? taItrT->second : 0.0;
+		m_temperature_coef_b = (tbItrT != m_mapImagerNABG.end()) ? tbItrT->second : 0.0;
+		m_temperature_coef_g = (tgItrT != m_mapImagerNABG.end()) ? tgItrT->second : 0.0;
+
+		/*Find the parameters for the conversion from GVAR-Count to albedo, Imager sensor, visible band*/
+		albedo_coef_m_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_m";
+		albedo_coef_x_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_x";
+		albedo_coef_b_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_b";
+		albedo_coef_k_str = "m_goes_" + goesNumStr + "_img_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_k";
+		map<string,float>::iterator tmItrA = m_mapImagerMXBK.find(albedo_coef_m_str);
+		map<string,float>::iterator txItrA = m_mapImagerMXBK.find(albedo_coef_x_str);
+		map<string,float>::iterator tbItrA = m_mapImagerMXBK.find(albedo_coef_b_str);
+		map<string,float>::iterator tkItrA = m_mapImagerMXBK.find(albedo_coef_k_str);
+		m_albedo_coef_m = (tmItrA != m_mapImagerMXBK.end()) ? tmItrA->second : 0.0;
+		m_albedo_coef_x = (txItrA != m_mapImagerMXBK.end()) ? txItrA->second : 0.0;
+		m_albedo_coef_b = (tbItrA != m_mapImagerMXBK.end()) ? tbItrA->second : 0.0;
+		m_albedo_coef_k = (tkItrA != m_mapImagerMXBK.end()) ? tkItrA->second : 0.0;
+
+	} else if(sensorName == "sounder" || sensorName == "snd") {
+		m_bImager = false;
+		m_bVisible = (bandNum == 19)? true : false;
+		/*Find the parameters for the conversion from GVAR-Count to radiance, Sounder sensor, infrared band*/
+		if(!m_bVisible)
+		{
+			if(goesNum >= 8 && goesNum <= 14) {
+				rad_coef_m_str = "m_goes_8_14_snd_chan_" + bandNumStr + "_coef_m";
+				rad_coef_b_str = "m_goes_8_14_snd_chan_" + bandNumStr + "_coef_b";
+			}
+			map<string,float>::iterator tmItrR = m_mapSounderMB.find(rad_coef_m_str);
+			map<string,float>::iterator tbItrR = m_mapSounderMB.find(rad_coef_b_str);
+			m_radiance_coef_m = (tmItrR != m_mapSounderMB.end()) ? tmItrR->second : 0.0;
+			m_radiance_coef_b = (tbItrR != m_mapSounderMB.end()) ? tbItrR->second : 0.0;
+		}
+		else
+		{
+			rad_coef_m_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_m";
+			rad_coef_b_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_b";
+			map<string,float>::iterator tmItrR = m_mapSounderMXBK.find(rad_coef_m_str);
+			map<string,float>::iterator tbItrR = m_mapSounderMXBK.find(rad_coef_b_str);
+			m_radiance_coef_m = (tmItrR != m_mapSounderMXBK.end()) ? tmItrR->second : 0.0;
+			m_radiance_coef_b = (tbItrR != m_mapSounderMXBK.end()) ? tbItrR->second : 0.0;
+		}
+
+		/*Find the parameters for the conversion from GVAR-Count to temperature, Sounder sensor, infrared band*/
+		tem_coef_n_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_n";
+		tem_coef_a_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_a";
+		tem_coef_b_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_b";
+		tem_coef_g_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_g";
+		map<string,float>::iterator tnItrT = m_mapSounderNABG.find(tem_coef_n_str);
+		map<string,float>::iterator taItrT = m_mapSounderNABG.find(tem_coef_a_str);
+		map<string,float>::iterator tbItrT = m_mapSounderNABG.find(tem_coef_b_str);
+		map<string,float>::iterator tgItrT = m_mapSounderNABG.find(tem_coef_g_str);
+		m_temperature_coef_n = (tnItrT != m_mapSounderNABG.end()) ? tnItrT->second : 0.0;
+		m_temperature_coef_a = (taItrT != m_mapSounderNABG.end()) ? taItrT->second : 0.0;
+		m_temperature_coef_b = (tbItrT != m_mapSounderNABG.end()) ? tbItrT->second : 0.0;
+		m_temperature_coef_g = (tgItrT != m_mapSounderNABG.end()) ? tgItrT->second : 0.0;
+
+		/*Find the parameters for the conversion from GVAR-Count to albedo, Sounder sensor, visible band*/
+		albedo_coef_m_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_m";
+		albedo_coef_x_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_x";
+		albedo_coef_b_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_b";
+		albedo_coef_k_str = "m_goes_" + goesNumStr + "_snd_chan_" + bandNumStr + "_dete_" + deteNumStr + "_coef_k";
+		map<string,float>::iterator tmItrA = m_mapSounderMXBK.find(albedo_coef_m_str);
+		map<string,float>::iterator txItrA = m_mapSounderMXBK.find(albedo_coef_x_str);
+		map<string,float>::iterator tbItrA = m_mapSounderMXBK.find(albedo_coef_b_str);
+		map<string,float>::iterator tkItrA = m_mapSounderMXBK.find(albedo_coef_k_str);
+		m_albedo_coef_m = (tmItrA != m_mapSounderMXBK.end()) ? tmItrA->second : 0.0;
+		m_albedo_coef_x = (txItrA != m_mapSounderMXBK.end()) ? txItrA->second : 0.0;
+		m_albedo_coef_b = (tbItrA != m_mapSounderMXBK.end()) ? tbItrA->second : 0.0;
+		m_albedo_coef_k = (tkItrA != m_mapSounderMXBK.end()) ? tkItrA->second : 0.0;
+	}
+}
+
+void Goes_Calibration::setStandardDataName(string srcFileName)
+{
+	//goes11.2009.310.101514.band_02.nc
+	//goes11.2008.314.002411.sndr.BAND_12.nc
+	//void Goes_Calibration::setDataProperity(string sensorName, int goesNum, int bandNum)
+	string sensorType;
+	if(srcFileName.find("sndr") != string::npos)
+		sensorType = "sounder";
+	else
+		sensorType = "imager";
+
+	unsigned int tok1 = srcFileName.find(".") - 4;
+	if(tok1 <= 0)
+	{
+		m_bValidFileName = false;
+		return;
+	}
+
+	string goesNumStr = srcFileName.substr(4, tok1);
+
+	unsigned int tok2 = srcFileName.find("_");
+	unsigned int tok3 = srcFileName.find_last_of(".") - tok2;
+	string bandNumStr = srcFileName.substr(tok2 + 1, tok3 - 1);
+
+	int gNum = 0, bNum = 0;
+	convertFromString(gNum, goesNumStr);
+	convertFromString(bNum, bandNumStr);
+
+	setDataProperity(sensorType, gNum, bNum);
+}
+
+/*
+ * Goes_Calibration::calcSceneRadiance(double gvarCount)
+ * Convert GVAR-count to the scene radiance.
+ * The GVAR-Count value should be between 0-1023 for 10bit count, 0-255 for 8bit count.
+ * !!!!!!The GOES Imager data was scaled to 15bit count.
+ * !!!!!!The GOES Sounder data was scaled to 16bit count.
+ * As to the Imager data, its coefficient were based on 10bit count, so the count should be divided by 32,
+ * As to the Sounder data, its coefficient were based on 16bit count, do NOT change its value;
+ * We supposed the passed count had already scaled to the corresponding coefficient requirement.
+ * */
+double Goes_Calibration::calcSceneRadiance(double gvarCount)
+{
+	double radiance = 0.0;
+	if(m_bImager)
+	{
+		gvarCount = gvarCount/32;
+		if(!m_bVisible)
+			radiance = (gvarCount - m_radiance_coef_b) / m_radiance_coef_m;
+		else
+			radiance = (m_radiance_coef_m * gvarCount + m_radiance_coef_b);
+	}
+	else
+	{
+		if(m_bVisible)
+		{
+			gvarCount = gvarCount/8;
+			radiance = (m_radiance_coef_m * gvarCount + m_radiance_coef_b);
+		}
+		else
+			radiance = (gvarCount - m_radiance_coef_b) / m_radiance_coef_m;
+	}
+
+	return radiance > 0 ? radiance : 0;
+}
+
+/*
+ * Goes_Calibration::calcEffectiveTemperarture(double gvarCount, bool bSOP)
+ * Convert GVAR count to temperature.
+ * !!!!!!The GOES Imager data was scaled to 15bit count.
+ * !!!!!!The GOES Sounder data was scaled to 16bit count.
+ * As to the Imager data, its coefficient were based on 10bit count, so the count should be divided by 32,
+ * As to the Sounder data, its coefficient were based on 16bit count to infrared, 13bit count to visible;
+ * We supposed the passed count had already scaled to the corresponding coefficient requirement.
+  * */
+double Goes_Calibration::calcEffectiveTemperarture(double gvarCount)
+{
+	double teff=0.0, temperature=0.0, rad=0.0;
+	rad = calcSceneRadiance(gvarCount);
+	if(rad == 0)
+		return 0;
+	teff = (m_teff_coef_c2 * m_temperature_coef_n) /
+		log(1 + (m_teff_coef_c1 * m_temperature_coef_n * m_temperature_coef_n * m_temperature_coef_n) / rad);
+
+	temperature = m_temperature_coef_a + m_temperature_coef_b * teff + m_temperature_coef_g * teff * teff;
+
+	return temperature > 0 ? temperature : 0;
+}
+
+/*
+ * Goes_Calibration::calcAlbedo(double gvarCount)
+ * Convert GVAR count of visible band to albedo.
+ * !!!!!!The GOES Imager data was scaled to 15bit count.
+ * !!!!!!The GOES Sounder data was scaled to 13bit count.
+ * A = k * R			(1)
+ * R = 	mX + b			(2)
+ * A = k * (mX + b)		(3)
+ * According to the equation 3, calculate the albedo value.
+ * */
+double Goes_Calibration::calcAlbedo(double gvarCount)
+{
+	if(m_bImager)
+		gvarCount = gvarCount/32;
+	else {
+		if(m_bVisible)
+			gvarCount = gvarCount/8;
+	}
+
+	double albedo=0.0;
+	albedo = m_albedo_coef_k * (m_albedo_coef_m * gvarCount + m_albedo_coef_b);
+	return albedo > 0 ? albedo : 0;
+}
+
+int isThisPointInBoundingBox(float lon, float lat, double latlonbbox[])
+{
+	double xmin = latlonbbox[0];
+	double xmax = latlonbbox[2];
+	double ymin = latlonbbox[1];
+	double ymax = latlonbbox[3];
+	if(xmin >= 0 && xmax < 0)//Cross +-180
+	{
+		if(lon >= 0)
+			xmax += 360;
+		else
+			xmin -= 360;
+	}
+
+	if(lon > xmin && lon < xmax && lat > ymin && lat < ymax )
+		return true;
+	return false;
+}
+
+/*
+ * RangeSet to GOES data:
+ * 1, GVAR count
+ * 2, Radiance
+ * 3, Temperature
+ * 4, Albedo
+ * */
+int Goes_Calibration::GetRangeSetInfo(string srcFilePath, std::vector<string>& rangeSetVec)
+{
+	string filename = CPLGetBasename(srcFilePath.c_str());
+	setStandardDataName(filename);
+
+	NcFile srcGOESFile(srcFilePath.c_str(), NcFile::ReadOnly);
+	if (!srcGOESFile.is_valid())
+		return false;
+
+	int srcLines=0, srcElems=0, srcBands=0;
+	NcVar *latVar=NULL, *lonVar=NULL, *datVar=NULL;
+
+	int dimNum = srcGOESFile.num_dims();
+	int varNum = srcGOESFile.num_vars();
+
+	for(int i = 0; i < dimNum; i++)
+	{
+		NcDim* curDim = srcGOESFile.get_dim(i);
+		string curDimName = curDim->name();
+		if(!curDimName.compare("lines") || !curDimName.compare("yc"))
+			srcLines = curDim->size();
+		else if(!curDimName.compare("elems") || !curDimName.compare("xc"))
+			srcElems = curDim->size();
+		else if(!curDimName.compare("bands") || !curDimName.compare("time"))
+			srcBands = curDim->size();
+	}
+
+	for(int i = 0; i < varNum; i++)
+	{
+		NcVar* curVar = srcGOESFile.get_var(i);
+		string varName = curVar->name();
+
+		if(!varName.compare("latitude") || !varName.compare("lat"))
+			latVar = curVar;
+		else if(!varName.compare("longitude") || !varName.compare("lon"))
+			lonVar = curVar;
+		else if(!varName.compare("data"))
+			datVar = curVar;
+	}
+
+	NcValues* latVarValues =  latVar->values();
+	NcValues* lonVarValues =  lonVar->values();
+	NcValues* dataVarValues = datVar->values();
+
+	double gvarmin = numeric_limits<double>::max();
+	double gvarmax = numeric_limits<double>::min();
+
+	for(int j = 0; j < srcLines; j++)
+	{
+		for(int k = 0; k < srcElems; k++)
+		{
+			float curLat =  latVarValues->as_float(j*srcElems + k);
+			float curLon =  lonVarValues->as_float(j*srcElems + k);
+			if(curLat >= -90 && curLat <= 90 && curLon >= -180 && curLon <= 180)
+			{
+				int curIndex = j*srcElems + k;
+				float curData =  dataVarValues->as_float(curIndex);
+				if(curData != 0)
+				{
+					gvarmin = MIN(curData, gvarmin);
+					gvarmax = MAX(curData, gvarmax);
+				}
+			}
+		}
+	}
+
+	string dataRangeSet = "data," + convertToString(gvarmin) + "," + convertToString(gvarmax) + ",GVAR count,Recorded GOES VARiant count";
+	double rmin = calcSceneRadiance(gvarmin);
+	double rmax = calcSceneRadiance(gvarmax);
+	string radianceRangeSet = "radiance," + convertToString(rmin) + "," + convertToString(rmax) + ",W m-2 sr-1,Calibrated from GVAR count";
+	string tempOrAlbeRangeSet;
+	double xmin, xmax;
+	if(m_bVisible){
+		xmin =  calcAlbedo(gvarmin);
+		xmax =  calcAlbedo(gvarmax);
+		tempOrAlbeRangeSet = "albedo," + convertToString(xmin) + "," + convertToString(xmax) + ",percentage,Calibrated from GVAR count";
+	}else {
+		xmin =  calcEffectiveTemperarture(gvarmin);
+		xmax =  calcEffectiveTemperarture(gvarmax);
+		tempOrAlbeRangeSet = "temperature," + convertToString(xmin) + "," + convertToString(xmax) + ",K,Calibrated from GVAR count";
+	}
+
+	rangeSetVec.push_back(dataRangeSet);
+	rangeSetVec.push_back(radianceRangeSet);
+	rangeSetVec.push_back(tempOrAlbeRangeSet);
+	return true;
+}
+
+//data[6800,13500];radiance[12.4,35.5];temperature[200,300]
+int Goes_Calibration::CalibrateGOESData(string srcFileName, string dstFileName, string crs, vector<double>& bbox, string rangeFilter)
+{
+	//////////////////////////////////////////////////////////////////////////////////
+	/*					Read Source netCDF File	and Gather information				*/
+	//////////////////////////////////////////////////////////////////////////////////
+	NcFile srcGOESFile(srcFileName.c_str(), NcFile::ReadOnly);
+	if (!srcGOESFile.is_valid())
+		return false;
+
+	bool bData = false, bDataFilter = false;
+	int data_min = 0, data_max = 0;
+	bool bAlbedo = false, bAlbedoFilter = false;
+	double albe_min = 0, albe_max = 0;
+	bool bTemperature = false, bTemperatureFilter = false;
+	double temp_min = 0, temp_max = 0;
+	bool bRadiance = false, bRadianceFilter = false;
+	double radi_min = 0, radi_max = 0;
+
+	vector<string> rangeVec;
+	string_replace(rangeFilter, " ", "");
+	csvburstCpp(rangeFilter, rangeVec, ';');
+
+	for(int i = 0; i < 	(int)rangeVec.size(); i++)
+	{
+		vector<string> tempVec;
+		csvburstComplexCpp(rangeVec.at(i), tempVec, "[,]");
+		string covType = tempVec.at(0);
+
+		if(EQUAL(covType.c_str(), "data"))	{
+			bData = true;
+			if(tempVec.size() == 4 ) {
+				bDataFilter = true;
+				convertFromString(data_min, tempVec.at(1));
+				convertFromString(data_max, tempVec.at(2));
+			}
+		} else if(EQUAL(covType.c_str(), "albedo"))	{
+			bAlbedo = true;
+			if(tempVec.size() == 4 ) {
+				bAlbedoFilter = true;
+				convertFromString(albe_min, tempVec.at(1));
+				convertFromString(albe_max, tempVec.at(2));
+			}
+		} else if(EQUAL(covType.c_str(), "temperature")) {
+			bTemperature = true;
+			if(tempVec.size() == 4 ) {
+				bTemperatureFilter = true;
+				convertFromString(temp_min, tempVec.at(1));
+				convertFromString(temp_max, tempVec.at(2));
+			}
+		} else if(EQUAL(covType.c_str(), "radiance")) {
+			bRadiance = true;
+			if(tempVec.size() == 4 ) {
+				bRadianceFilter = true;
+				convertFromString(radi_min, tempVec.at(1));
+				convertFromString(radi_max, tempVec.at(2));
+			}
+		}
+	}
+
+	if((!bData && !bAlbedo && !bTemperature && !bRadiance) || !m_bValidFileName)
+		bData = true;//If the assigned calibration type does not exist, use data as default.
+
+	std::map<string, string>			attMap;
+	std::vector<NCVariableObject>		varVec;
+	std::vector<NCDimensionObject>		dimVec;
+
+	NcVar *latVar=NULL, *lonVar=NULL, *datVar=NULL;
+
+	int srcLines=0, srcElems=0, srcBands=0;
+
+	int dimNum = srcGOESFile.num_dims();//the number of dimensions in the netCDF file.
+	int varNum = srcGOESFile.num_vars();//the number of variables in the netCDF file.
+	int attNum = srcGOESFile.num_atts();//the number of global attribute in the netCDF file.
+
+	/* Record the Dimensions information from source netCDF file and stored into a Map container*/
+	for(int i = 0; i < dimNum; i++)
+	{
+		NcDim* curDim = srcGOESFile.get_dim(i);
+		NCDimensionObject curDO;
+		string curDimName = curDim->name();
+		curDO.m_dimName = curDimName;
+		curDO.m_dimLength = curDim->size();
+
+		if(!curDimName.compare("lines") || !curDimName.compare("yc"))
+			srcLines = curDim->size();
+		else if(!curDimName.compare("elems") || !curDimName.compare("xc"))
+			srcElems = curDim->size();
+		else if(!curDimName.compare("bands") || !curDimName.compare("time"))
+			srcBands = curDim->size();
+
+		dimVec.push_back(curDO);
+	}
+
+	/* Record the Variable information from source netCDF file and stored into a Map container*/
+	/* KEY:		Variable Name		*/
+	/* VALUE:	NCVariableObject	*/
+	for(int i = 0; i < varNum; i++)
+	{
+		NCVariableObject curVarObject;
+		NcVar* curVar = srcGOESFile.get_var(i);
+		curVarObject.m_varName = curVar->name();
+
+		/*Record the Values for this Variable*/
+		NcValues* curVarValues = curVar->values();
+		int valueNums = curVarValues->num();
+		std::vector<string> curVarValueVector;
+		for(int ii = 0; ii < valueNums; ii++)
+		{
+			if(!(curVarObject.m_varName).compare("auditTrail"))//Need more process
+			{
+				string auditTrailValue = curVarValues->as_string(0);
+				curVarValueVector.push_back(auditTrailValue);
+				break;
+			}
+			else if(!(curVarObject.m_varName).compare("latitude") || !(curVarObject.m_varName).compare("lat"))
+			{
+				latVar = curVar;
+				break;
+			}
+			else if(!(curVarObject.m_varName).compare("longitude") || !(curVarObject.m_varName).compare("lon"))
+			{
+				lonVar = curVar;
+				break;
+			}
+			else if(!(curVarObject.m_varName).compare("data"))
+			{
+				datVar = curVar;
+				break;
+			}
+			else
+			{
+				string curVarValue = curVarValues->as_string(ii);
+				curVarValueVector.push_back(curVarValue);
+			}
+		}
+		curVarObject.m_varValueVector = curVarValueVector;
+
+		int curVarDims = curVar->num_dims();
+		int curVarAtts = curVar->num_atts();
+
+		/*Record the Dimensions for this Variable*/
+		std::vector<string> varDimVec;
+		for(int j = 0; j < curVarDims; j++)
+		{
+			NcDim* curVarDim = curVar->get_dim(j);
+			varDimVec.push_back(curVarDim->name());
+		}
+		curVarObject.m_varDimVector = varDimVec;
+
+		/*Record the Attributes for this Variable*/
+		std::map<string,string> varAttMap;
+		for(int k = 0; k < curVarAtts; k++)
+		{
+			NcAtt* curVarAtt = curVar->get_att(k);
+			NcToken curVarAttName = curVarAtt->name();
+			string curVarAttValue = (curVarAtt->values())->as_string(0);
+			varAttMap.insert(map<string, string>::value_type(curVarAttName,curVarAttValue));
+		}
+		curVarObject.m_varAttMap = varAttMap;
+
+		/* Record everything about this Variable into a Vector container.			*/
+		/* I tried to use Map container, but its internal sorting is not what I want*/
+		varVec.push_back(curVarObject);
+	}
+
+	/* Record the Global Attributes information from source netCDF file and stored into a Map container*/
+	/* KEY:		Global Attribute Name	*/
+	/* VALUE:	Global Attribute Value	*/
+	for(int i = 0; i < attNum; i++)
+	{
+		NcAtt* curAtt = srcGOESFile.get_att(i);
+		NcToken curAttName = curAtt->name();
+		char* curAttValue = (curAtt->values())->as_string(0);
+		attMap.insert(map<string,string>::value_type(curAttName, curAttValue));
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/*							Find Start/End Line/Elem							*/
+	//////////////////////////////////////////////////////////////////////////////////
+	int validStartLine = srcLines;
+	int validStartElem = srcElems;
+	int validEndLine = 0;
+	int validEndElem = 0;
+
+	bool bImageCRS = false;
+	double latlonbbox[4];
+
+	NcValues* latVarValues =  latVar->values();
+	NcValues* lonVarValues =  lonVar->values();
+	NcValues* dataVarValues = datVar->values();
+
+	if(EQUAL(crs.c_str(), "OGC:IMAGECRS") || EQUAL(crs.c_str(), "IMAGECRS")) {//Request Image CRS
+		validStartElem = (bbox[0] < 0) ? 0 : bbox[0];
+		validStartLine = (bbox[1] < 0) ? 0 : bbox[1];
+		validEndElem = (bbox[2] > srcElems) ? srcElems : bbox[2];
+		validEndLine = (bbox[3] > srcLines) ? srcLines : bbox[3];
+		bImageCRS = true;
+	}else if(EQUAL(crs.c_str(), "") || bbox.empty()){
+		validStartElem = 0;
+		validStartLine = 0;
+		validEndElem = srcElems;
+		validEndLine = srcLines;
+		bImageCRS = true;
+	}else if(crs.find("4326") != string::npos || crs.find("WGS84(DD)") != string::npos){ //Request WGS84 CRS
+		for(int i = 0; i < 4; i++)
+			latlonbbox[i] = bbox[i];
+	}else{
+		OGRSpatialReference latlonSRS, rqstSRS;
+		latlonSRS.SetWellKnownGeogCS("WGS84");
+		rqstSRS.SetFromUserInput(crs.c_str());
+		My2DPoint llPt(bbox[0], bbox[1]);
+		My2DPoint urPt(bbox[2], bbox[3]);
+		if (CE_None != bBox_transFormmate(rqstSRS, latlonSRS, llPt, urPt))
+			return false;
+		latlonbbox[0] = llPt.mi_X;
+		latlonbbox[1] = llPt.mi_Y;
+		latlonbbox[2] = urPt.mi_X;
+		latlonbbox[3] = urPt.mi_Y;
+	}
+
+	if(!bImageCRS)
+	{
+		for(int j = 0; j < srcLines; j++)
+		{
+			for(int k = 0; k < srcElems; k++)
+			{
+				float curLat =  latVarValues->as_float(j*srcElems + k);
+				float curLon =  lonVarValues->as_float(j*srcElems + k);
+				if(isThisPointInBoundingBox(curLon, curLat, latlonbbox))
+				{
+					if(j < validStartLine)
+						validStartLine = j;
+					if(k < validStartElem)
+						validStartElem = k;
+
+					if(validEndLine < j)
+						validEndLine = j + 1;
+					if(validEndElem < k)
+						validEndElem = k + 1;
+				}
+			}
+		}
+	}
+
+	//////////////////////////////////////////////////////////////////////////////////
+	/*							Write Subseted netCDF File							*/
+	//////////////////////////////////////////////////////////////////////////////////
+	NcFile dstGOESFile(dstFileName.c_str(), NcFile::Replace);
+
+	int subSettedLines = validEndLine - validStartLine;
+	int subSettedElems = validEndElem - validStartElem;
+	if(subSettedLines <=0 || subSettedElems <= 0)
+		return false;
+
+	int acDimNum=0, asDimNum=0, bandDimNum=0;
+	NcDim *lineDim=NULL, *elemDim=NULL, *bandDim=NULL, *acDim=NULL, *asDim=NULL;
+
+	/* Set the Dimension for output*/
+	int dimSize = dimVec.size();
+	for(int i = 0; i < dimSize; i++)
+	{
+		NCDimensionObject curDim = dimVec.at(i);
+		string curDimName = curDim.m_dimName;
+		long curDimLen = curDim.m_dimLength;
+
+		if(!curDimName.compare("bands") || !curDimName.compare("time"))
+		{
+			bandDimNum = curDimLen;
+			bandDim = dstGOESFile.add_dim(curDimName.c_str(), curDimLen);
+		}
+		else if(!curDimName.compare("lines") || !curDimName.compare("yc"))
+			lineDim = dstGOESFile.add_dim(curDimName.c_str(), subSettedLines);
+		else if(!curDimName.compare("elems") || !curDimName.compare("xc"))
+			elemDim = dstGOESFile.add_dim(curDimName.c_str(), subSettedElems);
+		else if(!curDimName.compare("auditCount"))
+		{
+			acDimNum = curDimLen;
+			acDim = dstGOESFile.add_dim(curDimName.c_str(), curDimLen);
+		}
+		else if(!curDimName.compare("auditSize"))
+		{
+			asDimNum = curDimLen;
+			asDim = dstGOESFile.add_dim(curDimName.c_str(), curDimLen);
+		}
+		else
+			dstGOESFile.add_dim(curDimName.c_str(), curDimLen);
+	}
+
+	/* Filter the data according to the bounding box*/
+	std::vector<float> dstLatiVec;
+	std::vector<float> dstLongVec;
+	std::vector<float> dstDataVec;
+	std::vector<float> dstAlbedoVec;
+	std::vector<float> dstRadianceVec;
+	std::vector<float> dstTemperatureVec;
+
+	for(int i = 0; i < srcBands; i++)
+	{
+		for(int j = 0; j < subSettedLines; j++)
+		{
+			for(int k = 0; k < subSettedElems; k++)
+			{
+				int srcLineIndex = validStartLine + j;
+				int srcElemIndex = validStartElem + k;
+				int thisPointInSrcIndex = srcLineIndex*srcElems + srcElemIndex;
+				float curLat =  latVarValues->as_float(thisPointInSrcIndex);
+				float curLon =  lonVarValues->as_float(thisPointInSrcIndex);
+				float curData =  dataVarValues->as_float(thisPointInSrcIndex);
+				dstLatiVec.push_back(curLat);
+				dstLongVec.push_back(curLon);
+				if(isThisPointInBoundingBox(curLon, curLat, latlonbbox) || bImageCRS)
+				{
+					if(bData) {
+						if(bDataFilter) {
+							if(data_min <= curData && data_max >= curData)
+								dstDataVec.push_back(curData);
+							else
+								dstDataVec.push_back(GOESNODATAVALUE);
+						}else
+							dstDataVec.push_back(curData);
+					}
+
+					if(bAlbedo)	{
+						double curAlbe = calcAlbedo(curData);
+						if(bAlbedoFilter) {
+							if(albe_min <= curAlbe && albe_max >= curAlbe)
+								dstAlbedoVec.push_back(curAlbe);
+							else
+								dstAlbedoVec.push_back(GOESNODATAVALUE);
+						}else
+							dstAlbedoVec.push_back(curAlbe);
+					}
+
+					if(bRadiance) {
+						double curRadi = calcSceneRadiance(curData);
+						if(bRadianceFilter)	{
+							if(radi_min <= curRadi && radi_max >= curRadi)
+								dstRadianceVec.push_back(curRadi);
+							else
+								dstRadianceVec.push_back(GOESNODATAVALUE);
+						}else
+							dstRadianceVec.push_back(curRadi);
+					}
+
+					if(bTemperature) {
+						double curTemp = calcEffectiveTemperarture(curData);
+						if(bTemperatureFilter) {
+							if(temp_min < curTemp && temp_max >= curTemp)
+								dstTemperatureVec.push_back(curTemp);
+							else
+								dstTemperatureVec.push_back(GOESNODATAVALUE);
+						}else
+							dstTemperatureVec.push_back(curTemp);
+					}
+				}
+				else
+				{
+					if(bData)
+						dstDataVec.push_back(GOESNODATAVALUE);
+					if(bAlbedo)
+						dstAlbedoVec.push_back(GOESNODATAVALUE);
+					if(bRadiance)
+						dstRadianceVec.push_back(GOESNODATAVALUE);
+					if(bTemperature)
+						dstTemperatureVec.push_back(GOESNODATAVALUE);
+				}
+			}
+		}
+	}
+
+	/* Set the Variable for output*/
+	int varSize = varVec.size();
+	for(int i = 0; i < varSize; i++)
+	{
+		NcVar *curVar;
+		NCVariableObject curVarO = varVec.at(i);
+		string curVarName = curVarO.m_varName;
+		std::vector<string> curVarValuesVec = curVarO.m_varValueVector;
+
+		if(!curVarName.compare("bands"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncInt/*, bandDim*/);
+			int varValue = atoi(curVarValuesVec.at(0).c_str());
+			curVar->put(&varValue, bandDimNum);
+		}
+		else if(!curVarName.compare("auditTrail"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncChar, acDim, asDim);
+			string auditTrailStr = curVarValuesVec.at(0);
+			curVar->put(auditTrailStr.c_str(), acDimNum, asDimNum);
+		}
+		else  if(!curVarName.compare("data"))
+		{
+			if(bData)
+			{
+				curVar = dstGOESFile.add_var(curVarName.c_str(), ncFloat, bandDim, lineDim, elemDim);
+				curVar->put(&dstDataVec[0], bandDimNum, subSettedLines, subSettedElems);
+			}else
+				continue;
+		}
+		else  if(!curVarName.compare("latitude") || !curVarName.compare("lat"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncFloat, lineDim, elemDim);
+			curVar->put(&dstLatiVec[0], subSettedLines, subSettedElems);
+		}
+		else  if(!curVarName.compare("longitude") || !curVarName.compare("lon"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncFloat, lineDim, elemDim);
+			curVar->put(&dstLongVec[0], subSettedLines, subSettedElems);
+		}
+		else  if(!curVarName.compare("startLine"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncInt);
+			int startLineNum = atoi(curVarValuesVec.at(0).c_str()) + validStartLine;
+			curVar->put(&startLineNum);
+		}
+		else  if(!curVarName.compare("startElem"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncInt);
+			int startElemNum = atoi(curVarValuesVec.at(0).c_str()) + validStartElem;
+			curVar->put(&startElemNum);
+		}
+		else  if(!curVarName.compare("numLines") || !curVarName.compare("yc"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncInt);
+			curVar->put(&subSettedLines);
+		}
+		else  if(!curVarName.compare("numElems") || !curVarName.compare("xc"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncInt);
+			curVar->put(&subSettedElems);
+		}
+		else  if(!curVarName.compare("time"))
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncInt, bandDim);
+			int varValue = atoi(curVarValuesVec.at(0).c_str());
+			curVar->put(&varValue);
+		}
+		else
+		{
+			curVar = dstGOESFile.add_var(curVarName.c_str(), ncInt);
+			int varValue = atoi(curVarValuesVec.at(0).c_str());
+			curVar->put(&varValue);
+		}
+
+		std::map<string,string> curVarAttMap = curVarO.m_varAttMap;
+		std::map<string,string>::iterator curVAIter;
+		for(curVAIter = curVarAttMap.begin(); curVAIter != curVarAttMap.end(); curVAIter++)
+		{
+			string vaName  = curVAIter->first;
+			string vaValue = curVAIter->second;
+			curVar->add_att(vaName.c_str(), vaValue.c_str());
+		}
+	}
+
+	if(bAlbedo)
+	{
+		NcVar *albedoVar = dstGOESFile.add_var("albedo", ncFloat, lineDim, elemDim);
+		albedoVar->put(&dstAlbedoVec[0], subSettedLines, subSettedElems);
+		albedoVar->add_att("long_name", "GOES effective albedo");
+		albedoVar->add_att("units", "1");//Need to be checked.
+		albedoVar->add_att("standard_name", "surface_albedo");//Need to be checked.
+	}
+	if(bRadiance)
+	{
+		NcVar *radianceVar = dstGOESFile.add_var("radiance", ncFloat, lineDim, elemDim);
+		radianceVar->put(&dstRadianceVec[0], subSettedLines, subSettedElems);
+		radianceVar->add_att("long_name", "radiance");
+		radianceVar->add_att("units", "W m-2 sr-1");//Need to be checked.
+	}
+	if(bTemperature)
+	{
+		NcVar *temperatureVar = dstGOESFile.add_var("temperature", ncFloat, lineDim, elemDim);
+		temperatureVar->put(&dstTemperatureVec[0], subSettedLines, subSettedElems);
+		temperatureVar->add_att("long_name", "GOES actual temperature");
+		temperatureVar->add_att("units", "K");
+		temperatureVar->add_att("standard_name", "surface_temperature");
+	}
+
+	if(attMap.empty())
+	{
+		dstGOESFile.add_att("Conventions", "CF-1.1");
+		dstGOESFile.add_att("Source", "McIDAS Area File");
+		dstGOESFile.add_att("Comment", "GMU CSISS Web Coverage Service");
+	}else
+	{
+		std::map<string,string>::iterator gAttIter;
+		for(gAttIter = attMap.begin(); gAttIter != attMap.end(); gAttIter++)
+		{
+			string gAttName  = gAttIter->first;
+			string gAttValue = gAttIter->second;
+			dstGOESFile.add_att(gAttName.c_str(), gAttValue.c_str());
+		}
+		dstGOESFile.add_att("Comment", "GMU CSISS Web Coverage Service");
+	}
+
+	return true;
+}
+
+

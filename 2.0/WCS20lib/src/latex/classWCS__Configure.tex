@@ -1,0 +1,494 @@
+\hypertarget{classWCS__Configure}{
+\section{WCS\_\-Configure Class Reference}
+\label{classWCS__Configure}\index{WCS\_\-Configure@{WCS\_\-Configure}}
+}
+
+
+Configuration class provides fetch methods to get information from WCS configuration file.  
+
+
+
+
+{\ttfamily \#include $<$WCS\_\-Configure.h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classWCS__Configure_a8f0f3520d76723409b2290ce3d5ec3de}{WCS\_\-Configure} ()
+\item 
+\hyperlink{classWCS__Configure_a69a5f47a39b58a80f3ba4baaf32c9693}{WCS\_\-Configure} (const string \&conf)
+\begin{DoxyCompactList}\small\item\em Constructor of an \hyperlink{classWCS__Configure}{WCS\_\-Configure} object. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a17e6c9417cf036ab459e1cd36aadcdaa}{Get\_\-CAPABILITIES\_\-HEAD\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the XML head element of the capabilities document. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_aa24220528f8fc68dd379db5b95943dd2}{Get\_\-CAPABILITIES\_\-SEVICEIDENTIFICATION\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the ServiceIdentification part of the capabilities document. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a4d6eca21bef095f73a75f8c1d74c32eb}{Get\_\-CAPABILITIES\_\-SEVICEPROVIDER\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the ServiceProvider part of the capabilities document. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_ae565e9adcf4513f0de954e422017cadf}{Get\_\-CAPABILITIES\_\-OPERATIONSMETADA\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the OperationsMetadata part of the capabilities document. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_aeec65d726fddb454ec9c943ef46602ca}{Get\_\-CAPABILITIES\_\-CONTENTS\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the Contents part of the capabilities document. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_afdecaaadfc30c79f6766b606fd05b402}{Get\_\-SERVICE\_\-ACCESS\_\-URL} ()
+\begin{DoxyCompactList}\small\item\em Fetch the access URL of this WCS. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_abd5989379bf561c53c7c14d37a8f99e9}{Get\_\-WCS\_\-SERVICE\_\-DATA\_\-DIRECTORY} ()
+\begin{DoxyCompactList}\small\item\em Fetch the directory of the data-\/to-\/be-\/served. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a82ce7ca820eed3e38a66a1befb885e4b}{Get\_\-DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the configuration XML file path of dataset coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_ae0fc8963b3530a687c0b6fca39e28519}{Get\_\-STITCHED\_\-MOSAIC\_\-CONFIGRATION\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the configuration XML file path of stitched mosaic coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a6aeb058758db3aab635af53dbcf5e7b2}{Get\_\-DATASET\_\-SERIES\_\-CONFIGRATION\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the configuration XML file path of datasetSeries coverage. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_af82cfb1889f6ba7ce9a44dc644f2badc}{Get\_\-TRANSACTION\_\-DATA\_\-DIRECTORY} ()
+\begin{DoxyCompactList}\small\item\em Fetch the directory for placing the data will be transacted. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_af4ae701e12b38013a75938e44b9cac54}{Get\_\-TEMPORARY\_\-OUTPUT\_\-DIRECTORY} ()
+\begin{DoxyCompactList}\small\item\em Fetch the directory for placing temporary and output files. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a102b44721354ea7267a39d0ad06acee7}{Get\_\-OUTPUT\_\-PREFIX\_\-URL} ()
+\begin{DoxyCompactList}\small\item\em Fetch the URL prefix corresponding to the temporary directory. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a484861bea7a237b7bc8a69aaee45fe9d}{Get\_\-CAPABILITIES\_\-FILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the path of the capabilities file path. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a9620adfd4bf1f21d35a1be4e2e2842d7}{Get\_\-WCS\_\-LOGFILE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the path of the WCS log file path. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a8f7718a4c34d9c008ed908b53b87d85b}{Get\_\-GDAL\_\-WARP\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the path of gdalwap command line. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a31326fa9c015dc8c5fb79072b1af9ddd}{Get\_\-ISO\_\-19115\_\-METADATA\_\-TEMPLATE\_\-PATH} ()
+\begin{DoxyCompactList}\small\item\em Fetch the path of the ISO 19115 template file. \end{DoxyCompactList}\item 
+string \hyperlink{classWCS__Configure_a9d9c703b2c3fdde176e5b89a52786548}{GetConfigureFileName} ()
+\begin{DoxyCompactList}\small\item\em Fetch the full path of the configuration file. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Configuration class provides fetch methods to get information from WCS configuration file. 
+
+A configuration file contains WCS-\/related parameters, which is placed under the same directory with WCS executable. The configuration file also has the same name with WCS executable but plus an suffix \char`\"{}conf\char`\"{}.
+
+This configuration file is required for WCS service. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classWCS__Configure_a8f0f3520d76723409b2290ce3d5ec3de}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!WCS\_\-Configure@{WCS\_\-Configure}}
+\index{WCS\_\-Configure@{WCS\_\-Configure}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{WCS\_\-Configure}]{\setlength{\rightskip}{0pt plus 5cm}WCS\_\-Configure::WCS\_\-Configure (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a8f0f3520d76723409b2290ce3d5ec3de}
+Constructor of an \hyperlink{classWCS__Configure}{WCS\_\-Configure} object. \hypertarget{classWCS__Configure_a69a5f47a39b58a80f3ba4baaf32c9693}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!WCS\_\-Configure@{WCS\_\-Configure}}
+\index{WCS\_\-Configure@{WCS\_\-Configure}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{WCS\_\-Configure}]{\setlength{\rightskip}{0pt plus 5cm}WCS\_\-Configure::WCS\_\-Configure (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{conf}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a69a5f47a39b58a80f3ba4baaf32c9693}
+
+
+Constructor of an \hyperlink{classWCS__Configure}{WCS\_\-Configure} object. 
+
+This is the accepted method of creating an configuration object and based this object to read the configuration information.
+
+
+\begin{DoxyParams}{Parameters}
+{\em conf} & String of the full path of the configuration file. \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\hypertarget{classWCS__Configure_aeec65d726fddb454ec9c943ef46602ca}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-CAPABILITIES\_\-CONTENTS\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-CONTENTS\_\-FILE\_\-PATH}}
+\index{Get\_\-CAPABILITIES\_\-CONTENTS\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-CONTENTS\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-CAPABILITIES\_\-CONTENTS\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-CAPABILITIES\_\-CONTENTS\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_aeec65d726fddb454ec9c943ef46602ca}
+
+
+Fetch the Contents part of the capabilities document. 
+
+This method will return the Contents part of the capabilities document.
+
+\begin{DoxyReturn}{Returns}
+String of the Contents part of the capabilities document. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a484861bea7a237b7bc8a69aaee45fe9d}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-CAPABILITIES\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-FILE\_\-PATH}}
+\index{Get\_\-CAPABILITIES\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-CAPABILITIES\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-CAPABILITIES\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a484861bea7a237b7bc8a69aaee45fe9d}
+
+
+Fetch the path of the capabilities file path. 
+
+This method will return the path of the capabilities file path. If this value is specified, WCS will import the file specified and display the XML contents to user.
+
+\begin{DoxyReturn}{Returns}
+String of the path of the capabilities file path. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a17e6c9417cf036ab459e1cd36aadcdaa}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-CAPABILITIES\_\-HEAD\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-HEAD\_\-FILE\_\-PATH}}
+\index{Get\_\-CAPABILITIES\_\-HEAD\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-HEAD\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-CAPABILITIES\_\-HEAD\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-CAPABILITIES\_\-HEAD\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a17e6c9417cf036ab459e1cd36aadcdaa}
+
+
+Fetch the XML head element of the capabilities document. 
+
+This method will return the XML head element of the capabilities document.
+
+\begin{DoxyReturn}{Returns}
+String of the head element of the capabilities document. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_ae565e9adcf4513f0de954e422017cadf}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-CAPABILITIES\_\-OPERATIONSMETADA\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-OPERATIONSMETADA\_\-FILE\_\-PATH}}
+\index{Get\_\-CAPABILITIES\_\-OPERATIONSMETADA\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-OPERATIONSMETADA\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-CAPABILITIES\_\-OPERATIONSMETADA\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-CAPABILITIES\_\-OPERATIONSMETADA\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_ae565e9adcf4513f0de954e422017cadf}
+
+
+Fetch the OperationsMetadata part of the capabilities document. 
+
+This method will return the OperationsMetadata part of the capabilities document.
+
+\begin{DoxyReturn}{Returns}
+String of the OperationsMetadata part of the capabilities document. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_aa24220528f8fc68dd379db5b95943dd2}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-CAPABILITIES\_\-SEVICEIDENTIFICATION\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-SEVICEIDENTIFICATION\_\-FILE\_\-PATH}}
+\index{Get\_\-CAPABILITIES\_\-SEVICEIDENTIFICATION\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-SEVICEIDENTIFICATION\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-CAPABILITIES\_\-SEVICEIDENTIFICATION\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-CAPABILITIES\_\-SEVICEIDENTIFICATION\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_aa24220528f8fc68dd379db5b95943dd2}
+
+
+Fetch the ServiceIdentification part of the capabilities document. 
+
+This method will return the ServiceIdentification part of the capabilities document.
+
+\begin{DoxyReturn}{Returns}
+String of the ServiceIdentification part of the capabilities document. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a4d6eca21bef095f73a75f8c1d74c32eb}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-CAPABILITIES\_\-SEVICEPROVIDER\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-SEVICEPROVIDER\_\-FILE\_\-PATH}}
+\index{Get\_\-CAPABILITIES\_\-SEVICEPROVIDER\_\-FILE\_\-PATH@{Get\_\-CAPABILITIES\_\-SEVICEPROVIDER\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-CAPABILITIES\_\-SEVICEPROVIDER\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-CAPABILITIES\_\-SEVICEPROVIDER\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a4d6eca21bef095f73a75f8c1d74c32eb}
+
+
+Fetch the ServiceProvider part of the capabilities document. 
+
+This method will return the ServiceProvider part of the capabilities document.
+
+\begin{DoxyReturn}{Returns}
+String of the ServiceProvider part of the capabilities document. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a82ce7ca820eed3e38a66a1befb885e4b}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH@{Get\_\-DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH}}
+\index{Get\_\-DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH@{Get\_\-DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a82ce7ca820eed3e38a66a1befb885e4b}
+
+
+Fetch the configuration XML file path of dataset coverage. 
+
+To improve the performance of WCS and make it easy to add the support to new datasets, some specified information of each dataset/granule will be extracted and build a XML file based on those information, such as coverage identifier in GDAL, bounding box, temporal range, coverage name to-\/be-\/displayed to user.
+
+On dataset's configuration file could include many dataset, and also the values of 'DATASET\_\-CONFIGRATION\_\-FILE\_\-PATH' could be specified by multiple dataset's configuration files, separated by ',' or ';'.
+
+Sample: 
+\begin{DoxyCode}
+ <Datasets>
+   <Dataset>
+     <name>MOD05_L2.A2008205.0255.005.2008206170326.hdf:Water_Vapor_Infrared</nam
+      e>
+           <path>/home/yshao/data/</path>
+           <coverageID>HDF4_EOS:EOS_SWATH:"/home/yshao/data/MOD05_L2.A2008205.025
+      5.005.2008206170326.hdf":mod05:Water_Vapor_Infrared</coverageID>
+           <west>-93.8909</west>
+           <east>-59.1097</east>
+           <south>32.2516</south>
+           <north>53.7898</north>
+           <beginTime>2008-07-23T02:55:00Z</beginTime>
+           <endTime>2008-07-23T03:00:00Z</endTime>
+     </Dataset>
+   <Dataset>
+     ...
+   </Dataset>
+ </Datasets>
+\end{DoxyCode}
+
+
+\begin{DoxyReturn}{Returns}
+String of the paths of the dataset's configuration file. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a6aeb058758db3aab635af53dbcf5e7b2}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-DATASET\_\-SERIES\_\-CONFIGRATION\_\-FILE\_\-PATH@{Get\_\-DATASET\_\-SERIES\_\-CONFIGRATION\_\-FILE\_\-PATH}}
+\index{Get\_\-DATASET\_\-SERIES\_\-CONFIGRATION\_\-FILE\_\-PATH@{Get\_\-DATASET\_\-SERIES\_\-CONFIGRATION\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-DATASET\_\-SERIES\_\-CONFIGRATION\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-DATASET\_\-SERIES\_\-CONFIGRATION\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a6aeb058758db3aab635af53dbcf5e7b2}
+
+
+Fetch the configuration XML file path of datasetSeries coverage. 
+
+To improve the performance of WCS and make it easy to add the support to new datasetSeries coverage, some specified information of each dataset/granule within the dataset series will be extracted and build a XML file based on those information.
+
+Sample: 
+\begin{DoxyCode}
+ <WCSEODatasetSeries>
+ <DatasetSeries>
+ <DatasetSeriesId>MODIS_Vegetation_Indices_NDVI_16-Day_L3_Global_0.05Deg_Year_201
+      0</DatasetSeriesId>
+ <CollectionName>MOD13C1</CollectionName>
+ <CoverageName>CMG 0.05 Deg 16 days NDVI</CoverageName>
+ <Datasets>
+ <Dataset>
+ <name>MOD13C1.A2010289.005.2010310073051.hdf</name>
+ <path>/home/yshao/data/MOD13C1.A2010289.005.2010310073051.hdf</path>
+ <coverageID>HDF4_EOS:EOS_GRID:"/home/yshao/data/MOD13C1.A2010289.005.20103100730
+      51.hdf":MODIS_Grid_16Day_VI_CMG:CMG 0.05 Deg 16 days NDVI</coverageID>
+ <west>-180</west>
+ <east>180</east>
+ <south>-90</south>
+ <north>90</north>
+ <beginTime>2010-07-28T00:00:00Z</beginTime>
+ <endTime>2010-08-12T23:59:59Z</endTime>
+ </Dataset>
+ <Dataset>
+ ...
+ </Dataset>
+ </Datasets>
+ </DatasetSeries>
+ <DatasetSeries>
+ ...
+ </DatasetSeries>
+ </WCSEODatasetSeries>
+\end{DoxyCode}
+
+
+\begin{DoxyReturn}{Returns}
+String of the paths of the dataset series' configuration file. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a8f7718a4c34d9c008ed908b53b87d85b}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-GDAL\_\-WARP\_\-PATH@{Get\_\-GDAL\_\-WARP\_\-PATH}}
+\index{Get\_\-GDAL\_\-WARP\_\-PATH@{Get\_\-GDAL\_\-WARP\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-GDAL\_\-WARP\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-GDAL\_\-WARP\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a8f7718a4c34d9c008ed908b53b87d85b}
+
+
+Fetch the path of gdalwap command line. 
+
+This method will return the path of gdalwap command line
+
+\begin{DoxyReturn}{Returns}
+String of the path of gdalwap command line 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a31326fa9c015dc8c5fb79072b1af9ddd}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-ISO\_\-19115\_\-METADATA\_\-TEMPLATE\_\-PATH@{Get\_\-ISO\_\-19115\_\-METADATA\_\-TEMPLATE\_\-PATH}}
+\index{Get\_\-ISO\_\-19115\_\-METADATA\_\-TEMPLATE\_\-PATH@{Get\_\-ISO\_\-19115\_\-METADATA\_\-TEMPLATE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-ISO\_\-19115\_\-METADATA\_\-TEMPLATE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-ISO\_\-19115\_\-METADATA\_\-TEMPLATE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a31326fa9c015dc8c5fb79072b1af9ddd}
+
+
+Fetch the path of the ISO 19115 template file. 
+
+This method will return the path of the ISO 19115 template file.
+
+\begin{DoxyReturn}{Returns}
+String of the path of the ISO 19115 template file. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a102b44721354ea7267a39d0ad06acee7}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-OUTPUT\_\-PREFIX\_\-URL@{Get\_\-OUTPUT\_\-PREFIX\_\-URL}}
+\index{Get\_\-OUTPUT\_\-PREFIX\_\-URL@{Get\_\-OUTPUT\_\-PREFIX\_\-URL}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-OUTPUT\_\-PREFIX\_\-URL}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-OUTPUT\_\-PREFIX\_\-URL (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a102b44721354ea7267a39d0ad06acee7}
+
+
+Fetch the URL prefix corresponding to the temporary directory. 
+
+This method will return the URL prefix corresponding to the temporary directory.
+
+\begin{DoxyReturn}{Returns}
+String of the URL prefix corresponding to the temporary directory. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_afdecaaadfc30c79f6766b606fd05b402}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-SERVICE\_\-ACCESS\_\-URL@{Get\_\-SERVICE\_\-ACCESS\_\-URL}}
+\index{Get\_\-SERVICE\_\-ACCESS\_\-URL@{Get\_\-SERVICE\_\-ACCESS\_\-URL}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-SERVICE\_\-ACCESS\_\-URL}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-SERVICE\_\-ACCESS\_\-URL (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_afdecaaadfc30c79f6766b606fd05b402}
+
+
+Fetch the access URL of this WCS. 
+
+This method will return the access URL of this WCS.
+
+\begin{DoxyReturn}{Returns}
+String of the access URL of this WCS. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_ae0fc8963b3530a687c0b6fca39e28519}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-STITCHED\_\-MOSAIC\_\-CONFIGRATION\_\-FILE\_\-PATH@{Get\_\-STITCHED\_\-MOSAIC\_\-CONFIGRATION\_\-FILE\_\-PATH}}
+\index{Get\_\-STITCHED\_\-MOSAIC\_\-CONFIGRATION\_\-FILE\_\-PATH@{Get\_\-STITCHED\_\-MOSAIC\_\-CONFIGRATION\_\-FILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-STITCHED\_\-MOSAIC\_\-CONFIGRATION\_\-FILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-STITCHED\_\-MOSAIC\_\-CONFIGRATION\_\-FILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_ae0fc8963b3530a687c0b6fca39e28519}
+
+
+Fetch the configuration XML file path of stitched mosaic coverage. 
+
+To improve the performance of WCS and make it easy to add the support to new mosaic coverage, some specified information of each dataset/granule within the mosaic coverage will be extracted and build a XML file based on those information.
+
+\begin{Desc}
+\item[\hyperlink{todo__todo000001}{Todo}]Currently (as of 07/22) the GMU WCS did not serve the data in the form of mosaic coverage, some demos will be added based on new requirement.\end{Desc}
+
+
+\begin{DoxyReturn}{Returns}
+String of the paths of the mosaic coverage's configuration file. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_af4ae701e12b38013a75938e44b9cac54}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-TEMPORARY\_\-OUTPUT\_\-DIRECTORY@{Get\_\-TEMPORARY\_\-OUTPUT\_\-DIRECTORY}}
+\index{Get\_\-TEMPORARY\_\-OUTPUT\_\-DIRECTORY@{Get\_\-TEMPORARY\_\-OUTPUT\_\-DIRECTORY}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-TEMPORARY\_\-OUTPUT\_\-DIRECTORY}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-TEMPORARY\_\-OUTPUT\_\-DIRECTORY (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_af4ae701e12b38013a75938e44b9cac54}
+
+
+Fetch the directory for placing temporary and output files. 
+
+This method will return the directory for placing temporary and output files.
+
+\begin{DoxyReturn}{Returns}
+String of the directory for placing temporary and output files. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_af82cfb1889f6ba7ce9a44dc644f2badc}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-TRANSACTION\_\-DATA\_\-DIRECTORY@{Get\_\-TRANSACTION\_\-DATA\_\-DIRECTORY}}
+\index{Get\_\-TRANSACTION\_\-DATA\_\-DIRECTORY@{Get\_\-TRANSACTION\_\-DATA\_\-DIRECTORY}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-TRANSACTION\_\-DATA\_\-DIRECTORY}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-TRANSACTION\_\-DATA\_\-DIRECTORY (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_af82cfb1889f6ba7ce9a44dc644f2badc}
+
+
+Fetch the directory for placing the data will be transacted. 
+
+This method will return the directory for placing the data will be transacted.
+
+\begin{Desc}
+\item[\hyperlink{todo__todo000002}{Todo}]Currently (as of 07/22) the transaction interface of GMU WCS have not been tested.\end{Desc}
+
+
+\begin{DoxyReturn}{Returns}
+String of the directory of the data-\/to-\/be-\/served. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a9620adfd4bf1f21d35a1be4e2e2842d7}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-WCS\_\-LOGFILE\_\-PATH@{Get\_\-WCS\_\-LOGFILE\_\-PATH}}
+\index{Get\_\-WCS\_\-LOGFILE\_\-PATH@{Get\_\-WCS\_\-LOGFILE\_\-PATH}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-WCS\_\-LOGFILE\_\-PATH}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-WCS\_\-LOGFILE\_\-PATH (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a9620adfd4bf1f21d35a1be4e2e2842d7}
+
+
+Fetch the path of the WCS log file path. 
+
+This method will return the path of the WCS log file path.
+
+\begin{DoxyReturn}{Returns}
+String of the path of the WCS log file path. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_abd5989379bf561c53c7c14d37a8f99e9}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!Get\_\-WCS\_\-SERVICE\_\-DATA\_\-DIRECTORY@{Get\_\-WCS\_\-SERVICE\_\-DATA\_\-DIRECTORY}}
+\index{Get\_\-WCS\_\-SERVICE\_\-DATA\_\-DIRECTORY@{Get\_\-WCS\_\-SERVICE\_\-DATA\_\-DIRECTORY}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{Get\_\-WCS\_\-SERVICE\_\-DATA\_\-DIRECTORY}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::Get\_\-WCS\_\-SERVICE\_\-DATA\_\-DIRECTORY (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_abd5989379bf561c53c7c14d37a8f99e9}
+
+
+Fetch the directory of the data-\/to-\/be-\/served. 
+
+This method will return the directory of the data-\/to-\/be-\/served.
+
+\begin{DoxyReturn}{Returns}
+String of the directory of the data-\/to-\/be-\/served. 
+\end{DoxyReturn}
+\hypertarget{classWCS__Configure_a9d9c703b2c3fdde176e5b89a52786548}{
+\index{WCS\_\-Configure@{WCS\_\-Configure}!GetConfigureFileName@{GetConfigureFileName}}
+\index{GetConfigureFileName@{GetConfigureFileName}!WCS_Configure@{WCS\_\-Configure}}
+\subsubsection[{GetConfigureFileName}]{\setlength{\rightskip}{0pt plus 5cm}string WCS\_\-Configure::GetConfigureFileName (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}
+\label{classWCS__Configure_a9d9c703b2c3fdde176e5b89a52786548}
+
+
+Fetch the full path of the configuration file. 
+
+This method will return the full path of the configuration file.
+
+\begin{DoxyReturn}{Returns}
+String of the full path of the configuration file. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+WCS\_\-Configure.h\item 
+WCS\_\-Configure.cpp\end{DoxyCompactItemize}

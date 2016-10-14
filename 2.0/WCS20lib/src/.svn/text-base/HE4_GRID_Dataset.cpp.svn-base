@@ -1,0 +1,255 @@
+#include "HE4_GRID_Dataset.h"
+
+HE4_GRID_Dataset::HE4_GRID_Dataset()
+{
+}
+
+HE4_GRID_Dataset::HE4_GRID_Dataset(const string& id, vector<int> &rBandList) :
+	AbstractDataset(id, rBandList)
+{
+	mdMissingValue = -9999;
+}
+HE4_GRID_Dataset::~HE4_GRID_Dataset()
+{
+}
+
+CPLErr HE4_GRID_Dataset::initialDataset(const int isSimple)
+{
+	mbIsVirtualDS = FALSE;
+
+	if (ms_CoverageID.empty() || ms_CoverageID == "" || (!ms_CoverageID.empty()
+			&& !EQUALN(ms_CoverageID.c_str(),"HDF4_EOS:EOS_GRID:",18)))
+	{
+		SetWCS_ErrorLocator("HE4_GRID_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Coverage ID Error.");
+
+		return CE_Failure;
+	}
+
+	vector<string> strSet;
+	unsigned int n = csvburstCpp(ms_CoverageID, strSet, ':');
+
+	if (n != 5) {
+		SetWCS_ErrorLocator("HE4_GRID_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Coverage ID Error.");
+		return CE_Failure;
+	}
+
+	mSrcFilename = strSet[2];
+	msDataTypeName = strSet[3];
+	msDatasetName = strSet[4];
+
+	mSrcFilename = myStrTrimsIn(mSrcFilename, " \'\"");
+
+	CPLSetConfigOption("GEOL_AS_GCPS", "FULL");
+	string_replace(ms_CoverageID, "\'", "\"");
+	GDALDataset* pSrc = (GDALDataset*) GDALOpen(ms_CoverageID.c_str(), GA_ReadOnly);
+	if (pSrc == NULL) {
+		SetWCS_ErrorLocator("HE4_GRID_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode,
+				"Failed to open file \"%s\".", mSrcFilename.c_str());
+		return CE_Failure;
+	}
+
+	msNativeFormat = GDALGetDriverShortName(pSrc->GetDriver());
+	if (!EQUAL(msNativeFormat.c_str(),"HDF4Image")) {
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("HE4_GRID_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to get data format");
+		return CE_Failure;
+	}
+
+	//set meta data list
+	setMetaDataList(pSrc);
+
+	//set noValue
+	unsigned int nBandCount = pSrc->GetRasterCount();
+	if (nBandCount < 1) {
+		GDALClose(pSrc);
+		SetWCS_ErrorLocator("HE4_GRID_Dataset::initialDataset()");
+		WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to get raster band.");
+		return CE_Failure;
+	}
+
+	int iSuc = 0;
+	double noValue = pSrc->GetRasterBand(1)->GetNoDataValue(&iSuc);
+	if (iSuc)
+		mdMissingValue = noValue;
+
+	maptrDS.reset(pSrc);
+
+	//set moNativeCRS and mGeoTransform
+	if (CE_None != setNativeCRS() || CE_None != setGeoTransform() || CE_None
+			!= setGDALDataset(isSimple))
+	{
+		GDALClose(maptrDS.release());
+		return CE_Failure;
+	}
+	return CE_None;
+}
+
+string getAIRSBBox(string core, string objstr)
+{
+	string endobj = "END_OBJECT="+objstr;
+	unsigned int ei = core.find(objstr);
+	string eistr = core.substr(ei);
+	unsigned int eivi1 = eistr.find("VALUE=");
+	unsigned int eivi2 = eistr.find(endobj);
+	if(eivi1 != string::npos && eivi2 != string::npos)
+	{
+		string dir = eistr.substr(eivi1 + 6, eivi2 - eivi1 - 7);
+		return dir;
+	}
+	else
+		return "";
+}
+
+CPLErr HE4_GRID_Dataset::setGeoTransform(){
+	char **papszMetadata = maptrDS->GetMetadata("");
+	double resX,resY;
+	double mdSrcGeoMinX, mdSrcGeoMaxX, mdSrcGeoMinY, mdSrcGeoMaxY;
+    if(NULL!= CSLFetchNameValue( papszMetadata, "WESTBOUNDINGCOORDINATE" ) &&
+    	NULL!= CSLFetchNameValue( papszMetadata, "EASTBOUNDINGCOORDINATE" ) &&
+    	NULL!= CSLFetchNameValue( papszMetadata, "SOUTHBOUNDINGCOORDINATE" ) &&
+    	NULL!= CSLFetchNameValue( papszMetadata, "NORTHBOUNDINGCOORDINATE" ) )
+    {
+		mdSrcGeoMinX=atof( CSLFetchNameValue( papszMetadata, "WESTBOUNDINGCOORDINATE" ) );
+		mdSrcGeoMaxX=atof( CSLFetchNameValue( papszMetadata, "EASTBOUNDINGCOORDINATE" ) );
+		mdSrcGeoMinY=atof( CSLFetchNameValue( papszMetadata, "SOUTHBOUNDINGCOORDINATE" ) );
+		mdSrcGeoMaxY=atof( CSLFetchNameValue( papszMetadata, "NORTHBOUNDINGCOORDINATE" ) );
+
+		if(mdSrcGeoMinX > mdSrcGeoMaxX)
+		{
+			double t = mdSrcGeoMinX;
+			mdSrcGeoMinX = mdSrcGeoMaxX;
+			mdSrcGeoMaxX = t;
+		}
+		resX=(mdSrcGeoMaxX-mdSrcGeoMinX)/(maptrDS->GetRasterXSize());
+		resY=(mdSrcGeoMaxY-mdSrcGeoMinY)/(maptrDS->GetRasterYSize());
+
+		mdGeotransform[0] = mdSrcGeoMinX;
+		mdGeotransform[1] = resX;
+		mdGeotransform[2] = 0;
+		mdGeotransform[3] = mdSrcGeoMaxY;
+		mdGeotransform[4] = 0;
+		mdGeotransform[5] = -resY;
+    } else if(NULL != CSLFetchNameValue( papszMetadata, "coremetadata" )) {
+        string core = CSLFetchNameValue( papszMetadata, "coremetadata" );
+    	core = replace_all(core, " ", "");
+    	string east = getAIRSBBox(core, "EASTBOUNDINGCOORDINATE");
+    	string west = getAIRSBBox(core, "WESTBOUNDINGCOORDINATE");
+   		string south = getAIRSBBox(core, "SOUTHBOUNDINGCOORDINATE");
+    	string north = getAIRSBBox(core, "NORTHBOUNDINGCOORDINATE");
+    	if(east != "" && west != "" && south != "" && north != "")
+    	{
+			mdSrcGeoMinX=atof(west.c_str());
+			mdSrcGeoMaxX=atof(east.c_str());
+			mdSrcGeoMinY=atof(south.c_str());
+			mdSrcGeoMaxY=atof(north.c_str());
+
+			if(mdSrcGeoMinX > mdSrcGeoMaxX) {
+				double t = mdSrcGeoMinX;
+				mdSrcGeoMinX = mdSrcGeoMaxX;
+				mdSrcGeoMaxX = t;
+			}
+
+			resX=(mdSrcGeoMaxX-mdSrcGeoMinX)/(maptrDS->GetRasterXSize());
+			resY=(mdSrcGeoMaxY-mdSrcGeoMinY)/(maptrDS->GetRasterYSize());
+
+			mdGeotransform[0] = mdSrcGeoMinX;
+			mdGeotransform[1] = resX;
+			mdGeotransform[2] = 0;
+			mdGeotransform[3] = mdSrcGeoMaxY;
+			mdGeotransform[4] = 0;
+			mdGeotransform[5] = -resY;
+		}else
+			return CE_Failure;
+
+	}else
+		return CE_Failure;
+
+    mbGeoTransformSet = TRUE;
+    return CE_None;
+}
+
+CPLErr HE4_GRID_Dataset::setGDALDataset(const int isSimple)
+{
+	if (!mpBandList.empty())
+	{
+		int iRasterXSize = maptrDS->GetRasterXSize();
+		int iRasterYSize = maptrDS->GetRasterYSize();
+
+		VRTDataset *poVDS = (VRTDataset *)VRTCreate(iRasterXSize, iRasterYSize);
+		if (poVDS == NULL) {
+			SetWCS_ErrorLocator("HE4_GRID_Dataset::setGDALDataset()");
+			WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to create VRT dataSet.");
+			return CE_Failure;
+		}
+
+		VRTSourcedRasterBand *poVRTBand = NULL;
+		GDALRasterBand *poSrcBand = NULL;
+		GDALDataType eBandType;
+		for (unsigned int i = 0; i < mpBandList.size(); i++) {
+			poSrcBand = maptrDS->GetRasterBand(mpBandList[i]);
+			if (poSrcBand == NULL) {
+				GDALClose((GDALDatasetH) poVDS);
+				SetWCS_ErrorLocator("HE4_GRID_Dataset::setGDALDataset()");
+				WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to get raster band.");
+				return CE_Failure;
+			}
+			eBandType = poSrcBand->GetRasterDataType();
+			/* -------------------------------------------------------------------- */
+			/*      Create this band.                                               */
+			/* -------------------------------------------------------------------- */
+			poVDS->AddBand(eBandType, NULL);
+			poVRTBand = (VRTSourcedRasterBand *) poVDS->GetRasterBand(i + 1);
+			poVRTBand->SetNoDataValue(mdMissingValue);
+
+			if (CE_None != poVRTBand->AddSimpleSource(poSrcBand, 0, 0,
+					iRasterXSize, iRasterYSize, 0, 0, iRasterXSize,
+					iRasterYSize, NULL, mdMissingValue)) {
+				GDALClose((GDALDatasetH) poVDS);
+				WCS_Error(CE_Failure, OGC_WCS_NoApplicableCode, "Failed to Add Simple Source into VRT DataSet.");
+				SetWCS_ErrorLocator("HE4_GRID_Dataset::setGDALDataset()");
+				return CE_Failure;
+			}
+		}
+
+		if (mbGeoTransformSet) {
+			poVDS->SetGeoTransform(mdGeotransform);
+			char *psTargetSRS;
+			moNativeCRS.exportToWkt(&psTargetSRS);
+			poVDS->SetProjection(psTargetSRS);
+			OGRFree(psTargetSRS);
+		}
+
+		GDALClose(maptrDS.release());
+		maptrDS.reset(poVDS);
+
+	}
+	return CE_None;
+}
+
+CPLErr HE4_GRID_Dataset::setMetaDataList(GDALDataset* hSrcDS)
+{
+	mvtrMeteDataList.push_back("Product_Description=The image data be created by WCS from HDF4_EOS_GRID data.");
+	char **papszMetadata = hSrcDS->GetMetadata("");
+
+	for (int i = 0; i < CSLCount((char**) papszMetadata); ++i) {
+		if (!EQUALN(papszMetadata[i],"WESTBOUNDINGCOORDINATE",22)
+				&&!EQUALN(papszMetadata[i],"EASTBOUNDINGCOORDINATE",22)
+				&&!EQUALN(papszMetadata[i],"SOUTHBOUNDINGCOORDINATE",23)
+				&&!EQUALN(papszMetadata[i],"NORTHBOUNDINGCOORDINATE",23))
+		{
+			mvtrMeteDataList.push_back(papszMetadata[i]);
+		}
+	}
+	return CE_None;
+}
+
+//Because WCS require the CRS must be based on WGS84, then 4047 is not right.
+CPLErr HE4_GRID_Dataset::setNativeCRS()
+{
+	moNativeCRS.SetWellKnownGeogCS("WGS84");
+	return CE_None;
+}

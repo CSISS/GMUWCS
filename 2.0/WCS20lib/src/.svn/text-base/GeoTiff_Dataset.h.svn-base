@@ -1,0 +1,25 @@
+#ifndef GEOTIFF_DATASET_H_
+#define GEOTIFF_DATASET_H_
+#include <string>
+#include "AbstractDataset.h"
+using namespace std;
+
+class GeoTiff_Dataset : public AbstractDataset
+{
+
+	GeoTiff_Dataset();
+
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setMetaDataList(GDALDataset*);
+public:
+	GeoTiff_Dataset(const string& id, vector<int> &rBandList);
+
+	virtual ~GeoTiff_Dataset();
+
+	virtual CPLErr initialDataset(const int isSimple=0);
+
+};
+
+#endif /*GEOTIFF_DATASET_H_*/

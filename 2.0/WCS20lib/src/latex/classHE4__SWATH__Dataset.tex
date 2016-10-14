@@ -1,0 +1,282 @@
+\hypertarget{classHE4__SWATH__Dataset}{
+\section{HE4\_\-SWATH\_\-Dataset Class Reference}
+\label{classHE4__SWATH__Dataset}\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}}
+}
+
+
+\hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process HDF-\/EOS2 Swath coverage.  
+
+
+
+
+{\ttfamily \#include \char`\"{}HE4\_\-SWATH\_\-Dataset.h\char`\"{}}
+
+Inheritance diagram for HE4\_\-SWATH\_\-Dataset:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classHE4__SWATH__Dataset}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual CPLErr \hyperlink{classHE4__SWATH__Dataset_a898be04259ed34592cbff87b2dd2680c}{SetGeoTransform} ()
+\begin{DoxyCompactList}\small\item\em Set the affine GeoTransform matrix for a HDF-\/EOS2 Swath coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE4__SWATH__Dataset_a71289ad4d22695120264b190e9170eb1}{SetMetaDataList} (GDALDataset $\ast$)
+\begin{DoxyCompactList}\small\item\em Set the metadata list for this coverage. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE4__SWATH__Dataset_abc9a1e86eba1e386e38e3771e4102df4}{SetNativeCRS} ()
+\begin{DoxyCompactList}\small\item\em Set the Native CRS for a HDF-\/EOS2 Swath dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE4__SWATH__Dataset_aba0769c876c341494ba043f5cbcdef9a}{SetGDALDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Set the GDALDataset object to HDF-\/EOS2 Swath dataset. \end{DoxyCompactList}\item 
+virtual CPLErr \hyperlink{classHE4__SWATH__Dataset_ac65fb00ef5ac627fb996e46442c07444}{InitialDataset} (const int isSimple=0)
+\begin{DoxyCompactList}\small\item\em Initialize the HDF-\/EOS Swath dataset . \end{DoxyCompactList}\item 
+\hyperlink{classHE4__SWATH__Dataset_a354e9e0923628cbfa6f7e6864afeba36}{HE4\_\-SWATH\_\-Dataset} (const string \&id, vector$<$ int $>$ \&rBandList)
+\begin{DoxyCompactList}\small\item\em Create an HDF-\/EOS Swath dataset object. \end{DoxyCompactList}\item 
+virtual \hyperlink{classHE4__SWATH__Dataset_a084f204e8cd2c7401b84bbd6aa98fd94}{$\sim$HE4\_\-SWATH\_\-Dataset} ()
+\begin{DoxyCompactList}\small\item\em Destroy an open \hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} object. \end{DoxyCompactList}\item 
+virtual int \hyperlink{classHE4__SWATH__Dataset_acbe2ea029124c791fc8fe2b9e68a8bf8}{GetImageXSize} ()
+\begin{DoxyCompactList}\small\item\em Fetch coverage width in pixels. \end{DoxyCompactList}\item 
+virtual int \hyperlink{classHE4__SWATH__Dataset_ab8450ad5ae44927bb8aef7dba5bc1af8}{GetImageYSize} ()
+\begin{DoxyCompactList}\small\item\em Fetch coverage height in pixels. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classHE4__SWATH__Dataset_ae158131d053ed98cc48f8d8be3fe5481}{
+int {\bfseries mi\_\-RectifiedImageXSize}}
+\label{classHE4__SWATH__Dataset_ae158131d053ed98cc48f8d8be3fe5481}
+
+\item 
+\hypertarget{classHE4__SWATH__Dataset_a234f2289c231f9c4bb2fa181ab28220c}{
+int {\bfseries mi\_\-RectifiedImageYSize}}
+\label{classHE4__SWATH__Dataset_a234f2289c231f9c4bb2fa181ab28220c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, used to process HDF-\/EOS2 Swath coverage. 
+
+The Swath concept for HDF-\/EOS is based on a typical satellite swath, where an instrument takes a series of scans perpendicular to the ground track of the satellite as it moves along that ground track.
+
+The HDF-\/EOS2 data view of a swath is one where the data is ordered by time or a time-\/like variable (e.g., scan line counter). The data stored for every time entry can consist of time, geolocation (latitude, longitude), scalar values, 1D arrays of values (scan lines or profiles), or 2D arrays of values (multiple channel scan lines).
+
+\hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} is a subclass of \hyperlink{classAbstractDataset}{AbstractDataset}, which is used to process MODIS Swath products collection, such as MOD021KM, MYD02HKM and MOD02QKM. 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classHE4__SWATH__Dataset_a354e9e0923628cbfa6f7e6864afeba36}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{HE4\_\-SWATH\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}HE4\_\-SWATH\_\-Dataset::HE4\_\-SWATH\_\-Dataset (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{id, }
+\item[{vector$<$ int $>$ \&}]{rBandList}
+\end{DoxyParamCaption}
+)}}
+\label{classHE4__SWATH__Dataset_a354e9e0923628cbfa6f7e6864afeba36}
+
+
+Create an HDF-\/EOS Swath dataset object. 
+
+This is the accepted method of creating a \hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} dataset and allocating all resources associated with it.
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & The coverage identifier.\\
+\hline
+{\em rBandList} & The field list selected for this coverage. For HDF-\/EOS Swath data, the user may choose multiple range and execute range subset operation.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A \hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} object. 
+\end{DoxyReturn}
+\hypertarget{classHE4__SWATH__Dataset_a084f204e8cd2c7401b84bbd6aa98fd94}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!$\sim$HE4\_\-SWATH\_\-Dataset@{$\sim$HE4\_\-SWATH\_\-Dataset}}
+\index{$\sim$HE4\_\-SWATH\_\-Dataset@{$\sim$HE4\_\-SWATH\_\-Dataset}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{$\sim$HE4\_\-SWATH\_\-Dataset}]{\setlength{\rightskip}{0pt plus 5cm}HE4\_\-SWATH\_\-Dataset::$\sim$HE4\_\-SWATH\_\-Dataset (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_a084f204e8cd2c7401b84bbd6aa98fd94}
+
+
+Destroy an open \hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} object. 
+
+This is the accepted method of closing a \hyperlink{classHE4__SWATH__Dataset}{HE4\_\-SWATH\_\-Dataset} dataset and deallocating all resources associated with it. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classHE4__SWATH__Dataset_acbe2ea029124c791fc8fe2b9e68a8bf8}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!GetImageXSize@{GetImageXSize}}
+\index{GetImageXSize@{GetImageXSize}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{GetImageXSize}]{\setlength{\rightskip}{0pt plus 5cm}virtual int HE4\_\-SWATH\_\-Dataset::GetImageXSize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_acbe2ea029124c791fc8fe2b9e68a8bf8}
+
+
+Fetch coverage width in pixels. 
+
+The method will return the width of coverage in pixels. GDAL API GetRasterXSize() will be called to generate the width value.
+
+\begin{DoxyReturn}{Returns}
+the width in pixels of raster bands in this coverage. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a950e120c5a1e9fa06ee5b02ed4fc6c42}{AbstractDataset}.
+
+\hypertarget{classHE4__SWATH__Dataset_ab8450ad5ae44927bb8aef7dba5bc1af8}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!GetImageYSize@{GetImageYSize}}
+\index{GetImageYSize@{GetImageYSize}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{GetImageYSize}]{\setlength{\rightskip}{0pt plus 5cm}virtual int HE4\_\-SWATH\_\-Dataset::GetImageYSize (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}inline, virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_ab8450ad5ae44927bb8aef7dba5bc1af8}
+
+
+Fetch coverage height in pixels. 
+
+The method will return the height of coverage in pixels. GDAL API GetRasterYSize() will be called to generate the height value.
+
+\begin{DoxyReturn}{Returns}
+the height in pixels of raster bands in this coverage. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a4f7ceb09ad968d28a5282c7652fb6975}{AbstractDataset}.
+
+\hypertarget{classHE4__SWATH__Dataset_ac65fb00ef5ac627fb996e46442c07444}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!InitialDataset@{InitialDataset}}
+\index{InitialDataset@{InitialDataset}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{InitialDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE4\_\-SWATH\_\-Dataset::InitialDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_ac65fb00ef5ac627fb996e46442c07444}
+
+
+Initialize the HDF-\/EOS Swath dataset . 
+
+This method is the implementation for initializing a HDF-\/EOS Swath dataset. Within this method, \hyperlink{classHE4__SWATH__Dataset_abc9a1e86eba1e386e38e3771e4102df4}{SetNativeCRS()}, \hyperlink{classHE4__SWATH__Dataset_a898be04259ed34592cbff87b2dd2680c}{SetGeoTransform()} and \hyperlink{classHE4__SWATH__Dataset_aba0769c876c341494ba043f5cbcdef9a}{SetGDALDataset()} will be called to initialize an HDF-\/EOS Swath dataset. The coverage type of HDF-\/EOS Swath data is set to \char`\"{}ReferenceableDataset\char`\"{}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a45924895c6bf26c7f75d503b8f6e388a}{AbstractDataset}.
+
+\hypertarget{classHE4__SWATH__Dataset_aba0769c876c341494ba043f5cbcdef9a}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!SetGDALDataset@{SetGDALDataset}}
+\index{SetGDALDataset@{SetGDALDataset}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{SetGDALDataset}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE4\_\-SWATH\_\-Dataset::SetGDALDataset (
+\begin{DoxyParamCaption}
+\item[{const int}]{isSimple = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_aba0769c876c341494ba043f5cbcdef9a}
+
+
+Set the GDALDataset object to HDF-\/EOS2 Swath dataset. 
+
+This method is used to set the HDF-\/EOS2 Swath dataset based on GDAL class VRTDataset.
+
+
+\begin{DoxyParams}{Parameters}
+{\em isSimple} & the WCS request type. When user executing a DescribeCoverage request, isSimple is set to 1, and for GetCoverage, is set to 0.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a93bd80bfa48ad45ea53599f289406287}{AbstractDataset}.
+
+\hypertarget{classHE4__SWATH__Dataset_a898be04259ed34592cbff87b2dd2680c}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!SetGeoTransform@{SetGeoTransform}}
+\index{SetGeoTransform@{SetGeoTransform}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{SetGeoTransform}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE4\_\-SWATH\_\-Dataset::SetGeoTransform (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_a898be04259ed34592cbff87b2dd2680c}
+
+
+Set the affine GeoTransform matrix for a HDF-\/EOS2 Swath coverage. 
+
+The method will set a GeoTransform matrix for a HDF-\/EOS2 Grid coverage by parsing and analyzing the metadata of HDF-\/EOS2 Grid data granule. If granule metadata do not include bounding box extent, GDAL\_\-GCP will be used to deduce the bounding box and set the GeoTransform accordingly.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_a1d79fc347de75acd57b18c80b9614369}{AbstractDataset}.
+
+\hypertarget{classHE4__SWATH__Dataset_a71289ad4d22695120264b190e9170eb1}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!SetMetaDataList@{SetMetaDataList}}
+\index{SetMetaDataList@{SetMetaDataList}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{SetMetaDataList}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE4\_\-SWATH\_\-Dataset::SetMetaDataList (
+\begin{DoxyParamCaption}
+\item[{GDALDataset $\ast$}]{hSrcDS}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_a71289ad4d22695120264b190e9170eb1}
+
+
+Set the metadata list for this coverage. 
+
+The method will set the metadata list for the coverage based on its corresponding GDALDataset object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em hSrc} & the GDALDataset object corresponding to coverage.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_af3f0b55b14f660b79751bf88489a2c10}{AbstractDataset}.
+
+\hypertarget{classHE4__SWATH__Dataset_abc9a1e86eba1e386e38e3771e4102df4}{
+\index{HE4\_\-SWATH\_\-Dataset@{HE4\_\-SWATH\_\-Dataset}!SetNativeCRS@{SetNativeCRS}}
+\index{SetNativeCRS@{SetNativeCRS}!HE4_SWATH_Dataset@{HE4\_\-SWATH\_\-Dataset}}
+\subsubsection[{SetNativeCRS}]{\setlength{\rightskip}{0pt plus 5cm}CPLErr HE4\_\-SWATH\_\-Dataset::SetNativeCRS (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}virtual\mbox{]}}}}
+\label{classHE4__SWATH__Dataset_abc9a1e86eba1e386e38e3771e4102df4}
+
+
+Set the Native CRS for a HDF-\/EOS2 Swath dataset. 
+
+The method will set the CRS for a HDF-\/EOS2 Grid dataset as an native CRS. Since the coordinates recorded in HDF-\/EOS2 Swath granule belong to geographic CRS, EPSG:4326 CRS are assigned to HDF-\/EOS2 Swath dataset.
+
+\begin{DoxyReturn}{Returns}
+CE\_\-None on success or CE\_\-Failure on failure. 
+\end{DoxyReturn}
+
+
+Reimplemented from \hyperlink{classAbstractDataset_acfac922d16e5edf51066169bd6ff28ec}{AbstractDataset}.
+
+
+
+The documentation for this class was generated from the following files:\begin{DoxyCompactItemize}
+\item 
+HE4\_\-SWATH\_\-Dataset.h\item 
+HE4\_\-SWATH\_\-Dataset.cpp\end{DoxyCompactItemize}

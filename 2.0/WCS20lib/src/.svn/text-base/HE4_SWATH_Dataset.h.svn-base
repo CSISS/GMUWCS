@@ -1,0 +1,37 @@
+#ifndef MOD_SWATH_DATASET_H_
+#define MOD_SWATH_DATASET_H_
+#include <string>
+#include "AbstractDataset.h"
+using namespace std;
+
+class HE4_SWATH_Dataset : public AbstractDataset
+{
+
+	int 					mi_RectifiedImageXSize;
+	int 					mi_RectifiedImageYSize;
+
+	HE4_SWATH_Dataset();
+
+
+//	CPLErr rectifyDataSet();
+
+	virtual CPLErr setGeoTransform();
+	virtual CPLErr setMetaDataList(GDALDataset* );
+	virtual CPLErr setNativeCRS();
+	virtual CPLErr setGDALDataset(const int isSimple=0);
+	CPLErr RectifySWATHDataSet();
+
+public:
+	HE4_SWATH_Dataset(const string& id, vector<int> &rBandList);
+
+	virtual ~HE4_SWATH_Dataset();
+
+	virtual CPLErr initialDataset(const int isSimple=0);
+
+//	virtual CPLErr getGeoMinMax(double geoMinMax[]);
+
+	virtual int GetImageXSize(){return mi_RectifiedImageXSize;}
+	virtual int GetImageYSize(){return mi_RectifiedImageYSize;}
+};
+
+#endif /*MODIS_SWATH_Dataset_H_*/

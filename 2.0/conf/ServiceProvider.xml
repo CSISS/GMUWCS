@@ -1,0 +1,26 @@
+  <ows:ServiceProvider>
+    <ows:ProviderName>Center for Spatial Information Science and System, George Mason University</ows:ProviderName>
+    <ows:ProviderSite xlink:href="http://localhost:8000/ows?" xlink:type="simple"/>
+    <ows:ServiceContact>
+      <ows:IndividualName>Liping Di</ows:IndividualName>
+      <ows:PositionName>Professor</ows:PositionName>
+      <ows:ContactInfo>
+        <ows:Phone>
+          <ows:Voice>+1-703-933-6114</ows:Voice>
+          <ows:Facsimile>+1-703-993-6127</ows:Facsimile>
+        </ows:Phone>
+        <ows:Address>
+          <ows:DeliveryPoint>10519 Braddock Road Suite 2900</ows:DeliveryPoint>
+          <ows:City>Fairfax</ows:City>
+          <ows:AdministrativeArea>Virginia</ows:AdministrativeArea>
+          <ows:PostalCode>22032</ows:PostalCode>
+          <ows:Country>USA</ows:Country>
+          <ows:ElectronicMailAddress>ldi@gmu.edu</ows:ElectronicMailAddress>
+        </ows:Address>
+        <ows:OnlineResource xlink:href="http://localhost:8000/ows?" xlink:type="simple"/>
+        <ows:HoursOfService>Mon - Fri 9:30 - 17:00 ET</ows:HoursOfService>
+        <ows:ContactInstructions>E-mails are usually answered within 3 working days.</ows:ContactInstructions>
+      </ows:ContactInfo>
+      <ows:Role>Service provider</ows:Role>
+    </ows:ServiceContact>
+  </ows:ServiceProvider>

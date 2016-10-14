@@ -1,0 +1,117 @@
+/*
+ * Goes_Utility.h
+ *
+ *  Created on: Apr 8, 2010
+ *      Author: yshao
+ */
+
+#ifndef GOES_UTILITY_H_
+#define GOES_UTILITY_H_
+
+#include <math.h>
+#include <map>
+#include <vector>
+#include <string>
+#include <sstream>
+#include <algorithm>
+#include "netcdfcpp.h"
+#include <gdal_priv.h>
+#include "wcsUtil.h"
+
+using namespace std;
+
+/*-----------------------------------------------------------------------------
+ * Author:		Yuanzheng Shao
+ * Function:	To Goes data (netcdf/swath), executing subsetting operation in
+ *				swath space.
+ * Parameter:
+ * 	srcFileName:	The original Goes file path.
+ * 	dstFileName:	The destination Goes file path, for output .
+ *  latlonBBox:		The bounding box for subsetting
+ *  dodataValue:	The no data value
+ * Return:
+ *	ture/false
+ * ---------------------------------------------------------------------------*/
+struct NCVariableObject
+{
+public:
+	string m_varName;//version
+	std::vector<string> m_varValueVector;//Multi values, such as lat/lon and data
+	std::vector<string> m_varDimVector;//lines,elems
+	std::map<string,string> m_varAttMap;//long_name="McIDAS area file version"
+};
+
+struct NCDimensionObject
+{
+public:
+	string m_dimName;//lines
+	long m_dimLength;//2212
+};
+
+static const float m_teff_coef_c1 = 0.00001191066;
+static const float m_teff_coef_c2 = 1.438833;
+
+static const float GOESNODATAVALUE = 0;
+
+/*
+ * http://www.oso.noaa.gov/goes/goes-calibration/gvar-conversion.htm
+ * http://www.oso.noaa.gov/goes/goes-calibration/goes-vis-ch-calibration.htm
+ * */
+class Goes_Calibration {
+private:
+	std::map<std::string,float> m_mapImagerMB;
+	std::map<std::string,float> m_mapSounderMB;
+	std::map<std::string,float> m_mapImagerNABG;
+	std::map<std::string,float> m_mapSounderNABG;
+	std::map<std::string,float> m_mapImagerMXBK;
+	std::map<std::string,float> m_mapSounderMXBK;
+
+	double m_radiance_coef_m;
+	double m_radiance_coef_b;
+	double m_temperature_coef_n;
+	double m_temperature_coef_a;
+	double m_temperature_coef_b;
+	double m_temperature_coef_g;
+	double m_albedo_coef_m;
+	double m_albedo_coef_x;
+	double m_albedo_coef_b;
+	double m_albedo_coef_k;
+
+	bool m_bImager;
+	bool m_bVisible;
+	bool m_bValidFileName;
+
+	void initImagerMBMap();
+	void initSounderMBMap();
+	void initImagerNABGMap();
+	void initSounderNABGMap();
+	void initImagerMXBKMap();
+	void initSounderMXBKMap();
+
+public:
+	Goes_Calibration();
+	virtual ~Goes_Calibration();
+
+	void setDataProperity(string sensorName, int goesNum, int bandNum);
+	void setStandardDataName(string srcFileName);
+
+	double calcSceneRadiance(double gvarCount);
+	double calcEffectiveTemperarture(double gvarCount);
+	double calcAlbedo(double gvarCount);
+
+	/*
+	 * coverage Type: data | albedo | temperature | radiance
+	 * 11/06, Add the rangeFilter function by adding a new parameter
+	 * Example:
+	 * 		data[6800-13500],radiance[12.4-35.5],temperature
+	 * */
+	int CalibrateGOESData(string srcFileName, string dstFileName, string crs, vector<double>& bbox, string rangeFilter);
+
+	/*
+	 * Range set, axisDescription
+	 * */
+	int GetRangeSetInfo(string srcFilePath, std::vector<string>& rangeSetVec);
+
+};
+
+#endif /* GOES_UTILITY_H_ */
